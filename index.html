@@ -112,7 +112,7 @@
   main{display:flex;flex-direction:column;justify-content:center;align-items:center;padding:110px 0 100px;scroll-margin-top:0}
   main .sec-head{margin-bottom:56px;padding:0 16px}
   .stage{width:100%;transition:filter .6s var(--ease),opacity .6s var(--ease),transform .6s var(--ease)}
-  .stage.blurred{filter:blur(14px);opacity:.45;transform:scale(.98)}
+  .stage.blurred{filter:blur(4px)}
   .rack-scroll{width:100%;display:flex;overflow-x:auto;overflow-y:visible;scrollbar-width:none}
   .rack-scroll::-webkit-scrollbar{display:none}
   .rack{position:relative;margin:0 auto;width:max-content;padding:0 60px}
@@ -154,7 +154,8 @@
 
   /* ---------- Fiche produit ---------- */
   .detail{
-    position:fixed;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;
+    position:fixed;inset:0;z-index:35;display:flex;align-items:center;justify-content:center;
+    background:rgba(243,245,248,.82);backdrop-filter:blur(22px) saturate(.9);-webkit-backdrop-filter:blur(22px) saturate(.9);
     opacity:0;pointer-events:none;transition:opacity .45s var(--ease);
   }
   .detail.open{opacity:1;pointer-events:auto}
@@ -194,7 +195,7 @@
   .specs span{font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;padding:5px 10px;border-radius:12px;background:rgba(22,23,26,.06);color:#3c4048}
   .d-desc{font-size:12px;line-height:1.6;color:#5c616a;text-align:center;max-width:340px;margin-top:8px}
   .close{
-    position:fixed;top:84px;right:clamp(16px,3vw,40px);font-size:10.5px;letter-spacing:.16em;
+    position:fixed;top:30px;right:clamp(16px,3vw,40px);font-size:10.5px;letter-spacing:.16em;
     display:flex;align-items:center;gap:8px;z-index:21;
   }
   .close:hover{opacity:.55}
@@ -437,7 +438,7 @@
     .item .g,.item:nth-child(even) .g,.item.active .g{width:200px;margin-left:-100px;transform:none}
     .item.sold::after{top:282px}
     .arrow{top:auto;bottom:24px}
-    .close{top:76px}
+    .close{top:22px}
   }
   @media (prefers-reduced-motion:reduce){*{animation:none!important;transition-duration:.01ms!important}}
 </style>
@@ -796,11 +797,12 @@ function garment(p, side = 'front') {
     det += `<path d="M70,50 Q100,62 130,50 L131,36 Q100,48 69,36 Z" fill="${p.color}" stroke="#000" stroke-opacity=".25"/>`;
     det += `<path d="M70,50 Q100,62 130,50 L131,36 Q100,48 69,36 Z" fill="#000" opacity=".1"/>`;
     if (p.type === 'puffer') det += `<path d="${cuffs}" fill="${p.c2}"/><path d="M47,244 L153,244 L153,252 L47,252 Z" fill="${p.c2}"/>`;
-    else det += `<path d="M50,58 Q46,92 44,106 M150,58 Q154,92 156,106" fill="none" stroke="${p.c2}" stroke-width="4"/><path d="M44,244 L156,244 L156,250 L44,250 Z" fill="${p.c2}"/>`;
+    else det += `<path d="M50,58 Q54,92 44,106 M150,58 Q146,92 156,106" fill="none" stroke="${p.c2}" stroke-width="4"/><path d="M44,244 L156,244 L156,250 L44,250 Z" fill="${p.c2}"/>`;
     if (front) {
       det += zip(56, 252, '#2a2c30');
       det += pocketZip(60, 170, 64, 214) + pocketZip(140, 170, 136, 214);
-      det += logo(112, 96, p.type === 'gilet' ? '#55524a' : '#e9e6df', 5);
+      // Le gilet est plus étroit : seul le pictogramme montagne tient sur la poitrine
+      det += p.type === 'gilet' ? '<path d="M118,98 L123,90 L125.5,94 L128,89 L133,98 Z" fill="#55524a"/>' : logo(112, 96, '#e9e6df', 5);
     } else {
       det += logo(76, 84, p.type === 'gilet' ? '#55524a' : '#e9e6df', 6);
     }
