@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Safa Trek | Vêtements de trekking</title>
 <meta name="description" content="Safa Trek, vêtements techniques de trekking pensés pour l’Atlas : hardshells, doudounes, polaires, pantalons.">
+<link rel="preload" as="image" href="videos/hero-poster.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
@@ -59,9 +60,10 @@
   /* ---------- Hero vidéo ---------- */
   .hero{position:relative;height:100vh;min-height:560px;overflow:hidden;color:#fff;background:#141a20;isolation:isolate}
   .hero-video,.hero-fallback{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-  .hero-video{opacity:0;transition:opacity 1.2s ease;z-index:1}
-  .hero.has-video .hero-video{opacity:1}
-  .hero-fallback{animation:kenburns 26s ease-in-out infinite alternate}
+  /* La vidéo est visible dès le départ (son affiche = sa première image) ; le décor dessiné ne sert que de secours */
+  .hero-video{z-index:1}
+  .hero-fallback{display:none;animation:kenburns 26s ease-in-out infinite alternate}
+  .hero.no-video .hero-fallback{display:block}
   .hero-fallback svg{width:100%;height:100%;display:block}
   .mist{animation:mist 18s ease-in-out infinite alternate}
   @keyframes kenburns{to{transform:scale(1.08) translateY(-1.5%)}}
@@ -560,8 +562,8 @@
 
 <div class="stage" id="stage">
 <section class="hero" id="hero">
-  <!-- Déposez votre vidéo dans videos/hero.mp4 : elle remplace automatiquement le décor animé -->
-  <video class="hero-video" id="heroVideo" autoplay muted loop playsinline preload="auto" aria-hidden="true">
+  <!-- Vidéo dans videos/hero.mp4 ; poster = sa première image, affichée instantanément pendant le chargement -->
+  <video class="hero-video" id="heroVideo" autoplay muted loop playsinline preload="auto" poster="videos/hero-poster.jpg" aria-hidden="true">
     <source src="videos/hero.mp4" type="video/mp4">
   </video>
   <div class="hero-fallback" aria-hidden="true">
@@ -1580,10 +1582,9 @@ const onScroll = () => {
 };
 addEventListener('scroll', onScroll, { passive: true }); onScroll();
 
-// Vidéo du hero : affichée dès qu'elle est prête, sinon le décor animé reste
+// Vidéo du hero : si le fichier est introuvable, on affiche le décor dessiné à la place
 const heroVideo = $('#heroVideo');
-heroVideo.addEventListener('loadeddata', () => hero.classList.add('has-video'));
-heroVideo.querySelector('source').addEventListener('error', () => heroVideo.remove());
+heroVideo.querySelector('source').addEventListener('error', () => { heroVideo.remove(); hero.classList.add('no-video'); });
 
 // Liste d'un produit (vêtements ou matériel) : sert à ouvrir sa fiche depuis n'importe où
 const listOf = p => p.kind === 'gear' ? GEAR : PRODUCTS;
