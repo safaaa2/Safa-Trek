@@ -167,6 +167,10 @@
     transform:translateY(24px);transition:transform .6s var(--ease);max-height:100vh;overflow-y:auto;
   }
   .detail.open .detail-inner{transform:none}
+  /* La fiche défile sans barre visible, et rien n'est écrasé quand elle dépasse l'écran */
+  .detail-inner{scrollbar-width:none;-ms-overflow-style:none}
+  .detail-inner::-webkit-scrollbar{display:none}
+  .detail-inner > *{flex-shrink:0}
   .d-garment{width:min(300px,72vw);perspective:1200px}
   .d-garment .g{filter:drop-shadow(0 26px 24px rgba(20,25,35,.22))}
   .d-garment .g.flip-out{animation:flipOut .3s ease-in forwards}
