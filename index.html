@@ -418,6 +418,87 @@
     .shelf{grid-template-columns:repeat(2,minmax(0,1fr))}
     .perks{grid-template-columns:repeat(2,1fr)}
   }
+  /* ---------- Bandeau des sommets ---------- */
+  .marquee{overflow:hidden;background:var(--bg);border-bottom:1px solid var(--line);padding:22px 0}
+  .marquee-track{display:flex;width:max-content;animation:marquee 46s linear infinite}
+  .marquee:hover .marquee-track{animation-play-state:paused}
+  .marquee span{display:flex;align-items:center;gap:22px;padding-right:22px;white-space:nowrap;font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-size:clamp(22px,2.6vw,34px);color:#3c4048}
+  .marquee b{font-family:'Archivo',sans-serif;font-style:normal;font-weight:600;font-size:10px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase}
+  .marquee i{font-style:normal;color:#c58a64;font-size:14px}
+  @keyframes marquee{to{transform:translateX(-50%)}}
+
+  /* ---------- Apparition au défilement ---------- */
+  .reveal{opacity:0;transform:translateY(30px);transition:opacity 1s var(--ease),transform 1s var(--ease);transition-delay:var(--d,0s)}
+  .reveal.in{opacity:1;transform:none}
+
+  /* ---------- Curseur ---------- */
+  .cursor{
+    position:fixed;left:0;top:0;z-index:70;pointer-events:none;width:10px;height:10px;margin:-5px 0 0 -5px;border-radius:50%;
+    background:#fff;mix-blend-mode:difference;display:grid;place-items:center;
+    transition:width .35s var(--ease),height .35s var(--ease),margin .35s var(--ease),background .25s,opacity .3s;
+  }
+  .cursor span{font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#fff;opacity:0;transition:opacity .2s}
+  .cursor.big{width:76px;height:76px;margin:-38px 0 0 -38px;background:var(--ink);mix-blend-mode:normal}
+  .cursor.big span{opacity:1}
+  .cursor.hide{opacity:0}
+  body.has-cursor,body.has-cursor a,body.has-cursor button,body.has-cursor .item{cursor:none}
+
+  /* ---------- Complétez votre tenue ---------- */
+  .pairs-wrap{width:min(420px,92vw);margin-top:26px;padding-top:22px;border-top:1px solid var(--line)}
+  .pairs-title{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;text-align:center;margin-bottom:14px}
+  .pairs-title .serif{font-size:17px;letter-spacing:0}
+  .pairs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  .pair{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 8px;border-radius:14px;background:rgba(255,255,255,.7);border:1px solid rgba(0,0,0,.05);transition:transform .35s var(--ease),background .3s}
+  .pair:hover{transform:translateY(-3px);background:#fff}
+  .pair .g{width:64px;height:64px;filter:none!important;animation:none!important}
+  .pair b{font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;text-align:center;line-height:1.3}
+  .pair small{font-size:10.5px;color:var(--muted)}
+
+  /* ---------- Nos sentiers ---------- */
+  .trails{background:#17201c;color:#e9e6df;padding:110px clamp(16px,5vw,80px)}
+  .trails-in{max-width:1240px;margin:0 auto}
+  .trails .eyebrow{color:#8fa197}
+  .trails .sec-head p{color:#a9b5ad}
+  .trails-grid{display:grid;grid-template-columns:1fr 1.05fr;gap:50px;align-items:start}
+  .map-wrap{position:sticky;top:100px}
+  .atlas-map{width:100%;display:block;background:#1d2823;border-radius:24px;border:1px solid rgba(255,255,255,.06)}
+  .contours path{fill:none;stroke:#9db3a6;stroke-opacity:.18;stroke-width:1.2}
+  .m-route{fill:none;stroke:#c58a64;stroke-width:1.4;stroke-dasharray:4 5;opacity:.6;animation:route 30s linear infinite}
+  @keyframes route{to{stroke-dashoffset:-400}}
+  .m-sea{font:600 7px Archivo,sans-serif;letter-spacing:.3em;fill:#6f8e94}
+  .m-city circle{fill:#e9e6df}
+  .m-city text{font:500 8.5px Archivo,sans-serif;letter-spacing:.08em;fill:#a9b5ad}
+  .pin{cursor:pointer}
+  .pin circle.dot{fill:#e9e6df;transition:r .3s,fill .3s}
+  .pin circle.halo{fill:#c58a64;opacity:0;transform-origin:center;transform-box:fill-box}
+  .pin text{font:700 7.5px Archivo,sans-serif;fill:#17201c;text-anchor:middle;pointer-events:none}
+  .pin .lbl{font:italic 400 12px 'Instrument Serif',serif;fill:#e9e6df;text-anchor:start;opacity:.55;transition:opacity .3s}
+  .pin.on circle.dot{fill:#c58a64}
+  .pin.on .lbl{opacity:1}
+  .pin.on circle.halo{animation:halo 1.8s ease-out infinite}
+  @keyframes halo{from{opacity:.55;transform:scale(1)}to{opacity:0;transform:scale(2.6)}}
+  .map-note{font-size:10.5px;color:#6f7d75;margin-top:10px;text-align:center}
+  .trail-list{display:flex;flex-direction:column;gap:14px}
+  .trail{border:1px solid rgba(255,255,255,.1);border-radius:22px;padding:26px 26px 24px;transition:background .4s,border-color .4s}
+  .trail.on{background:rgba(255,255,255,.05);border-color:rgba(197,138,100,.6)}
+  .trail-top{display:flex;align-items:baseline;gap:14px}
+  .trail .n{font-family:'Instrument Serif',serif;font-style:italic;font-size:40px;line-height:1;color:#c58a64}
+  .trail h3{font-stretch:118%;font-size:17px;font-weight:800;text-transform:uppercase;letter-spacing:.03em}
+  .trail-meta{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}
+  .trail-meta span{font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;padding:5px 10px;border-radius:12px;background:rgba(255,255,255,.07);color:#cfd6d1}
+  .trail p{font-size:13px;line-height:1.7;color:#a9b5ad}
+  .trail h4{font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:#8fa197;margin:18px 0 10px}
+  .chips{display:flex;flex-wrap:wrap;gap:6px}
+  .chips button{display:flex;align-items:center;gap:6px;font-size:11px;padding:6px 12px 6px 6px;border-radius:16px;border:1px solid rgba(255,255,255,.16);transition:all .25s}
+  .chips button:hover{border-color:#e9e6df;background:rgba(255,255,255,.06)}
+  .chips .g{width:22px;height:22px;filter:none!important;animation:none!important}
+  .trail-add{margin-top:20px;height:44px;padding:0 22px;border-radius:22px;background:#e9e6df;color:#17201c;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;transition:transform .3s var(--ease),background .3s}
+  .trail-add:hover{transform:translateY(-2px);background:#fff}
+
+  @media (max-width:900px){
+    .trails-grid{grid-template-columns:1fr}
+    .map-wrap{position:static}
+  }
   @media (max-width:760px){
     .hide-sm{display:none}
     .layer-grid{grid-template-columns:1fr}
@@ -452,6 +533,7 @@
   <nav class="nav-left">
     <button data-go="#clothes">Vêtements</button>
     <button data-go="#gear">Matériel</button>
+    <button data-go="#trails" class="hide-sm">Sentiers</button>
     <button id="aboutBtn" class="hide-sm">À propos</button>
   </nav>
   <a class="brand" href="#" id="home"><svg viewBox="0 0 24 16" aria-hidden="true"><path d="M1 15 L8.5 3 L12.5 9 L15.5 5 L23 15 Z"/></svg>SAFA TREK</a>
@@ -516,6 +598,10 @@
   <div class="hero-foot"><span>Livraison offerte dès 1 000 MAD</span><span>Retours sous 30 jours</span><span>Paiement à la livraison</span></div>
 </section>
 
+<div class="marquee" aria-label="Sommets et vallées de l'Atlas">
+  <div class="marquee-track" id="marquee"></div>
+</div>
+
 <main id="clothes">
   <div class="sec-head">
     <span class="eyebrow">01 · Vêtements</span>
@@ -553,6 +639,42 @@
   <div class="shelf" id="shelf"></div>
 </section>
 
+<section class="trails" id="trails" aria-labelledby="trailsTitle">
+  <div class="trails-in">
+    <div class="sec-head">
+      <span class="eyebrow">03 · Nos sentiers</span>
+      <h2 id="trailsTitle">Quatre randonnées, <span class="serif">un sac prêt</span></h2>
+      <p>Nos itinéraires préférés dans l'Atlas, avec le matériel que nous emportons. Choisissez votre sentier, le pack est prêt.</p>
+    </div>
+    <div class="trails-grid">
+      <div class="map-wrap">
+        <svg class="atlas-map" id="atlasMap" viewBox="0 50 400 230" role="img" aria-label="Carte stylisée de l'Atlas marocain avec les quatre sentiers">
+          <defs>
+            <linearGradient id="ocean" x1="0" x2="1"><stop offset="0" stop-color="#2a4a52"/><stop offset="1" stop-color="#2a4a52" stop-opacity="0"/></linearGradient>
+          </defs>
+          <path d="M0,0 L70,0 Q52,60 66,120 Q40,170 52,230 Q30,280 40,320 L0,320 Z" fill="url(#ocean)" opacity=".7"/>
+          <text x="16" y="262" class="m-sea" transform="rotate(-90 16 262)">OCÉAN ATLANTIQUE</text>
+          <g class="contours">
+            <path d="M80,190 Q130,120 210,128 Q300,80 360,120 Q380,170 330,190 Q260,210 210,200 Q140,236 80,190 Z"/>
+            <path d="M110,186 Q150,140 210,146 Q290,104 340,132 Q350,166 316,178 Q256,192 208,186 Q150,212 110,186 Z"/>
+            <path d="M140,176 Q170,152 200,160 Q230,150 214,176 Q186,196 140,176 Z"/>
+            <path d="M156,170 Q176,158 196,164 Q206,170 190,180 Q170,186 156,170 Z"/>
+            <path d="M226,128 Q262,104 296,120 Q300,140 270,146 Q238,150 226,128 Z"/>
+            <path d="M242,128 Q264,114 284,124 Q284,136 264,138 Q246,140 242,128 Z"/>
+            <path d="M290,150 Q326,140 344,160 Q334,180 304,176 Q284,170 290,150 Z"/>
+          </g>
+          <path class="m-route" d="M62,214 Q120,160 172,166 Q220,140 262,124 Q300,140 318,160"/>
+          <g class="m-city"><circle cx="58" cy="222" r="3"/><text x="66" y="234">Agadir</text></g>
+          <g class="m-city"><circle cx="180" cy="96" r="3"/><text x="188" y="92">Marrakech</text></g>
+          <g id="mapPins"></g>
+        </svg>
+        <p class="map-note">Carte stylisée, non à l'échelle.</p>
+      </div>
+      <div class="trail-list" id="trailList"></div>
+    </div>
+  </div>
+</section>
+
 <section class="perks" aria-label="Nos garanties">
   <div><svg viewBox="0 0 24 24"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z"/><circle cx="7" cy="17.5" r="1.6"/><circle cx="17" cy="17.5" r="1.6"/></svg><h4>Livraison offerte</h4><p>Partout au Maroc dès 1 000 MAD</p></div>
   <div><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.4-5.7M4 4v4h4"/></svg><h4>Retours 30 jours</h4><p>Échange ou remboursement</p></div>
@@ -573,7 +695,7 @@
     <nav class="f-cols">
       <div><h5>Boutique</h5><a href="#" data-go="#clothes">Vêtements</a><a href="#" data-go="#gear">Matériel</a><a href="#" data-soon>Nouveautés</a><a href="#" data-soon>Cartes cadeaux</a></div>
       <div><h5>Aide</h5><a href="#" data-soon>Livraison et retours</a><a href="#" data-soon>Guide des tailles</a><a href="#" data-soon>Entretien du duvet</a><a href="#" data-soon>Suivre ma commande</a></div>
-      <div><h5>Safa Trek</h5><a href="#" id="aboutLink">À propos</a><a href="#" data-soon>Nos sentiers</a><a href="#" data-soon>Engagements</a><a href="#" data-soon>Ambassadeurs</a></div>
+      <div><h5>Safa Trek</h5><a href="#" id="aboutLink">À propos</a><a href="#" data-go="#trails">Nos sentiers</a><a href="#" data-soon>Engagements</a><a href="#" data-soon>Ambassadeurs</a></div>
       <div><h5>Contact</h5><p>Agadir, Maroc</p><p>Lun. à sam., 9 h à 18 h</p>
         <div class="f-social">
           <a href="#" data-soon aria-label="Instagram"><svg viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".9" fill="currentColor"/></svg></a>
@@ -610,6 +732,10 @@
     <div class="stock" id="stock" hidden></div>
     <div class="specs" id="specs"></div>
     <p class="d-desc" id="dDesc"></p>
+    <div class="pairs-wrap">
+      <h4 class="pairs-title">Complétez votre <span class="serif">tenue</span></h4>
+      <div class="pairs" id="pairs"></div>
+    </div>
   </div>
 </section>
 
@@ -1197,6 +1323,8 @@ function openDetail(i, l = list) {
   $('#specs').innerHTML = p.specs.map(s => `<span>${s}</span>`).join('');
   $('#dPrice').textContent = fmt(p.price);
   $('#dDesc').textContent = p.desc;
+  renderPairs(p);
+  $('.detail-inner').scrollTop = 0;
   $('#side').hidden = p.kind === 'gear';
   document.querySelectorAll('#side button').forEach(b => b.classList.toggle('on', b.dataset.side === 'front'));
   if (sizes.length === 1 && p.stock[sizes[0]]) size = sizes[0];
@@ -1438,7 +1566,10 @@ function toast(msg) {
 $('#currency').value = currency;
 $('#currency').addEventListener('change', e => {
   currency = e.target.value; store.set('safatrek_cur', currency); renderCart(); renderShelf();
-  if (current >= 0) { $('#dPrice').textContent = fmt(list[current].price); updateAdd(); }
+  document.querySelectorAll('[data-add]').forEach(b => {
+    const t = TRAILS[b.dataset.add]; b.textContent = `Ajouter le sac · ${t.gear.length} articles · ${fmt(packTotal(t))}`;
+  });
+  if (current >= 0) { $('#dPrice').textContent = fmt(list[current].price); updateAdd(); renderPairs(list[current]); }
 });
 $('#searchBtn').addEventListener('click', () => {
   const s = $('#search'); s.classList.toggle('on');
@@ -1473,6 +1604,123 @@ addEventListener('scroll', onScroll, { passive: true }); onScroll();
 const heroVideo = $('#heroVideo');
 heroVideo.addEventListener('loadeddata', () => hero.classList.add('has-video'));
 heroVideo.querySelector('source').addEventListener('error', () => heroVideo.remove());
+
+// Liste d'un produit (vêtements ou matériel) : sert à ouvrir sa fiche depuis n'importe où
+const listOf = p => p.kind === 'gear' ? GEAR : PRODUCTS;
+const openProduct = id => { const p = byId(id), l = listOf(p); openDetail(l.indexOf(p), l); };
+
+/* ---------- Complétez votre tenue ---------- */
+const PAIRS = {
+  atlas: ['merino', 'toubkal', 'boots'], toubkal: ['merino', 'atlas', 'lamp'], ifni: ['merino', 'trail', 'pack'],
+  antiatlas: ['merino', 'trail', 'poles'], merino: ['ifni', 'atlas', 'socks'], mgoun: ['merino', 'antiatlas', 'sleep'],
+  trail: ['boots', 'socks', 'antiatlas'], imlil: ['merino', 'daypack', 'glasses'], pack: ['flask', 'lamp', 'firstaid'],
+  boots: ['socks', 'poles', 'trail'], poles: ['boots', 'pack', 'glasses'], tent: ['sleep', 'stove', 'lamp'],
+  lamp: ['tent', 'firstaid', 'pack'], flask: ['daypack', 'stove', 'merino'], sleep: ['tent', 'stove', 'mgoun'],
+  stove: ['tent', 'flask', 'sleep'], daypack: ['flask', 'imlil', 'firstaid'], firstaid: ['pack', 'lamp', 'glasses'],
+  socks: ['boots', 'merino', 'trail'], glasses: ['imlil', 'atlas', 'daypack']
+};
+function renderPairs(p) {
+  $('#pairs').innerHTML = (PAIRS[p.id] || []).map(byId).map(q => `
+    <button class="pair" data-id="${q.id}">${art(q)}<b>${q.name}</b><small>${soldOut(q) ? 'Épuisé' : fmt(q.price)}</small></button>`).join('');
+}
+$('#pairs').addEventListener('click', e => { const b = e.target.closest('.pair'); if (b) openProduct(b.dataset.id); });
+
+/* ---------- Bandeau des sommets ---------- */
+const PEAKS = [['Toubkal', '4 167 m'], ['M’Goun', '4 071 m'], ['Imlil', '1 740 m'], ['Gorges du Todra', '1 400 m'],
+  ['Aït Bouguemez', '1 800 m'], ['Paradise Valley', 'Agadir'], ['Jbel Saghro', '2 712 m'], ['Ouanoukrim', '4 089 m']];
+const peaksHtml = `<span>${PEAKS.map(([n, h]) => `${n} <b>${h}</b> <i>✦</i>`).join(' ')}</span>`;
+$('#marquee').innerHTML = peaksHtml + peaksHtml;
+
+/* ---------- Nos sentiers ---------- */
+// gear : ajouté au panier avec l'option indiquée ; wear : conseillé (taille personnelle, on ouvre la fiche)
+const TRAILS = [
+  { name: 'Toubkal par Imlil', short: 'Toubkal', x: 172, y: 166, meta: ['2 jours', '4 167 m', 'Modérée'],
+    desc: 'Le plus haut sommet d’Afrique du Nord. Départ d’Imlil, nuit au refuge, sommet au lever du soleil au-dessus d’une mer de nuages.',
+    wear: ['atlas', 'toubkal', 'boots'], gear: [['lamp', 'Unique'], ['poles', 'Unique'], ['flask', '750 ml'], ['firstaid', 'Unique']] },
+  { name: 'M’Goun par les Aït Bouguemez', short: 'M’Goun', x: 262, y: 124, meta: ['4 jours', '4 071 m', 'Difficile'],
+    desc: 'La « vallée heureuse », ses greniers collectifs et une longue crête à plus de 4 000 m. Bivouac en autonomie.',
+    wear: ['mgoun', 'trail', 'boots'], gear: [['pack', '45 L'], ['tent', 'Unique'], ['sleep', 'Regular'], ['stove', 'Unique']] },
+  { name: 'Gorges du Todra', short: 'Todra', x: 318, y: 160, meta: ['1 jour', '600 m D+', 'Facile'],
+    desc: 'Des falaises de 300 m de haut, des villages berbères et des palmeraies. Une boucle lumineuse, idéale pour commencer.',
+    wear: ['merino', 'socks'], gear: [['daypack', 'Unique'], ['flask', '750 ml'], ['glasses', 'Unique']] },
+  { name: 'Paradise Valley', short: 'Paradise Valley', x: 80, y: 196, meta: ['½ journée', 'Près d’Agadir', 'Facile'],
+    desc: 'Canyons, vasques d’eau turquoise et lauriers-roses, à une heure d’Agadir. La sortie parfaite du week-end.',
+    wear: ['merino', 'trail'], gear: [['daypack', 'Unique'], ['flask', '750 ml'], ['firstaid', 'Unique']] }
+];
+const packTotal = t => t.gear.reduce((s, [id]) => s + byId(id).price, 0);
+$('#mapPins').innerHTML = TRAILS.map((t, i) => `
+  <g class="pin" data-t="${i}" tabindex="0" role="button" aria-label="${t.name}">
+    <circle class="halo" cx="${t.x}" cy="${t.y}" r="9"/>
+    <circle class="dot" cx="${t.x}" cy="${t.y}" r="9"/>
+    <text x="${t.x}" y="${t.y + 2.6}">${i + 1}</text>
+    <text class="lbl" x="${t.x + 14}" y="${t.y + (i === 2 ? 22 : -12)}">${t.short}</text>
+  </g>`).join('');
+function renderTrails() {
+  $('#trailList').innerHTML = TRAILS.map((t, i) => `
+    <article class="trail" data-t="${i}">
+      <div class="trail-top"><span class="n">0${i + 1}</span><h3>${t.name}</h3></div>
+      <div class="trail-meta">${t.meta.map(m => `<span>${m}</span>`).join('')}</div>
+      <p>${t.desc}</p>
+      <h4>À porter</h4>
+      <div class="chips">${t.wear.map(id => `<button data-id="${id}">${art(byId(id))}${byId(id).name}</button>`).join('')}</div>
+      <h4>Dans le sac</h4>
+      <div class="chips">${t.gear.map(([id]) => `<button data-id="${id}">${art(byId(id))}${byId(id).name}</button>`).join('')}</div>
+      <button class="trail-add" data-add="${i}">Ajouter le sac · ${t.gear.length} articles · ${fmt(packTotal(t))}</button>
+    </article>`).join('');
+}
+renderTrails();
+function setTrail(i) {
+  document.querySelectorAll('.trail').forEach(el => el.classList.toggle('on', +el.dataset.t === i));
+  document.querySelectorAll('.pin').forEach(el => el.classList.toggle('on', +el.dataset.t === i));
+}
+setTrail(0);
+$('#trailList').addEventListener('mouseover', e => { const t = e.target.closest('.trail'); if (t) setTrail(+t.dataset.t); });
+$('#trailList').addEventListener('click', e => {
+  const chip = e.target.closest('[data-id]'), add = e.target.closest('[data-add]');
+  if (chip) openProduct(chip.dataset.id);
+  if (add) {
+    let n = 0;
+    TRAILS[add.dataset.add].gear.forEach(([id, size]) => {
+      const p = byId(id); if (!p.stock[size]) return;
+      const line = cart.find(l => l.id === id && l.size === size);
+      if (line) line.qty = Math.min(line.qty + 1, p.stock[size]); else cart.push({ id, size, qty: 1 });
+      n++;
+    });
+    saveCart(); toast(`${n} articles du sac ajoutés au panier`);
+  }
+});
+$('#mapPins').addEventListener('click', e => {
+  const pin = e.target.closest('.pin'); if (!pin) return;
+  setTrail(+pin.dataset.t);
+  document.querySelector(`.trail[data-t="${pin.dataset.t}"]`).scrollIntoView({ behavior: 'smooth', block: 'center' });
+});
+// Une fois sur le sentier, la carte suit la randonnée affichée au centre de l'écran
+if ('IntersectionObserver' in window) {
+  const trailObs = new IntersectionObserver(es => es.forEach(e => e.isIntersecting && setTrail(+e.target.dataset.t)),
+    { rootMargin: '-45% 0px -45% 0px' });
+  document.querySelectorAll('.trail').forEach(el => trailObs.observe(el));
+}
+
+/* ---------- Apparition au défilement ---------- */
+const revealEls = document.querySelectorAll('.sec-head, .layer, .trail, .map-wrap, .perks > div, .f-top, .f-word');
+revealEls.forEach((el, i) => { el.classList.add('reveal'); el.style.setProperty('--d', `${(i % 4) * 0.08}s`); });
+if ('IntersectionObserver' in window) {
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }),
+    { rootMargin: '0px 0px -8% 0px' });
+  revealEls.forEach(el => io.observe(el));
+} else revealEls.forEach(el => el.classList.add('in'));
+
+/* ---------- Curseur ---------- */
+if (matchMedia('(hover: hover) and (pointer: fine)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  const cur = document.createElement('div');
+  cur.className = 'cursor hide'; cur.innerHTML = '<span>Voir</span>';
+  document.body.append(cur); document.body.classList.add('has-cursor');
+  let x = 0, y = 0, cx = 0, cy = 0;
+  addEventListener('mousemove', e => { x = e.clientX; y = e.clientY; cur.classList.remove('hide');
+    cur.classList.toggle('big', !!e.target.closest('.item, .gcard, .layer, .pair')); });
+  document.addEventListener('mouseleave', () => cur.classList.add('hide'));
+  (function loop() { cx += (x - cx) * .2; cy += (y - cy) * .2; cur.style.transform = `translate(${cx}px,${cy}px)`; requestAnimationFrame(loop); })();
+}
 
 // Système trois couches : chaque carte ouvre la fiche du produit conseillé
 const LAYERS = [
