@@ -157,19 +157,22 @@
 
   /* ---------- Fiche produit ---------- */
   .detail{
-    position:fixed;inset:0;z-index:35;display:flex;align-items:center;justify-content:center;
-    background:rgba(243,245,248,.82);backdrop-filter:blur(22px) saturate(.9);-webkit-backdrop-filter:blur(22px) saturate(.9);
+    position:fixed;inset:0;z-index:35;display:flex;flex-direction:column;align-items:center;
+    overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none;-ms-overflow-style:none;
     opacity:0;pointer-events:none;transition:opacity .45s var(--ease);
+  }
+  .detail::-webkit-scrollbar{display:none}
+  /* Le flou est sur un calque fixe : la fiche entière défile, Fermer et les flèches restent en place */
+  .detail::before{
+    content:"";position:fixed;inset:0;z-index:-1;
+    background:rgba(243,245,248,.82);backdrop-filter:blur(22px) saturate(.9);-webkit-backdrop-filter:blur(22px) saturate(.9);
   }
   .detail.open{opacity:1;pointer-events:auto}
   .detail-inner{
-    display:flex;flex-direction:column;align-items:center;gap:6px;padding:90px 16px 30px;
-    transform:translateY(24px);transition:transform .6s var(--ease);max-height:100vh;overflow-y:auto;
+    display:flex;flex-direction:column;align-items:center;gap:6px;padding:90px 16px 60px;margin:auto 0;
+    transform:translateY(24px);transition:transform .6s var(--ease);
   }
   .detail.open .detail-inner{transform:none}
-  /* La fiche défile sans barre visible, et rien n'est écrasé quand elle dépasse l'écran */
-  .detail-inner{scrollbar-width:none;-ms-overflow-style:none}
-  .detail-inner::-webkit-scrollbar{display:none}
   .detail-inner > *{flex-shrink:0}
   .d-garment{width:min(300px,72vw);perspective:1200px}
   .d-garment .g{filter:drop-shadow(0 26px 24px rgba(20,25,35,.22))}
@@ -1284,7 +1287,7 @@ function openDetail(i, l = list) {
   $('#dPrice').textContent = fmt(p.price);
   $('#dDesc').textContent = p.desc;
   renderPairs(p);
-  $('.detail-inner').scrollTop = 0;
+  detail.scrollTop = 0;
   $('#side').hidden = p.kind === 'gear';
   document.querySelectorAll('#side button').forEach(b => b.classList.toggle('on', b.dataset.side === 'front'));
   if (sizes.length === 1 && p.stock[sizes[0]]) size = sizes[0];
