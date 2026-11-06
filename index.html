@@ -216,6 +216,13 @@
   .sec-head h2{font-stretch:118%;font-weight:800;font-size:clamp(26px,3.6vw,40px);text-transform:uppercase;margin:10px 0 12px;letter-spacing:.01em}
   .sec-head p{font-size:13px;line-height:1.7;color:#5c616a}
   .shelf{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+  .gfilters{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin:-16px 0 36px}
+  .gfilters button{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;padding:9px 16px;border-radius:20px;border:1px solid #cfd4da;transition:all .25s}
+  .gfilters button:hover{border-color:var(--ink)}
+  .gfilters button.on{background:var(--ink);border-color:var(--ink);color:#fff}
+  .gfilters sup{font-size:8.5px;opacity:.6;margin-left:4px}
+  .gcard{animation:cardIn .5s var(--ease) both}
+  @keyframes cardIn{from{opacity:0;transform:translateY(14px)}}
   .gcard{text-align:left;display:flex;flex-direction:column;gap:6px;transition:opacity .3s}
   .gcard.dim{opacity:.2}
   .gart{
@@ -418,6 +425,7 @@
     <h2>Tout pour la montagne</h2>
     <p>Sacs, chaussures, bâtons et bivouac : le matériel que nous emportons sur les sentiers de l'Atlas, testé par notre équipe.</p>
   </div>
+  <div class="gfilters" id="gfilters" role="toolbar" aria-label="Catégories"></div>
   <div class="shelf" id="shelf"></div>
 </section>
 
@@ -773,7 +781,34 @@ const GEAR = [
     cat:'gourde bouteille eau thermos', sizes:['500 ml','750 ml'], stock:{'500 ml':0,'750 ml':7},
     desc:'Gourde isotherme en inox double paroi : 24 h au frais, 12 h au chaud. Bouchon avec anse, étanche dans le sac.',
     specs:['Inox double paroi','12 h chaud','390 g'] },
+  { id:'sleep', kind:'gear', art:'sleep', name:'Toubkal -5 Sleeping Bag', price:1090, color:'#2f5247', c2:'#1f2a27',
+    cat:'sac de couchage duvet dormir nuit', tag:'Refuge', sizes:['Regular','Long'], stock:{Regular:3,Long:2},
+    desc:'Sac de couchage momie en duvet pour les nuits fraîches en refuge ou au bivouac. Capuche ajustable et zip anti-accroche.',
+    specs:['Confort -5 °C','Duvet 650 cuin','1,1 kg'] },
+  { id:'stove', kind:'gear', art:'stove', name:'Atlas Stove Kit', price:450, color:'#2b2f37', c2:'#e0552b',
+    cat:'réchaud rechaud cuisine popote gaz', sizes:['Unique'], stock:{'Unique':5},
+    desc:'Réchaud à gaz compact avec popote en aluminium 1 L. Le brûleur et la cartouche se rangent dans la casserole.',
+    specs:['Brûleur 3 000 W','Popote 1 L','Ébullition en 3 min'] },
+  { id:'daypack', kind:'gear', art:'pack', small:true, name:'Imlil 20L Daypack', price:490, color:'#2f5247', c2:'#cdb88c',
+    cat:'sac à dos sac journée', sizes:['Unique'], stock:{'Unique':8},
+    desc:'Sac de randonnée à la journée, compatible poche à eau, avec bretelles respirantes et attache pour les bâtons.',
+    specs:['20 L','Poche à eau compatible','620 g'] },
+  { id:'firstaid', kind:'gear', art:'firstaid', name:'Trek First-Aid Kit', price:180, color:'#d63b2f', c2:'#2b2f37',
+    cat:'trousse secours pharmacie soins', sizes:['Unique'], stock:{'Unique':12},
+    desc:'Trousse de premiers secours étanche : pansements, ampoules, bandes, désinfectant, couverture de survie et pince à tiques.',
+    specs:['42 éléments','Étanche','240 g'] },
+  { id:'socks', kind:'gear', art:'socks', name:'Merino Trek Socks ×2', price:150, color:'#6c809b', c2:'#2b2f37',
+    cat:'chaussettes laine merino', sizes:['35-38','39-42','43-46'], stock:{'35-38':6,'39-42':8,'43-46':5},
+    desc:'Lot de 2 paires de chaussettes en mérinos, renforcées au talon et aux orteils pour éviter les ampoules.',
+    specs:['Mérinos 70 %','Talon renforcé','Lot de 2'] },
+  { id:'glasses', kind:'gear', art:'glasses', name:'Glacier Cat.4 Sunglasses', price:320, color:'#2b2f37', c2:'#e0752b',
+    cat:'lunettes soleil glacier altitude', tag:'Haute altitude', sizes:['Unique'], stock:{'Unique':6},
+    desc:'Lunettes de glacier catégorie 4 avec protections latérales amovibles, pour la neige et le soleil en altitude.',
+    specs:['Catégorie 4','Protections latérales','UV 400'] },
 ];
+const GEAR_GROUPS = { pack:'sacs', daypack:'sacs', tent:'camping', sleep:'camping', stove:'camping', flask:'camping',
+  boots:'marche', poles:'marche', socks:'marche', lamp:'securite', firstaid:'securite', glasses:'securite' };
+const GEAR_FILTERS = [['all', 'Tout'], ['sacs', 'Sacs'], ['camping', 'Camping'], ['marche', 'Marche'], ['securite', 'Sécurité']];
 
 function gear(p) {
   if (p.img) return photo(p.img);
@@ -880,6 +915,90 @@ function gear(p) {
       <path d="${body}" fill="none" stroke="#000" stroke-opacity=".15"/>`;
   }
 
+  if (p.art === 'sleep') {
+    const body = 'M68,46 Q100,16 132,46 L136,118 Q138,168 122,186 L78,186 Q62,168 64,118 Z';
+    defs = `<clipPath id="${u}c"><path d="${body}"/></clipPath>`;
+    g = ground(46) + `
+      <path d="${body}" fill="${c}"/>
+      <g clip-path="url(#${u}c)">
+        ${Array.from({ length: 9 }, (_, i) => `<path d="M60,${74 + i * 13} Q100,${80 + i * 13} 140,${74 + i * 13}" fill="none" stroke="#000" stroke-opacity=".22" stroke-width="1.4"/><path d="M60,${66 + i * 13} Q100,${72 + i * 13} 140,${66 + i * 13}" fill="none" stroke="#fff" stroke-opacity=".1" stroke-width="4"/>`).join('')}
+        <path d="M60,150 L140,150 L140,200 L60,200 Z" fill="#000" opacity=".08"/>
+      </g>
+      <ellipse cx="100" cy="50" rx="22" ry="13" fill="${d}"/>
+      <ellipse cx="100" cy="52" rx="14" ry="8" fill="#111"/>
+      <path d="M80,58 Q100,68 120,58" fill="none" stroke="#e0552b" stroke-width="2"/><circle cx="121" cy="60" r="2.4" fill="#e0552b"/>
+      <path d="M126,62 L130,180" stroke="#e9c33f" stroke-width="2"/>
+      ${logo(80, 120, '#e9e6df', 5)}
+      <path d="${body}" fill="url(#${u}s)"/>
+      <path d="${body}" fill="none" stroke="#000" stroke-opacity=".18"/>`;
+  }
+
+  if (p.art === 'stove') {
+    const can = 'M60,152 Q60,134 100,132 Q140,134 140,152 L140,176 Q140,188 100,188 Q60,188 60,176 Z';
+    g = ground(52) + `
+      <path d="${can}" fill="${c}"/>
+      <path d="M60,160 Q100,166 140,160 L140,172 Q100,178 60,172 Z" fill="${d}"/>
+      <text x="100" y="155" text-anchor="middle" font-family="Arial,sans-serif" font-weight="700" font-size="5.5" letter-spacing="1.6" fill="#e9e6df">GAZ 230 G</text>
+      <path d="${can}" fill="url(#${u}s)"/>
+      <rect x="92" y="114" width="16" height="20" rx="2" fill="#55585e"/>
+      <rect x="86" y="108" width="28" height="7" rx="2" fill="#8e9198"/>
+      <path d="M70,104 L90,112 M130,104 L110,112" stroke="#55585e" stroke-width="3" stroke-linecap="round"/>
+      <path d="M114,122 L126,122 Q130,122 130,126" fill="none" stroke="${d}" stroke-width="3" stroke-linecap="round"/>
+      <path d="M60,58 L140,58 L138,100 Q138,106 132,106 L68,106 Q62,106 62,100 Z" fill="#c4c8ce"/>
+      <path d="M60,58 L140,58 L138,100 Q138,106 132,106 L68,106 Q62,106 62,100 Z" fill="url(#${u}s)"/>
+      <ellipse cx="100" cy="58" rx="40" ry="6" fill="#dfe2e6" stroke="#000" stroke-opacity=".15"/>
+      <path d="M140,66 L166,62" stroke="#2b2f37" stroke-width="4" stroke-linecap="round"/>
+      <rect x="94" y="48" width="12" height="6" rx="2" fill="#2b2f37"/>
+      ${logo(82, 86, '#55585e', 5)}`;
+  }
+
+  if (p.art === 'firstaid') {
+    const body = 'M50,82 Q50,66 66,66 L134,66 Q150,66 150,82 L150,170 Q150,184 136,184 L64,184 Q50,184 50,170 Z';
+    g = ground(56) + `
+      <path d="M86,66 Q86,48 100,48 Q114,48 114,66" fill="none" stroke="${d}" stroke-width="5"/>
+      <path d="${body}" fill="${c}"/>
+      <path d="M54,84 Q100,76 146,84" fill="none" stroke="#26282c" stroke-width="2"/>
+      <rect x="138" y="80" width="8" height="12" rx="2" fill="#26282c"/>
+      <rect x="66" y="96" width="68" height="68" rx="12" fill="#fff" opacity=".96"/>
+      <path d="M92,108 L108,108 L108,122 L122,122 L122,138 L108,138 L108,152 L92,152 L92,138 L78,138 L78,122 L92,122 Z" fill="${c}"/>
+      ${logo(76, 176, '#f4efe6', 4.6)}
+      <path d="${body}" fill="url(#${u}s)"/>
+      <path d="${body}" fill="none" stroke="#000" stroke-opacity=".15"/>`;
+  }
+
+  if (p.art === 'socks') {
+    const sock = 'M70,24 L104,24 L104,112 Q104,122 114,130 L148,152 Q162,164 150,178 Q142,186 126,180 L84,156 Q70,148 70,132 Z';
+    const one = (dx, dy, op) => `<g transform="translate(${dx},${dy})" opacity="${op}">
+      <path d="${sock}" fill="${c}"/>
+      <path d="M70,24 L104,24 L104,46 L70,46 Z" fill="${d}"/>
+      ${Array.from({ length: 8 }, (_, i) => `<path d="M${73 + i * 4},26 L${73 + i * 4},44" stroke="#fff" stroke-opacity=".14"/>`).join('')}
+      <path d="M70,132 Q70,148 84,156 L96,162 Q82,140 84,118 L70,112 Z" fill="${d}" opacity=".85"/>
+      <path d="M134,166 Q146,160 152,166 Q160,174 150,178 Q142,186 126,180 Z" fill="${d}" opacity=".85"/>
+      <path d="M78,70 L98,70 M78,84 L98,84" stroke="#e0552b" stroke-width="2"/>
+      <path d="${sock}" fill="url(#${u}s)"/>
+      <path d="${sock}" fill="none" stroke="#000" stroke-opacity=".15"/>
+    </g>`;
+    g = ground(56) + one(-22, -6, .55) + one(8, 6, 1);
+  }
+
+  if (p.art === 'glasses') {
+    defs = `<linearGradient id="${u}m" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1f5d9e"/><stop offset=".55" stop-color="#3b2f6b"/><stop offset="1" stop-color="${d}"/></linearGradient>`;
+    const lens = 'M34,92 Q34,70 62,70 L90,72 Q98,74 96,92 Q92,124 64,124 Q36,122 34,92 Z';
+    const side = (t = '') => `<g ${t}>
+      <path d="M34,84 L14,80 Q8,96 18,112 L36,106 Z" fill="#3a3d42"/>
+      <path d="${lens}" fill="url(#${u}m)"/>
+      <path d="M44,80 Q56,74 70,78" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="3" stroke-linecap="round"/>
+      <path d="${lens}" fill="none" stroke="${c}" stroke-width="5"/>
+    </g>`;
+    g = ground(70) + `
+      <path d="M14,86 L0,98 M186,86 L200,98" stroke="${c}" stroke-width="4"/>
+      ${side()}${side('transform="translate(200,0) scale(-1,1)"')}
+      <path d="M94,82 Q100,74 106,82" fill="none" stroke="${c}" stroke-width="5"/>
+      <text x="100" y="146" text-anchor="middle" font-family="Arial,sans-serif" font-weight="700" font-size="6" letter-spacing="2" fill="#55585e">CAT. 4 · GLACIER</text>`;
+  }
+
+  if (p.small) g = `<g transform="translate(15,28.5) scale(.85)">${g}</g>`;
+
   return `<svg class="g" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>${shade}${defs}</defs>${g}</svg>`;
 }
 
@@ -922,9 +1041,19 @@ itemsEl.addEventListener('click', e => { const el = e.target.closest('.item'); i
 itemsEl.addEventListener('keydown', e => { if (e.key === 'Enter') { const el = e.target.closest('.item'); if (el) openDetail(+el.dataset.i, PRODUCTS); } });
 
 /* ================= Étagère matériel ================= */
-const shelfEl = $('#shelf');
+const shelfEl = $('#shelf'), filtersEl = $('#gfilters');
+let gearFilter = 'all';
+filtersEl.innerHTML = GEAR_FILTERS.map(([k, label]) =>
+  `<button data-f="${k}" class="${k === 'all' ? 'on' : ''}">${label}<sup>${k === 'all' ? GEAR.length : GEAR.filter(p => GEAR_GROUPS[p.id] === k).length}</sup></button>`
+).join('');
+filtersEl.addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  gearFilter = b.dataset.f;
+  filtersEl.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
+  renderShelf();
+});
 function renderShelf() {
-  shelfEl.innerHTML = GEAR.map((p, i) => `
+  shelfEl.innerHTML = GEAR.map((p, i) => gearFilter !== 'all' && GEAR_GROUPS[p.id] !== gearFilter ? '' : `
     <button class="gcard${soldOut(p) ? ' sold' : ''}" data-i="${i}">
       <div class="gart">${p.tag ? `<span class="gtag">${p.tag}</span>` : ''}${gear(p)}</div>
       <div class="ginfo"><h3>${p.name}</h3><span>${soldOut(p) ? 'Épuisé' : fmt(p.price)}</span></div>

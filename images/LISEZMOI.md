@@ -28,3 +28,9 @@ Format conseillé : 1200 × 1600 px (vêtements, portrait) ou 1200 × 1200 px (m
 | Bivouac 2P Tent | `tent.png` |
 | Lumen 400 Headlamp | `lamp.png` |
 | Isotherm Flask | `flask.png` |
+| Toubkal -5 Sleeping Bag | `sleep.png` |
+| Atlas Stove Kit | `stove.png` |
+| Imlil 20L Daypack | `daypack.png` |
+| Trek First-Aid Kit | `firstaid.png` |
+| Merino Trek Socks ×2 | `socks.png` |
+| Glacier Cat.4 Sunglasses | `glasses.png` |
