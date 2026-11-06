@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>SAHRA | Vêtements</title>
-<meta name="description" content="SAHRA, vêtements dessinés à Agadir. Pièces en séries limitées.">
+<title>Safa Trek | Vêtements de trekking</title>
+<meta name="description" content="Safa Trek, vêtements techniques de trekking pensés pour l’Atlas : hardshells, doudounes, polaires, pantalons.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&display=swap" rel="stylesheet">
@@ -32,9 +32,10 @@
   .nav-left{display:flex;gap:22px;font-size:11px;letter-spacing:.14em;text-transform:uppercase}
   .nav-left button:hover{opacity:.55}
   .brand{
-    font-stretch:125%;font-weight:800;font-size:clamp(22px,2.6vw,30px);letter-spacing:.06em;
-    text-decoration:none;color:var(--ink);
+    font-stretch:125%;font-weight:800;font-size:clamp(17px,2.2vw,26px);letter-spacing:.06em;
+    text-decoration:none;color:var(--ink);display:flex;align-items:center;gap:.4em;white-space:nowrap;
   }
+  .brand svg{width:1.15em;height:.8em;fill:var(--ink)}
   .nav-right{display:flex;justify-content:flex-end;align-items:center;gap:18px}
   .nav-right svg{width:19px;height:19px;stroke:var(--ink);fill:none;stroke-width:1.6}
   .icon-btn{position:relative;display:grid;place-items:center;width:30px;height:30px;border-radius:50%;transition:background .2s}
@@ -131,6 +132,8 @@
   .add:not(:disabled):hover{transform:translateY(-1px)}
   .link{font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;border-bottom:1px solid currentColor;padding-bottom:2px;margin-top:10px}
   .stock{font-size:10.5px;color:#5c616a;letter-spacing:.04em;text-align:center;line-height:1.8;max-width:300px}
+  .specs{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-top:14px;max-width:360px}
+  .specs span{font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;padding:5px 10px;border-radius:12px;background:rgba(22,23,26,.06);color:#3c4048}
   .d-desc{font-size:12px;line-height:1.6;color:#5c616a;text-align:center;max-width:340px;margin-top:8px}
   .close{
     position:fixed;top:84px;right:clamp(16px,3vw,40px);font-size:10.5px;letter-spacing:.16em;
@@ -222,7 +225,7 @@
     <button id="aboutBtn">À propos</button>
     <button id="allBtn">Collection</button>
   </nav>
-  <a class="brand" href="#" id="home">SAHRA</a>
+  <a class="brand" href="#" id="home"><svg viewBox="0 0 24 16" aria-hidden="true"><path d="M1 15 L8.5 3 L12.5 9 L15.5 5 L23 15 Z"/></svg>SAFA TREK</a>
   <div class="nav-right">
     <select class="currency" id="currency" aria-label="Devise">
       <option value="MAD">MAD</option>
@@ -241,7 +244,7 @@
   </div>
 </header>
 
-<div class="search" id="search"><input id="q" type="search" placeholder="Rechercher : hoodie, chemise, rayures…" autocomplete="off"></div>
+<div class="search" id="search"><input id="q" type="search" placeholder="Rechercher : doudoune, polaire, pantalon…" autocomplete="off"></div>
 
 <main>
   <div class="stage" id="stage">
@@ -272,6 +275,7 @@
     <button class="add" id="add" disabled>Choisir une taille</button>
     <button class="link" id="availBtn">Voir la disponibilité</button>
     <div class="stock" id="stock" hidden></div>
+    <div class="specs" id="specs"></div>
     <p class="d-desc" id="dDesc"></p>
   </div>
 </section>
@@ -282,16 +286,16 @@
   <div class="lines" id="lines"></div>
   <div class="drawer-foot">
     <div class="total"><span>Sous-total</span><span id="subtotal">0</span></div>
-    <p>Livraison offerte partout au Maroc dès 800 MAD.</p>
+    <p>Livraison offerte partout au Maroc dès 1 000 MAD.</p>
     <button class="checkout" id="checkout">Passer commande</button>
   </div>
 </aside>
 
 <div class="about" id="about">
   <div class="about-card">
-    <h2>SAHRA</h2>
-    <p>Une marque de vêtements née à Agadir, entre l'océan et le désert. Chaque pièce est produite en série limitée, dans des matières choisies pour durer.</p>
-    <p>Coupes amples, couleurs du sable, du ciel et de la nuit. Pas de saison, pas de soldes : juste des pièces qu'on garde.</p>
+    <h2>SAFA TREK</h2>
+    <p>Des vêtements de trekking conçus à Agadir et testés sur les sentiers de l'Atlas : du Toubkal au M'Goun, des nuits froides en refuge aux crêtes balayées par le vent.</p>
+    <p>Le système trois couches, sans compromis : une sous-couche en mérinos, une couche chaude en polaire ou en duvet, et une veste qui protège de la pluie et du vent.</p>
     <button class="link" id="aboutClose">Retour au portant</button>
   </div>
 </div>
@@ -301,47 +305,47 @@
 <script>
 /* ================= Catalogue ================= */
 const PRODUCTS = [
-  { id:'dune',   name:'Dune Coach Jacket',  price:690, type:'jacket', color:'#d9c98b', trim:'#c7b573', pipe:'#f4edd2',
-    cat:'veste', desc:'Veste coach en sergé de coton, zip métal et liserés ton sur ton. Coupe ample, épaules tombantes.',
-    stock:{S:3,M:5,L:2,XL:0,'2XL':1} },
-  { id:'ember',  name:'Ember Knit Vest',    price:540, type:'knit', color:'#f0561d', trim:'#d9461a',
-    cat:'pull maille', desc:'Débardeur en maille torsadée, col V côtelé. Laine mérinos et coton, à porter sur un tee ou une chemise.',
-    stock:{S:2,M:4,L:4,XL:2,'2XL':0} },
-  { id:'night',  name:'Night Track Jacket', price:820, type:'jacket', color:'#2b2f37', trim:'#20232a', pipe:'#e9e6df',
-    cat:'veste', desc:'Veste de survêtement en nylon mat, passepoils crème sur les manches. Doublure mesh respirante.',
-    stock:{S:1,M:3,L:3,XL:2,'2XL':1} },
-  { id:'strike', name:'Atlas Plaid Strike', price:760, type:'shirt', pattern:'plaid', color:'#3a3f66', c2:'#7d6c93', c3:'#c65050', panel:'#17a56a', panelEdge:'#e6ea5c',
-    cat:'chemise carreaux', desc:'Chemise à carreaux et empiècements vert émeraude cousus à la main. Pièce signature, 60 exemplaires.',
-    stock:{S:2,M:2,L:1,XL:1,'2XL':0} },
-  { id:'cloud',  name:'Cloud Hoodie',       price:720, type:'hoodie', color:'#ecebe6', trim:'#dad7cf',
-    cat:'sweat hoodie', desc:'Hoodie en molleton 450 g brossé, poche kangourou et cordons plats. Le basique le plus épais de la collection.',
-    stock:{S:4,M:6,L:5,XL:3,'2XL':2} },
-  { id:'onyx',   name:'Onyx Zip Hoodie',    price:780, type:'hoodie', zip:true, color:'#2a2a2e', trim:'#1c1c1f',
-    cat:'sweat hoodie zip', desc:'Hoodie zippé noir profond, patch tissé sur la poitrine. Molleton 450 g, zip double curseur.',
-    stock:{S:3,M:5,L:4,XL:2,'2XL':1} },
-  { id:'ocean',  name:'Ocean Stripe Shirt', price:590, type:'shirt', pattern:'stripes', color:'#f7f9fc', c2:'#8db5e0',
-    cat:'chemise rayures', desc:'Chemise manches courtes en popeline rayée bleu océan, poche poitrine. Légère et fraîche.',
-    stock:{S:0,M:0,L:0,XL:0,'2XL':0} },
-  { id:'tranq',  name:'Tranquility Tee',    price:420, type:'tee', color:'#f8f8f6', trim:'#e4e3de', print:true,
-    cat:'tee t-shirt', desc:'Tee oversize en jersey 260 g, sérigraphie couché de soleil sur les dunes devant, logo au dos.',
-    stock:{S:5,M:8,L:6,XL:4,'2XL':2} },
+  { id:'atlas',  name:'Atlas Hardshell 3L', price:1490, type:'shell', color:'#e0552b', c2:'#2b2f37',
+    cat:'veste imperméable pluie hardshell', desc:'Veste imperméable 3 couches pour la haute montagne. Capuche compatible casque, coutures étanchées, aérations sous les bras.',
+    specs:['Imperméable 20 000 mm','Respirant 20 000 g','420 g'], stock:{S:2,M:4,L:3,XL:2,'2XL':1} },
+  { id:'toubkal',name:'Toubkal Down Jacket', price:1290, type:'puffer', color:'#2f5247', c2:'#1f2a27',
+    cat:'doudoune duvet chaud hiver', desc:'Doudoune en duvet 800 cuin pour les nuits en refuge. Se range dans sa propre poche.',
+    specs:['Duvet 800 cuin','Confort -10 °C','380 g'], stock:{S:1,M:3,L:3,XL:1,'2XL':0} },
+  { id:'ifni',   name:'Ifni Fleece Half-Zip', price:690, type:'fleece', color:'#cdb88c', c2:'#3b3a36',
+    cat:'polaire fleece pull', desc:'Polaire grille légère, demi-zip et empiècements renforcés aux épaules pour le portage du sac.',
+    specs:['Polaire grille 200 g/m²','Séchage rapide','310 g'], stock:{S:3,M:5,L:4,XL:2,'2XL':2} },
+  { id:'antiatlas', name:'Anti-Atlas Softshell', price:990, type:'soft', color:'#3d4654', trim:'#2d343f', zipc:'#e9c33f',
+    cat:'softshell veste vent', desc:'Softshell coupe-vent et déperlante, extensible dans 4 directions. Idéale pour l’approche et la randonnée rapide.',
+    specs:['Coupe-vent','Stretch 4 sens','480 g'], stock:{S:2,M:3,L:3,XL:2,'2XL':1} },
+  { id:'merino', name:'Merino Base Layer', price:490, type:'base', color:'#6c809b', trim:'#5b6d86',
+    cat:'sous-couche merino t-shirt manches longues', desc:'Première couche en laine mérinos 180 g : chaude, respirante et sans odeur, même après plusieurs jours de marche.',
+    specs:['100 % mérinos','Anti-odeurs','190 g'], stock:{S:4,M:6,L:5,XL:3,'2XL':2} },
+  { id:'mgoun',  name:'M’Goun Down Vest', price:890, type:'gilet', color:'#d9d5c9', c2:'#9b968a',
+    cat:'gilet doudoune sans manches duvet', desc:'Gilet en duvet à porter sous une hardshell ou seul au bivouac. Col montant et poches zippées.',
+    specs:['Duvet 700 cuin','Compressible','240 g'], stock:{S:2,M:2,L:3,XL:1,'2XL':0} },
+  { id:'trail',  name:'Trail Zip-Off Pants', price:790, type:'pants', color:'#5c614b', c2:'#2b2d27',
+    cat:'pantalon short zip-off', desc:'Pantalon de trek convertible en short, genoux articulés, poche cargo zippée et ceinture intégrée.',
+    specs:['Convertible short','Anti-UV UPF 50','350 g'], stock:{S:3,M:4,L:4,XL:2,'2XL':1} },
+  { id:'imlil',  name:'Imlil Windbreaker', price:640, type:'shell', light:true, color:'#a8c7d9', c2:'#e9eef2',
+    cat:'coupe-vent veste légère', desc:'Coupe-vent ultra-léger qui tient dans la paume. Pour les crêtes ventées et les départs à l’aube.',
+    specs:['Ultra-léger','Déperlant','110 g'], stock:{S:0,M:0,L:0,XL:0,'2XL':0} },
 ];
 const SIZES = ['S','M','L','XL','2XL'];
 
 /* ================= Dessin des vêtements (SVG) ================= */
 const SHAPES = {
-  tee:  'M72,50 Q100,64 128,50 L166,62 L190,108 L160,122 L153,104 L153,252 L47,252 L47,104 L40,122 L10,108 L34,62 Z',
-  long: 'M72,50 Q100,64 128,50 L164,60 Q178,66 182,96 L192,236 L168,240 L156,124 L153,124 L153,252 L47,252 L47,124 L44,124 L32,240 L8,236 L18,96 Q22,66 36,60 Z',
-  vest: 'M72,50 Q100,96 128,50 L150,58 Q146,92 156,106 L156,250 L44,250 L44,106 Q54,92 50,58 Z'
+  long:  'M72,50 Q100,64 128,50 L164,60 Q178,66 182,96 L192,236 L168,240 L156,124 L153,124 L153,252 L47,252 L47,124 L44,124 L32,240 L8,236 L18,96 Q22,66 36,60 Z',
+  gilet: 'M72,50 Q100,62 128,50 L150,58 Q146,92 156,106 L156,250 L44,250 L44,106 Q54,92 50,58 Z',
+  pants: 'M58,48 L142,48 L152,252 L110,252 L100,118 L90,252 L48,252 Z'
 };
 let uid = 0;
 
 function garment(p, side = 'front') {
   const u = 'g' + (uid++);
-  const trim = p.trim || p.color;
-  let shape = p.type === 'tee' || p.type === 'shirt' ? SHAPES.tee : p.type === 'knit' ? SHAPES.vest : SHAPES.long;
-  if (side === 'back') shape = shape.replace('Q100,64', 'Q100,55').replace('Q100,96', 'Q100,58');
-  if (p.type === 'shirt' && side === 'front') shape = shape.replace('Q100,64', 'Q100,58');
+  const front = side === 'front';
+  const trim = p.trim || p.c2 || p.color;
+  let shape = SHAPES[p.type === 'gilet' ? 'gilet' : p.type === 'pants' ? 'pants' : 'long'];
+  if (!front) shape = shape.replace('Q100,64', 'Q100,55').replace('Q100,62', 'Q100,55');
 
   const defs = [
     `<linearGradient id="${u}s" x1="0" x2="1"><stop offset="0" stop-color="#000" stop-opacity=".22"/><stop offset=".2" stop-color="#000" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".08"/><stop offset=".8" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".24"/></linearGradient>`,
@@ -350,111 +354,124 @@ function garment(p, side = 'front') {
     `<clipPath id="${u}c"><path d="${shape}"/></clipPath>`
   ];
   let fill = p.color;
-  if (p.pattern === 'stripes') {
-    defs.push(`<pattern id="${u}p" width="14" height="10" patternUnits="userSpaceOnUse"><rect width="14" height="10" fill="${p.color}"/><rect width="5" height="10" fill="${p.c2}"/></pattern>`);
+  if (p.type === 'puffer' || p.type === 'gilet') {
+    // Compartiments de duvet : chaque bande est bombée (clair en haut, ombré en bas)
+    defs.push(`<linearGradient id="${u}bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".22"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".26"/></linearGradient>`);
+    defs.push(`<pattern id="${u}p" width="200" height="22" y="2" patternUnits="userSpaceOnUse"><rect width="200" height="22" fill="${p.color}"/><rect width="200" height="22" fill="url(#${u}bg)"/><path d="M0,21.3 H200" stroke="#000" stroke-opacity=".35" stroke-width="1.4"/></pattern>`);
     fill = `url(#${u}p)`;
-  } else if (p.pattern === 'plaid') {
-    defs.push(`<pattern id="${u}p" width="34" height="34" patternUnits="userSpaceOnUse"><rect width="34" height="34" fill="${p.color}"/><rect y="10" width="34" height="9" fill="${p.c2}" opacity=".55"/><rect x="10" width="9" height="34" fill="${p.c2}" opacity=".55"/><rect y="27" width="34" height="2" fill="${p.c3}" opacity=".85"/><rect x="27" width="2" height="34" fill="${p.c3}" opacity=".85"/><rect y="4" width="34" height="1" fill="#fff" opacity=".25"/><rect x="4" width="1" height="34" fill="#fff" opacity=".25"/></pattern>`);
-    fill = `url(#${u}p)`;
-  } else if (p.type === 'knit') {
-    defs.push(`<pattern id="${u}p" width="12" height="10" patternUnits="userSpaceOnUse"><rect width="12" height="10" fill="${p.color}"/><path d="M0,0 L6,5 L12,0 M0,5 L6,10 L12,5" fill="none" stroke="#000" stroke-opacity=".18" stroke-width="1.6"/></pattern>`);
+  } else if (p.type === 'fleece') {
+    defs.push(`<pattern id="${u}p" width="5" height="5" patternUnits="userSpaceOnUse"><rect width="5" height="5" fill="${p.color}"/><circle cx="1.5" cy="1.5" r="1" fill="#000" opacity=".08"/><circle cx="4" cy="4" r=".8" fill="#fff" opacity=".12"/></pattern>`);
     fill = `url(#${u}p)`;
   }
 
-  const hanger = `<path d="M100,40 L100,28 Q100,21 106,17 Q113,11 108,5 Q102,0 95,5" fill="none" stroke="#a2a7ae" stroke-width="2.6" stroke-linecap="round"/>
-    <path d="M90,34 Q100,30 110,34 L112,50 L88,50 Z" fill="#8b4a28"/><path d="M90,34 Q100,30 110,34 L110.6,38 Q100,34 89.4,38 Z" fill="#a55f37"/>`;
+  // Cintre : crochet + bois, ou barre à pinces pour le pantalon
+  const hook = `<path d="M100,40 L100,28 Q100,21 106,17 Q113,11 108,5 Q102,0 95,5" fill="none" stroke="#a2a7ae" stroke-width="2.6" stroke-linecap="round"/>`;
+  const hanger = p.type === 'pants'
+    ? hook + `<path d="M62,40 L138,40" stroke="#a2a7ae" stroke-width="3" stroke-linecap="round"/><rect x="65" y="37" width="9" height="18" rx="1.6" fill="#3a3d42"/><rect x="126" y="37" width="9" height="18" rx="1.6" fill="#3a3d42"/>`
+    : hook + `<path d="M90,34 Q100,30 110,34 L112,50 L88,50 Z" fill="#8b4a28"/><path d="M90,34 Q100,30 110,34 L110.6,38 Q100,34 89.4,38 Z" fill="#a55f37"/>`;
 
-  // Empiècements cousus (clippés dans la silhouette)
-  let clipped = '';
-  if (p.panel) {
-    const d = side === 'front'
-      ? 'M104,56 C124,92 72,118 108,156 C138,186 116,226 146,256 L200,256 L200,40 L128,40 Z M0,100 L44,116 C46,96 30,84 36,58 L0,58 Z'
-      : 'M96,56 C76,92 128,118 92,156 C62,186 84,226 54,256 L0,256 L0,40 L72,40 Z M200,100 L156,116 C154,96 170,84 164,58 L200,58 Z';
-    clipped += `<path d="${d}" fill="${p.panel}" stroke="${p.panelEdge}" stroke-width="3.2"/>`;
-  }
+  // Capuche repliée derrière le col (hardshell / coupe-vent)
+  const behind = p.type === 'shell' && front ? `<path d="M64,60 Q56,16 100,12 Q144,16 136,60 Z" fill="${p.c2}"/><path d="M64,60 Q56,16 100,12 Q144,16 136,60" fill="none" stroke="#000" stroke-opacity=".18"/>` : '';
 
   const rib = d => `<path d="${d}" fill="url(#${u}r)"/>`;
-  const hemLong = 'M47,236 L153,236 L153,252 L47,252 Z';
-  const cuffs = 'M9.3,218 L34,222 L32,240 L8,236 Z M190.7,218 L166,222 L168,240 L192,236 Z';
-  let det = '';
+  const hemLong = 'M47,240 L153,240 L153,252 L47,252 Z';
+  const cuffs = 'M9.3,222 L33.6,226 L32,240 L8,236 Z M190.7,222 L166.4,226 L168,240 L192,236 Z';
+  const zip = (y1, y2, c = '#8e9198') => `<path d="M100,${y1} L100,${y2}" stroke="${c}" stroke-width="2.6"/><rect x="97" y="${y1 + 8}" width="6" height="12" rx="1.5" fill="${c}"/>`;
+  const pocketZip = (x1, y1, x2, y2, c = '#26282c') => `<path d="M${x1},${y1} L${x2},${y2}" stroke="${c}" stroke-width="2.2" stroke-linecap="round"/><circle cx="${x1}" cy="${y1}" r="2.2" fill="${c}"/>`;
+  const logo = (x, y, c, size = 5.5) => `<g transform="translate(${x},${y})"><path d="M0,0 L4,-6 L6,-3 L8,-7 L12,0 Z" fill="${c}"/><text x="15" y="0" font-family="Arial,sans-serif" font-weight="700" font-size="${size}" letter-spacing="1.2" fill="${c}">SAFA TREK</text></g>`;
+  let clipped = '', det = '';
 
-  if (p.type === 'tee') {
-    det += `<path d="${side === 'front' ? 'M72,50 Q100,64 128,50' : 'M72,50 Q100,55 128,50'}" fill="none" stroke="${trim}" stroke-width="5"/>`;
-    det += `<path d="M14,100 L42,112 M186,100 L158,112" stroke="#000" stroke-opacity=".08" stroke-width="2"/>`;
-    if (p.print && side === 'front') {
-      defs.push(`<linearGradient id="${u}k" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f7d3a6"/><stop offset="1" stop-color="#e3755a"/></linearGradient>`);
-      det += `<text x="100" y="98" text-anchor="middle" font-family="Georgia,serif" font-size="12" font-weight="700" letter-spacing="1.5" fill="#26262a">TRANQUILITY</text>
-        <rect x="70" y="106" width="60" height="70" rx="3" fill="url(#${u}k)"/>
-        <circle cx="100" cy="136" r="11" fill="#fff4da"/>
-        <path d="M70,160 Q88,145 104,158 Q118,149 130,156 L130,176 L70,176 Z" fill="#c26a40"/>
-        <path d="M70,168 Q94,157 130,170 L130,176 L70,176 Z" fill="#94492a"/>
-        <text x="100" y="189" text-anchor="middle" font-family="Arial,sans-serif" font-size="5.5" letter-spacing="1.6" fill="#55555a">AGADIR · 30.4° N</text>`;
-    } else if (p.print) {
-      det += `<text x="100" y="96" text-anchor="middle" font-family="Arial Black,Arial,sans-serif" font-weight="900" font-size="22" letter-spacing="4" fill="#26262a">SAHRA</text>
-        <text x="100" y="110" text-anchor="middle" font-family="Arial,sans-serif" font-size="6" letter-spacing="2" fill="#55555a">SUN, SAND &amp; SILENCE</text>`;
-    }
-  }
-
-  if (p.type === 'shirt') {
-    if (side === 'front') {
-      det += `<path d="M72,50 L100,60 L88,84 Z" fill="${fill}" stroke="#000" stroke-opacity=".22" stroke-width="1"/><path d="M128,50 L100,60 L112,84 Z" fill="${fill}" stroke="#000" stroke-opacity=".22" stroke-width="1"/>`;
-      det += `<path d="M100,60 L100,252" stroke="#000" stroke-opacity=".18" stroke-width="1.2"/>`;
-      det += [92, 122, 152, 182, 212, 240].map(y => `<circle cx="100" cy="${y}" r="2.8" fill="#f3f0e8" stroke="#000" stroke-opacity=".25" stroke-width=".6"/>`).join('');
-      if (p.pattern === 'stripes') det += `<path d="M112,104 L138,104 L138,130 Q125,134 112,130 Z" fill="none" stroke="#000" stroke-opacity=".2" stroke-width="1"/>`;
-      if (p.panel) det += `<text x="70" y="104" font-family="Georgia,serif" font-size="13" font-weight="700" fill="#f3f0e8">A</text>`;
+  if (p.type === 'shell') {
+    const dark = p.light ? '#5b7486' : '#e9e6df';
+    clipped += `<path d="M0,40 L200,40 L200,96 Q150,84 100,90 Q50,84 0,96 Z" fill="${p.c2}" opacity="${p.light ? .9 : 1}"/>`;
+    clipped += `<path d="M0,96 Q50,84 100,90 Q150,84 200,96" fill="none" stroke="#000" stroke-opacity=".2" stroke-width="1"/>`;
+    det += `<path d="M70,50 Q100,62 130,50 L132,34 Q100,46 68,34 Z" fill="${p.c2}" stroke="#000" stroke-opacity=".2"/>`;
+    det += `<path d="${cuffs}" fill="#000" opacity=".12"/><rect x="12" y="226" width="14" height="6" rx="1" fill="#000" opacity=".25"/><rect x="174" y="226" width="14" height="6" rx="1" fill="#000" opacity=".25"/>`;
+    det += `<path d="M47,248 L153,248" stroke="#000" stroke-opacity=".2"/><circle cx="54" cy="246" r="2.4" fill="#26282c"/><circle cx="146" cy="246" r="2.4" fill="#26282c"/>`;
+    if (front) {
+      det += `<path d="M96,48 L96,252 M104,48 L104,252" stroke="#000" stroke-opacity=".22" stroke-width="1.2"/>` + zip(48, 252, '#26282c');
+      det += pocketZip(62, 104, 84, 128) + pocketZip(138, 104, 116, 128);
+      det += pocketZip(48, 136, 44, 176);
+      det += logo(56, 158, dark);
     } else {
-      det += `<path d="M47,82 Q100,92 153,82" fill="none" stroke="#000" stroke-opacity=".2" stroke-width="1.2"/><path d="M100,88 L100,112" stroke="#000" stroke-opacity=".16"/>`;
-      det += `<path d="M72,50 Q100,57 128,50" fill="none" stroke="#000" stroke-opacity=".25" stroke-width="3"/>`;
+      det += `<path d="M66,52 Q60,116 100,122 Q140,116 134,52 Q100,60 66,52 Z" fill="${p.c2}" stroke="#000" stroke-opacity=".18"/>`;
+      det += `<path d="M66,52 Q60,116 100,122 Q140,116 134,52" fill="none" stroke="#000" stroke-opacity=".08" stroke-width="6"/><rect x="96" y="108" width="8" height="5" rx="1" fill="#26282c"/>`;
+      det += logo(71, 150, dark, 7.5);
     }
-    det += `<path d="M14,100 L42,112 M186,100 L158,112" stroke="#000" stroke-opacity=".12" stroke-width="1.4"/>`;
   }
 
-  if (p.type === 'hoodie') {
-    det += rib(hemLong) + rib(cuffs);
-    if (side === 'front') {
-      det += `<path d="M70,52 Q70,26 100,24 Q130,26 130,52 Q100,72 70,52 Z" fill="${trim}" stroke="#000" stroke-opacity=".15"/>
-        <path d="M78,52 Q80,36 100,34 Q120,36 122,52 Q100,64 78,52 Z" fill="#000" opacity=".22"/>`;
-      if (p.zip) {
-        det += `<path d="M100,62 L100,250" stroke="#8e9198" stroke-width="2.6"/><rect x="97" y="74" width="6" height="12" rx="1.5" fill="#b9bcc2"/>`;
-        det += `<rect x="118" y="104" width="18" height="7" rx="1" fill="#f1f1ee"/><path d="M66,170 L66,226 M134,170 L134,226" stroke="#000" stroke-opacity=".25" stroke-width="1.2"/>`;
-      } else {
-        det += `<path d="M66,232 L66,196 L80,166 L120,166 L134,196 L134,232 Z" fill="none" stroke="#000" stroke-opacity=".16" stroke-width="1.4"/>`;
-        det += `<text x="100" y="118" text-anchor="middle" font-family="Arial,sans-serif" font-size="6" letter-spacing="2.2" fill="#9a978f">SAHRA</text>`;
-      }
-      det += `<path d="M92,64 L90,110 M108,64 L110,110" stroke="${p.zip ? '#d9d9d6' : '#c9c5bc'}" stroke-width="2.4" stroke-linecap="round"/>
-        <path d="M90,108 L90,116 M110,108 L110,116" stroke="#8e9198" stroke-width="3" stroke-linecap="round"/>`;
+  if (p.type === 'puffer' || p.type === 'gilet') {
+    det += `<path d="M70,50 Q100,62 130,50 L131,36 Q100,48 69,36 Z" fill="${p.color}" stroke="#000" stroke-opacity=".25"/>`;
+    det += `<path d="M70,50 Q100,62 130,50 L131,36 Q100,48 69,36 Z" fill="#000" opacity=".1"/>`;
+    if (p.type === 'puffer') det += `<path d="${cuffs}" fill="${p.c2}"/><path d="M47,244 L153,244 L153,252 L47,252 Z" fill="${p.c2}"/>`;
+    else det += `<path d="M50,58 Q46,92 44,106 M150,58 Q154,92 156,106" fill="none" stroke="${p.c2}" stroke-width="4"/><path d="M44,244 L156,244 L156,250 L44,250 Z" fill="${p.c2}"/>`;
+    if (front) {
+      det += zip(56, 252, '#2a2c30');
+      det += pocketZip(60, 170, 64, 214) + pocketZip(140, 170, 136, 214);
+      det += logo(112, 96, p.type === 'gilet' ? '#55524a' : '#e9e6df', 5);
     } else {
-      det += `<path d="M64,52 Q58,124 100,132 Q142,124 136,52 Q100,62 64,52 Z" fill="${p.color}" stroke="#000" stroke-opacity=".16"/>
-        <path d="M100,56 L100,130" stroke="#000" stroke-opacity=".14" stroke-width="1.2"/>
-        <path d="M64,52 Q58,124 100,132 Q142,124 136,52" fill="none" stroke="#000" stroke-opacity=".08" stroke-width="6"/>`;
+      det += logo(76, 84, p.type === 'gilet' ? '#55524a' : '#e9e6df', 6);
     }
   }
 
-  if (p.type === 'jacket') {
-    det += `<path d="${hemLong} ${cuffs}" fill="${trim}"/>` + rib(hemLong) + rib(cuffs);
-    det += `<path d="M38,62 Q24,80 20,100 L10,218 M162,62 Q176,80 180,100 L190,218" fill="none" stroke="${p.pipe}" stroke-width="3"/>`;
-    if (side === 'front') {
-      det += `<path d="M70,50 Q100,62 130,50 L131,40 Q100,54 69,40 Z" fill="${trim}"/>`;
-      det += `<path d="M100,56 L100,252" stroke="#9ba0a7" stroke-width="2.4"/><rect x="97" y="64" width="6" height="12" rx="1.5" fill="#c3c6cb"/>`;
-      det += `<path d="M58,150 L74,186 M142,150 L126,186" stroke="#000" stroke-opacity=".25" stroke-width="1.4"/>`;
-      det += `<circle cx="126" cy="94" r="4" fill="none" stroke="${p.pipe}" stroke-width="1.4"/>`;
+  if (p.type === 'fleece') {
+    clipped += `<path d="M0,40 L200,40 L200,92 L150,86 Q100,80 50,86 L0,92 Z" fill="${p.c2}"/>`;
+    det += `<path d="${cuffs} ${hemLong}" fill="${p.c2}"/>` + rib(cuffs) + rib(hemLong);
+    det += `<path d="M70,50 Q100,62 130,50 L131,36 Q100,48 69,36 Z" fill="${p.c2}"/>`;
+    if (front) {
+      det += zip(48, 124, '#c9c3b4');
+      det += `<rect x="114" y="100" width="22" height="26" rx="3" fill="${p.c2}" opacity=".85"/>` + pocketZip(118, 104, 118, 122, '#c9c3b4');
+      det += logo(56, 110, '#3b3a36', 4.6);
     } else {
-      det += `<path d="M70,50 Q100,57 130,50 L131,40 Q100,48 69,40 Z" fill="${trim}"/>`;
-      det += `<text x="100" y="92" text-anchor="middle" font-family="Arial,sans-serif" font-size="7" letter-spacing="3" fill="${p.pipe}">SAHRA ATHLETIC</text>`;
+      det += logo(76, 112, '#3b3a36', 6);
     }
   }
 
-  if (p.type === 'knit') {
-    det += rib('M44,234 L156,234 L156,250 L44,250 Z');
-    det += `<path d="${side === 'front' ? 'M72,50 Q100,96 128,50' : 'M72,50 Q100,58 128,50'}" fill="none" stroke="${trim}" stroke-width="7"/>`;
-    det += `<path d="M50,58 Q46,92 44,106 M150,58 Q154,92 156,106" fill="none" stroke="${trim}" stroke-width="6"/>`;
-    det += `<path d="M76,110 Q70,170 76,232 M124,110 Q130,170 124,232" fill="none" stroke="#000" stroke-opacity=".12" stroke-width="5"/>`;
+  if (p.type === 'soft') {
+    det += `<path d="${cuffs} ${hemLong}" fill="${trim}"/>`;
+    det += `<path d="M70,50 Q100,62 130,50 L131,34 Q100,46 69,34 Z" fill="${trim}" stroke="#000" stroke-opacity=".2"/>`;
+    det += `<path d="M36,60 Q60,90 47,124 M164,60 Q140,90 153,124" fill="none" stroke="#000" stroke-opacity=".25" stroke-width="1.2"/>`;
+    det += `<rect x="13" y="226" width="12" height="6" rx="1" fill="${p.zipc}"/><rect x="175" y="226" width="12" height="6" rx="1" fill="${p.zipc}"/>`;
+    if (front) {
+      det += zip(46, 252, p.zipc);
+      det += pocketZip(130, 92, 116, 128, p.zipc) + pocketZip(56, 160, 70, 204, p.zipc) + pocketZip(144, 160, 130, 204, p.zipc);
+      det += logo(54, 106, '#cfd4db', 5);
+    } else {
+      det += `<path d="M47,90 Q100,100 153,90" fill="none" stroke="#000" stroke-opacity=".25"/>` + logo(72, 120, '#cfd4db', 7);
+    }
+  }
+
+  if (p.type === 'base') {
+    det += rib(cuffs) + rib(hemLong);
+    det += `<path d="${front ? 'M72,50 Q100,64 128,50' : 'M72,50 Q100,55 128,50'}" fill="none" stroke="${trim}" stroke-width="5"/>`;
+    det += `<path d="M76,53 L47,124 M124,53 L153,124" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="1.2" stroke-dasharray="3 2"/>`;
+    det += `<path d="M47,140 L47,240 M153,140 L153,240" stroke="#fff" stroke-opacity=".25" stroke-dasharray="3 2"/>`;
+    det += front ? logo(56, 104, '#e3e8ef', 4.6) : `<text x="100" y="80" text-anchor="middle" font-family="Arial,sans-serif" font-size="5" letter-spacing="2" fill="#e3e8ef">MERINO 180</text>`;
+  }
+
+  if (p.type === 'pants') {
+    det += `<path d="M58,48 L142,48 L143,60 L57,60 Z" fill="${p.color}"/><path d="M58,48 L142,48 L143,60 L57,60 Z" fill="#000" opacity=".12"/>`;
+    det += `<path d="M57,52 L143,52 L143,57 L57,57 Z" fill="${p.c2}"/>`;
+    det += `<path d="M50,206 L95,206 M105,206 L150,206" stroke="#26282c" stroke-width="1.8"/>`;
+    det += `<path d="M58,150 Q70,156 84,150 M116,150 Q130,156 142,150" fill="none" stroke="#000" stroke-opacity=".22"/>`;
+    det += `<path d="M52,244 L92,244 M108,244 L150,244" stroke="#000" stroke-opacity=".2"/>`;
+    if (front) {
+      det += `<rect x="94" y="50" width="12" height="9" rx="1.5" fill="#26282c"/>`;
+      det += `<path d="M100,60 Q100,92 92,104" fill="none" stroke="#000" stroke-opacity=".25" stroke-width="1.2"/>`;
+      det += `<path d="M62,64 Q66,86 58,96 M138,64 Q134,86 142,96" fill="none" stroke="#000" stroke-opacity=".25" stroke-width="1.2"/>`;
+      det += `<rect x="124" y="130" width="22" height="30" rx="2" fill="${p.color}" stroke="#000" stroke-opacity=".25"/><path d="M124,138 L146,138" stroke="#000" stroke-opacity=".25"/>` + pocketZip(127, 134, 143, 134);
+      det += logo(58, 118, '#d9dccd', 4.2);
+    } else {
+      det += `<rect x="96" y="49" width="8" height="10" rx="1" fill="${p.color}" stroke="#000" stroke-opacity=".2"/>`;
+      det += `<path d="M58,92 Q100,84 142,92" fill="none" stroke="#000" stroke-opacity=".22"/>` + pocketZip(64, 102, 86, 102) + pocketZip(136, 102, 114, 102);
+    }
   }
 
   const folds = `<path d="M68,150 Q73,195 66,246 M131,160 Q126,205 134,248" fill="none" stroke="#000" stroke-opacity=".05" stroke-width="3"/>`;
 
   return `<svg class="g" viewBox="0 0 200 262" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
     <defs>${defs.join('')}</defs>
+    ${behind}
     ${hanger}
     <path d="${shape}" fill="${fill}"/>
     <g clip-path="url(#${u}c)">${clipped}${folds}</g>
@@ -471,8 +488,8 @@ const store = {
   get(k, d) { try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch { return d; } },
   set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
 };
-let cart = store.get('sahra_cart', []);
-let currency = store.get('sahra_cur', 'MAD');
+let cart = store.get('safatrek_cart', []);
+let currency = store.get('safatrek_cur', 'MAD');
 let current = -1, side = 'front', size = null;
 
 const fmt = n => currency === 'EUR'
@@ -492,7 +509,7 @@ function setActive(el) {
   if (!el) { caption.textContent = ''; return; }
   el.classList.add('active');
   const p = PRODUCTS[el.dataset.i];
-  caption.textContent = `SAHRA ${p.name} · ${soldOut(p) ? 'Épuisé' : fmt(p.price)}`;
+  caption.textContent = `SAFA TREK ${p.name} · ${soldOut(p) ? 'Épuisé' : fmt(p.price)}`;
 }
 itemsEl.addEventListener('mouseover', e => { const el = e.target.closest('.item'); if (el) setActive(el); });
 itemsEl.addEventListener('mouseleave', () => setActive(null));
@@ -506,7 +523,8 @@ function openDetail(i) {
   current = (i + PRODUCTS.length) % PRODUCTS.length; side = 'front'; size = null;
   const p = PRODUCTS[current];
   $('#dGarment').innerHTML = garment(p, 'front');
-  $('#dName').textContent = 'SAHRA ' + p.name;
+  $('#dName').textContent = p.name;
+  $('#specs').innerHTML = p.specs.map(s => `<span>${s}</span>`).join('');
   $('#dPrice').textContent = fmt(p.price);
   $('#dDesc').textContent = p.desc;
   document.querySelectorAll('#side button').forEach(b => b.classList.toggle('on', b.dataset.side === 'front'));
@@ -556,7 +574,7 @@ $('#next').addEventListener('click', () => openDetail(current + 1));
 
 /* ================= Panier ================= */
 const byId = id => PRODUCTS.find(p => p.id === id);
-function saveCart() { store.set('sahra_cart', cart); renderCart(); }
+function saveCart() { store.set('safatrek_cart', cart); renderCart(); }
 function renderCart() {
   const count = cart.reduce((s, l) => s + l.qty, 0);
   const badge = $('#cartCount'); badge.textContent = count; badge.classList.toggle('on', count > 0);
@@ -595,7 +613,7 @@ function toast(msg) {
 }
 $('#currency').value = currency;
 $('#currency').addEventListener('change', e => {
-  currency = e.target.value; store.set('sahra_cur', currency); renderCart();
+  currency = e.target.value; store.set('safatrek_cur', currency); renderCart();
   if (current >= 0) { $('#dPrice').textContent = fmt(PRODUCTS[current].price); updateAdd(); }
 });
 $('#searchBtn').addEventListener('click', () => {
