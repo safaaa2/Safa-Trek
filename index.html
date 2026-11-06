@@ -339,6 +339,10 @@
   }
   @media (max-width:520px){ .row2{grid-template-columns:1fr;gap:0} }
 
+  .g.photo{display:block;height:auto;object-fit:contain;user-select:none}
+  .item .g.photo{max-height:400px}
+  .gart .g.photo{max-height:82%;width:auto;max-width:82%}
+
   @media (max-width:1000px){
     .f-top{grid-template-columns:1fr;gap:44px}
     .shelf{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -596,7 +600,11 @@ const SHAPES = {
 };
 let uid = 0;
 
+// Photo détourée (images/<id>.png) si elle existe, sinon le dessin SVG
+const photo = src => `<img class="g photo" src="${src}" alt="" draggable="false">`;
+
 function garment(p, side = 'front') {
+  if (p.img) return photo(side === 'back' && p.imgBack ? p.imgBack : p.img);
   const u = 'g' + (uid++);
   const front = side === 'front';
   const trim = p.trim || p.c2 || p.color;
@@ -768,6 +776,7 @@ const GEAR = [
 ];
 
 function gear(p) {
+  if (p.img) return photo(p.img);
   const u = 'g' + (uid++), c = p.color, d = p.c2;
   const shade = `<linearGradient id="${u}s" x1="0" x2="1"><stop offset="0" stop-color="#000" stop-opacity=".22"/><stop offset=".3" stop-color="#000" stop-opacity="0"/><stop offset=".55" stop-color="#fff" stop-opacity=".12"/><stop offset="1" stop-color="#000" stop-opacity=".25"/></linearGradient>`;
   const ground = (rx = 60) => `<ellipse cx="100" cy="190" rx="${rx}" ry="6" fill="#000" opacity=".12"/>`;
@@ -1061,8 +1070,42 @@ orderForm.addEventListener('input', e => e.target.classList.remove('invalid'));
 
 const esc = s => String(s).replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[ch]);
 const PHONE_RE = /^(?:\+212|00212|0)[5-7]\d{8}$/;
-orderForm.addEventListener('submit', e => {
+// Chaque commande est envoyée par e-mail via FormSubmit (aucun serveur à gérer)
+const ORDER_EMAIL = 'safanya.contact@gmail.com';
+const mad = n => new Intl.NumberFormat('fr-MA').format(n) + ' MAD';
+async function sendOrder(o) {
+  const c = o.customer;
+  const body = {
+    _subject: `Nouvelle commande ${o.id} · ${mad(o.total)}`,
+    _template: 'table', _captcha: 'false',
+    Commande: o.id,
+    Date: new Date(o.date).toLocaleString('fr-FR'),
+    Client: `${c.first} ${c.last}`,
+    Téléphone: c.phone,
+    'E-mail': c.email || '-',
+    Ville: c.city,
+    Adresse: c.address + (c.zip ? ` (${c.zip})` : ''),
+    Livraison: o.ship === 'exp' ? 'Express 24 h' : 'Standard 2 à 4 jours',
+    Paiement: 'À la livraison (espèces)',
+    Articles: o.items.map(l => `${l.qty} × ${byId(l.id).name}${l.size === 'Unique' ? '' : ` (${l.size})`} = ${mad(byId(l.id).price * l.qty)}`).join(' | '),
+    'Sous-total': mad(o.subtotal),
+    'Frais de livraison': o.shipping ? mad(o.shipping) : 'Offerts',
+    Total: mad(o.total),
+    Note: c.note || '-'
+  };
+  if (c.email) body._replyto = c.email;
+  try {
+    const r = await fetch(`https://formsubmit.co/ajax/${ORDER_EMAIL}`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(body)
+    });
+    const j = await r.json();
+    return r.ok && String(j.success) === 'true';
+  } catch { return false; }
+}
+
+orderForm.addEventListener('submit', async e => {
   e.preventDefault();
+  if (orderForm.dataset.busy) return;
   const f = orderForm, err = $('#coErr');
   const phone = f.phone.value.replace(/[\s.-]/g, '');
   let bad = [...f.querySelectorAll('[required]')].filter(i => !i.value.trim());
@@ -1088,10 +1131,15 @@ orderForm.addEventListener('submit', e => {
     customer: { first: f.first.value.trim(), last: f.last.value.trim(), phone, email: f.email.value.trim(),
                 city: f.city.value, zip: f.zip.value.trim(), address: f.address.value.trim(), note: f.note.value.trim() }
   };
+  const btn = $('#coSubmit');
+  f.dataset.busy = '1'; btn.disabled = true; btn.textContent = 'Envoi de la commande…';
+  order.sent = await sendOrder(order);
+  delete f.dataset.busy; btn.disabled = false;
   const orders = store.get('safatrek_orders', []);
   orders.unshift(order); store.set('safatrek_orders', orders);
   cart = []; saveCart(); f.reset();
   renderDone(order);
+  if (!order.sent) toast('Commande enregistrée, mais l’envoi par e-mail a échoué. Nous vous recontacterons.');
 });
 
 function renderDone(o) {
@@ -1171,6 +1219,17 @@ document.addEventListener('keydown', e => {
 
 if (matchMedia('(hover: none)').matches) $('#hint').textContent = 'Faites glisser le portant · touchez une pièce';
 renderRack(); renderShelf(); renderCart();
+
+// Déposez images/<id>.png (et images/<id>-back.png pour le dos) : la photo remplace le dessin
+let rerender;
+ALL.forEach(p => {
+  const front = new Image();
+  front.onload = () => { p.img = front.src; clearTimeout(rerender); rerender = setTimeout(() => { renderRack(); renderShelf(); renderCart(); }, 50); };
+  front.src = `images/${p.id}.png`;
+  const back = new Image();
+  back.onload = () => { p.imgBack = back.src; };
+  back.src = `images/${p.id}-back.png`;
+});
 </script>
 </body>
 </html>
