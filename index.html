@@ -443,50 +443,42 @@
   .pair b{font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;text-align:center;line-height:1.3}
   .pair small{font-size:10.5px;color:var(--muted)}
 
-  /* ---------- Nos sentiers ---------- */
-  .trails{background:#17201c;color:#e9e6df;padding:110px clamp(16px,5vw,80px)}
+  /* ---------- Nos packs ---------- */
+  .trails{background:#fff;padding:110px clamp(16px,5vw,80px);border-top:1px solid var(--line)}
   .trails-in{max-width:1240px;margin:0 auto}
-  .trails .eyebrow{color:#8fa197}
-  .trails .sec-head p{color:#a9b5ad}
-  .trails-grid{display:grid;grid-template-columns:1fr 1.05fr;gap:50px;align-items:start}
-  .map-wrap{position:sticky;top:100px}
-  .atlas-map{width:100%;display:block;background:#1d2823;border-radius:24px;border:1px solid rgba(255,255,255,.06)}
-  .contours path{fill:none;stroke:#9db3a6;stroke-opacity:.18;stroke-width:1.2}
-  .m-route{fill:none;stroke:#c58a64;stroke-width:1.4;stroke-dasharray:4 5;opacity:.6;animation:route 30s linear infinite}
-  @keyframes route{to{stroke-dashoffset:-400}}
-  .m-sea{font:600 7px Archivo,sans-serif;letter-spacing:.3em;fill:#6f8e94}
-  .m-city circle{fill:#e9e6df}
-  .m-city text{font:500 8.5px Archivo,sans-serif;letter-spacing:.08em;fill:#a9b5ad}
-  .pin{cursor:pointer}
-  .pin circle.dot{fill:#e9e6df;transition:r .3s,fill .3s}
-  .pin circle.halo{fill:#c58a64;opacity:0;transform-origin:center;transform-box:fill-box}
-  .pin text{font:700 7.5px Archivo,sans-serif;fill:#17201c;text-anchor:middle;pointer-events:none}
-  .pin .lbl{font:italic 400 12px 'Instrument Serif',serif;fill:#e9e6df;text-anchor:start;opacity:.55;transition:opacity .3s}
-  .pin.on circle.dot{fill:#c58a64}
-  .pin.on .lbl{opacity:1}
-  .pin.on circle.halo{animation:halo 1.8s ease-out infinite}
-  @keyframes halo{from{opacity:.55;transform:scale(1)}to{opacity:0;transform:scale(2.6)}}
-  .map-note{font-size:10.5px;color:#6f7d75;margin-top:10px;text-align:center}
-  .trail-list{display:flex;flex-direction:column;gap:14px}
-  .trail{border:1px solid rgba(255,255,255,.1);border-radius:22px;padding:26px 26px 24px;transition:background .4s,border-color .4s}
-  .trail.on{background:rgba(255,255,255,.05);border-color:rgba(197,138,100,.6)}
-  .trail-top{display:flex;align-items:baseline;gap:14px}
-  .trail .n{font-family:'Instrument Serif',serif;font-style:italic;font-size:40px;line-height:1;color:#c58a64}
-  .trail h3{font-stretch:118%;font-size:17px;font-weight:800;text-transform:uppercase;letter-spacing:.03em}
-  .trail-meta{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}
-  .trail-meta span{font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;padding:5px 10px;border-radius:12px;background:rgba(255,255,255,.07);color:#cfd6d1}
-  .trail p{font-size:13px;line-height:1.7;color:#a9b5ad}
-  .trail h4{font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:#8fa197;margin:18px 0 10px}
-  .chips{display:flex;flex-wrap:wrap;gap:6px}
-  .chips button{display:flex;align-items:center;gap:6px;font-size:11px;padding:6px 12px 6px 6px;border-radius:16px;border:1px solid rgba(255,255,255,.16);transition:all .25s}
-  .chips button:hover{border-color:#e9e6df;background:rgba(255,255,255,.06)}
-  .chips .g{width:22px;height:22px;filter:none!important;animation:none!important}
-  .trail-add{margin-top:20px;height:44px;padding:0 22px;border-radius:22px;background:#e9e6df;color:#17201c;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;transition:transform .3s var(--ease),background .3s}
-  .trail-add:hover{transform:translateY(-2px);background:#fff}
+  .packs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+  .pack{display:flex;flex-direction:column;border-radius:26px;overflow:hidden;background:#fbfaf7;border:1px solid #ece8df;transition:transform .5s var(--ease),box-shadow .5s var(--ease)}
+  .pack:hover{transform:translateY(-6px);box-shadow:0 30px 50px -28px rgba(40,35,25,.35)}
+  .pack-art{position:relative;aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 50% 60%,#fff 0%,var(--tint) 75%)}
+  .pack-n{position:absolute;top:18px;left:22px;font-family:'Instrument Serif',serif;font-style:italic;font-size:44px;line-height:1;color:rgba(22,23,26,.35)}
+  .pack-level{position:absolute;top:22px;right:22px;font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;background:#fff;padding:6px 12px;border-radius:14px;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+  .pack-items{display:flex;align-items:flex-end;justify-content:center;width:86%;height:70%}
+  .pi{flex:1;max-width:30%;margin:0 -2.5%;transition:transform .6s var(--ease),margin .6s var(--ease)}
+  .pi .g{width:100%;height:auto;filter:drop-shadow(0 12px 12px rgba(20,25,35,.14))!important;animation:none!important}
+  .pi:nth-child(even){transform:translateY(-10%)}
+  .pack:hover .pi{margin:0 1%}
+  .pack:hover .pi:nth-child(odd){transform:translateY(-6%) rotate(-3deg)}
+  .pack:hover .pi:nth-child(even){transform:translateY(-14%) rotate(3deg)}
+  .pack-body{padding:26px 28px 28px;display:flex;flex-direction:column;flex:1}
+  .pack-meta{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+  .pack h3{font-stretch:118%;font-size:clamp(18px,1.8vw,22px);font-weight:800;text-transform:uppercase;letter-spacing:.02em;margin:8px 0 10px}
+  .pack p{font-size:13px;line-height:1.7;color:#5c616a}
+  .pack h4{font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin:20px 0 6px}
+  .pack ul{list-style:none}
+  .pack li button{width:100%;display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid #ece8df;font-size:12.5px;text-align:left;transition:padding .25s}
+  .pack li button:hover{padding-left:6px}
+  .pack li span{color:var(--muted)}
+  .pack-wear{font-size:12px;color:#5c616a;margin-top:14px;line-height:1.8}
+  .pack-wear button{font-size:12px;border-bottom:1px solid #c9c4b8;padding-bottom:1px;margin-right:2px}
+  .pack-wear button:hover{border-color:var(--ink)}
+  .pack-foot{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-top:auto;padding-top:22px}
+  .pack-foot small{display:block;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+  .pack-foot strong{font-size:20px;font-weight:700}
+  .pack-add{height:46px;padding:0 24px;border-radius:24px;background:var(--ink);color:#fff;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;transition:transform .3s var(--ease)}
+  .pack-add:hover{transform:translateY(-2px)}
 
   @media (max-width:900px){
-    .trails-grid{grid-template-columns:1fr}
-    .map-wrap{position:static}
+    .packs{grid-template-columns:1fr}
   }
   @media (max-width:760px){
     .hide-sm{display:none}
@@ -522,7 +514,7 @@
   <nav class="nav-left">
     <button data-go="#clothes">Vêtements</button>
     <button data-go="#gear">Matériel</button>
-    <button data-go="#trails" class="hide-sm">Sentiers</button>
+    <button data-go="#trails" class="hide-sm">Packs</button>
     <button id="aboutBtn" class="hide-sm">À propos</button>
   </nav>
   <a class="brand" href="#" id="home"><svg viewBox="0 0 24 16" aria-hidden="true"><path d="M1 15 L8.5 3 L12.5 9 L15.5 5 L23 15 Z"/></svg>SAFA TREK</a>
@@ -631,36 +623,11 @@
 <section class="trails" id="trails" aria-labelledby="trailsTitle">
   <div class="trails-in">
     <div class="sec-head">
-      <span class="eyebrow">03 · Nos sentiers</span>
-      <h2 id="trailsTitle">Quatre randonnées, <span class="serif">un sac prêt</span></h2>
-      <p>Nos itinéraires préférés dans l'Atlas, avec le matériel que nous emportons. Choisissez votre sentier, le pack est prêt.</p>
+      <span class="eyebrow">03 · Nos packs</span>
+      <h2 id="trailsTitle">Un sentier, <span class="serif">un sac prêt</span></h2>
+      <p>Nos randonnées préférées dans l'Atlas, avec le matériel que nous emportons. Choisissez votre sentier : le sac est prêt.</p>
     </div>
-    <div class="trails-grid">
-      <div class="map-wrap">
-        <svg class="atlas-map" id="atlasMap" viewBox="0 50 400 230" role="img" aria-label="Carte stylisée de l'Atlas marocain avec les quatre sentiers">
-          <defs>
-            <linearGradient id="ocean" x1="0" x2="1"><stop offset="0" stop-color="#2a4a52"/><stop offset="1" stop-color="#2a4a52" stop-opacity="0"/></linearGradient>
-          </defs>
-          <path d="M0,0 L70,0 Q52,60 66,120 Q40,170 52,230 Q30,280 40,320 L0,320 Z" fill="url(#ocean)" opacity=".7"/>
-          <text x="16" y="262" class="m-sea" transform="rotate(-90 16 262)">OCÉAN ATLANTIQUE</text>
-          <g class="contours">
-            <path d="M80,190 Q130,120 210,128 Q300,80 360,120 Q380,170 330,190 Q260,210 210,200 Q140,236 80,190 Z"/>
-            <path d="M110,186 Q150,140 210,146 Q290,104 340,132 Q350,166 316,178 Q256,192 208,186 Q150,212 110,186 Z"/>
-            <path d="M140,176 Q170,152 200,160 Q230,150 214,176 Q186,196 140,176 Z"/>
-            <path d="M156,170 Q176,158 196,164 Q206,170 190,180 Q170,186 156,170 Z"/>
-            <path d="M226,128 Q262,104 296,120 Q300,140 270,146 Q238,150 226,128 Z"/>
-            <path d="M242,128 Q264,114 284,124 Q284,136 264,138 Q246,140 242,128 Z"/>
-            <path d="M290,150 Q326,140 344,160 Q334,180 304,176 Q284,170 290,150 Z"/>
-          </g>
-          <path class="m-route" d="M62,214 Q120,160 172,166 Q220,140 262,124 Q300,140 318,160"/>
-          <g class="m-city"><circle cx="58" cy="222" r="3"/><text x="66" y="234">Agadir</text></g>
-          <g class="m-city"><circle cx="180" cy="96" r="3"/><text x="188" y="92">Marrakech</text></g>
-          <g id="mapPins"></g>
-        </svg>
-        <p class="map-note">Carte stylisée, non à l'échelle.</p>
-      </div>
-      <div class="trail-list" id="trailList"></div>
-    </div>
+    <div class="packs" id="trailList"></div>
   </div>
 </section>
 
@@ -684,7 +651,7 @@
     <nav class="f-cols">
       <div><h5>Boutique</h5><a href="#" data-go="#clothes">Vêtements</a><a href="#" data-go="#gear">Matériel</a><a href="#" data-soon>Nouveautés</a><a href="#" data-soon>Cartes cadeaux</a></div>
       <div><h5>Aide</h5><a href="#" data-soon>Livraison et retours</a><a href="#" data-soon>Guide des tailles</a><a href="#" data-soon>Entretien du duvet</a><a href="#" data-soon>Suivre ma commande</a></div>
-      <div><h5>Safa Trek</h5><a href="#" id="aboutLink">À propos</a><a href="#" data-go="#trails">Nos sentiers</a><a href="#" data-soon>Engagements</a><a href="#" data-soon>Ambassadeurs</a></div>
+      <div><h5>Safa Trek</h5><a href="#" id="aboutLink">À propos</a><a href="#" data-go="#trails">Nos packs</a><a href="#" data-soon>Engagements</a><a href="#" data-soon>Ambassadeurs</a></div>
       <div><h5>Contact</h5><p>Agadir, Maroc</p><p>Lun. à sam., 9 h à 18 h</p>
         <div class="f-social">
           <a href="#" data-soon aria-label="Instagram"><svg viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".9" fill="currentColor"/></svg></a>
@@ -1554,10 +1521,7 @@ function toast(msg) {
 }
 $('#currency').value = currency;
 $('#currency').addEventListener('change', e => {
-  currency = e.target.value; store.set('safatrek_cur', currency); renderCart(); renderShelf();
-  document.querySelectorAll('[data-add]').forEach(b => {
-    const t = TRAILS[b.dataset.add]; b.textContent = `Ajouter le sac · ${t.gear.length} articles · ${fmt(packTotal(t))}`;
-  });
+  currency = e.target.value; store.set('safatrek_cur', currency); renderCart(); renderShelf(); renderTrails();
   if (current >= 0) { $('#dPrice').textContent = fmt(list[current].price); updateAdd(); renderPairs(list[current]); }
 });
 $('#searchBtn').addEventListener('click', () => {
@@ -1620,50 +1584,45 @@ const PEAKS = [['Toubkal', '4 167 m'], ['M’Goun', '4 071 m'], ['Imlil', '1 740
 const peaksHtml = `<span>${PEAKS.map(([n, h]) => `${n} <b>${h}</b> <i>✦</i>`).join(' ')}</span>`;
 $('#marquee').innerHTML = peaksHtml + peaksHtml;
 
-/* ---------- Nos sentiers ---------- */
+/* ---------- Nos packs ---------- */
 // gear : ajouté au panier avec l'option indiquée ; wear : conseillé (taille personnelle, on ouvre la fiche)
 const TRAILS = [
-  { name: 'Toubkal par Imlil', short: 'Toubkal', x: 172, y: 166, meta: ['2 jours', '4 167 m', 'Modérée'],
+  { name: 'Toubkal par Imlil', meta: ['2 jours', '4 167 m'], level: 'Modérée', tint: '#e6e1d6',
     desc: 'Le plus haut sommet d’Afrique du Nord. Départ d’Imlil, nuit au refuge, sommet au lever du soleil au-dessus d’une mer de nuages.',
     wear: ['atlas', 'toubkal', 'boots'], gear: [['lamp', 'Unique'], ['poles', 'Unique'], ['flask', '750 ml'], ['firstaid', 'Unique']] },
-  { name: 'M’Goun par les Aït Bouguemez', short: 'M’Goun', x: 262, y: 124, meta: ['4 jours', '4 071 m', 'Difficile'],
+  { name: 'M’Goun par les Aït Bouguemez', meta: ['4 jours', '4 071 m'], level: 'Difficile', tint: '#dfe4e9',
     desc: 'La « vallée heureuse », ses greniers collectifs et une longue crête à plus de 4 000 m. Bivouac en autonomie.',
     wear: ['mgoun', 'trail', 'boots'], gear: [['pack', '45 L'], ['tent', 'Unique'], ['sleep', 'Regular'], ['stove', 'Unique']] },
-  { name: 'Gorges du Todra', short: 'Todra', x: 318, y: 160, meta: ['1 jour', '600 m D+', 'Facile'],
+  { name: 'Gorges du Todra', meta: ['1 jour', '600 m D+'], level: 'Facile', tint: '#ecdfd3',
     desc: 'Des falaises de 300 m de haut, des villages berbères et des palmeraies. Une boucle lumineuse, idéale pour commencer.',
     wear: ['merino', 'socks'], gear: [['daypack', 'Unique'], ['flask', '750 ml'], ['glasses', 'Unique']] },
-  { name: 'Paradise Valley', short: 'Paradise Valley', x: 80, y: 196, meta: ['½ journée', 'Près d’Agadir', 'Facile'],
+  { name: 'Paradise Valley', meta: ['½ journée', 'Près d’Agadir'], level: 'Facile', tint: '#e2e7df',
     desc: 'Canyons, vasques d’eau turquoise et lauriers-roses, à une heure d’Agadir. La sortie parfaite du week-end.',
     wear: ['merino', 'trail'], gear: [['daypack', 'Unique'], ['flask', '750 ml'], ['firstaid', 'Unique']] }
 ];
 const packTotal = t => t.gear.reduce((s, [id]) => s + byId(id).price, 0);
-$('#mapPins').innerHTML = TRAILS.map((t, i) => `
-  <g class="pin" data-t="${i}" tabindex="0" role="button" aria-label="${t.name}">
-    <circle class="halo" cx="${t.x}" cy="${t.y}" r="9"/>
-    <circle class="dot" cx="${t.x}" cy="${t.y}" r="9"/>
-    <text x="${t.x}" y="${t.y + 2.6}">${i + 1}</text>
-    <text class="lbl" x="${t.x + 14}" y="${t.y + (i === 2 ? 22 : -12)}">${t.short}</text>
-  </g>`).join('');
 function renderTrails() {
   $('#trailList').innerHTML = TRAILS.map((t, i) => `
-    <article class="trail" data-t="${i}">
-      <div class="trail-top"><span class="n">0${i + 1}</span><h3>${t.name}</h3></div>
-      <div class="trail-meta">${t.meta.map(m => `<span>${m}</span>`).join('')}</div>
-      <p>${t.desc}</p>
-      <h4>À porter</h4>
-      <div class="chips">${t.wear.map(id => `<button data-id="${id}">${art(byId(id))}${byId(id).name}</button>`).join('')}</div>
-      <h4>Dans le sac</h4>
-      <div class="chips">${t.gear.map(([id]) => `<button data-id="${id}">${art(byId(id))}${byId(id).name}</button>`).join('')}</div>
-      <button class="trail-add" data-add="${i}">Ajouter le sac · ${t.gear.length} articles · ${fmt(packTotal(t))}</button>
+    <article class="pack" data-t="${i}">
+      <div class="pack-art" style="--tint:${t.tint}">
+        <span class="pack-n">0${i + 1}</span><span class="pack-level">${t.level}</span>
+        <div class="pack-items">${t.gear.map(([id]) => `<div class="pi">${art(byId(id))}</div>`).join('')}</div>
+      </div>
+      <div class="pack-body">
+        <span class="pack-meta">${t.meta.join(' · ')}</span>
+        <h3>${t.name}</h3>
+        <p>${t.desc}</p>
+        <h4>Dans le sac</h4>
+        <ul>${t.gear.map(([id, size]) => `<li><button data-id="${id}">${byId(id).name}${size === 'Unique' ? '' : ` · ${size}`}<span>${fmt(byId(id).price)}</span></button></li>`).join('')}</ul>
+        <div class="pack-wear">À porter avec : ${t.wear.map(id => `<button data-id="${id}">${byId(id).name}</button>`).join(', ')}</div>
+        <div class="pack-foot">
+          <div><small>${t.gear.length} articles</small><strong>${fmt(packTotal(t))}</strong></div>
+          <button class="pack-add" data-add="${i}">Ajouter le sac</button>
+        </div>
+      </div>
     </article>`).join('');
 }
 renderTrails();
-function setTrail(i) {
-  document.querySelectorAll('.trail').forEach(el => el.classList.toggle('on', +el.dataset.t === i));
-  document.querySelectorAll('.pin').forEach(el => el.classList.toggle('on', +el.dataset.t === i));
-}
-setTrail(0);
-$('#trailList').addEventListener('mouseover', e => { const t = e.target.closest('.trail'); if (t) setTrail(+t.dataset.t); });
 $('#trailList').addEventListener('click', e => {
   const chip = e.target.closest('[data-id]'), add = e.target.closest('[data-add]');
   if (chip) openProduct(chip.dataset.id);
@@ -1678,20 +1637,9 @@ $('#trailList').addEventListener('click', e => {
     saveCart(); toast(`${n} articles du sac ajoutés au panier`);
   }
 });
-$('#mapPins').addEventListener('click', e => {
-  const pin = e.target.closest('.pin'); if (!pin) return;
-  setTrail(+pin.dataset.t);
-  document.querySelector(`.trail[data-t="${pin.dataset.t}"]`).scrollIntoView({ behavior: 'smooth', block: 'center' });
-});
-// Une fois sur le sentier, la carte suit la randonnée affichée au centre de l'écran
-if ('IntersectionObserver' in window) {
-  const trailObs = new IntersectionObserver(es => es.forEach(e => e.isIntersecting && setTrail(+e.target.dataset.t)),
-    { rootMargin: '-45% 0px -45% 0px' });
-  document.querySelectorAll('.trail').forEach(el => trailObs.observe(el));
-}
 
 /* ---------- Apparition au défilement ---------- */
-const revealEls = document.querySelectorAll('.sec-head, .layer, .trail, .map-wrap, .perks > div, .f-top, .f-word');
+const revealEls = document.querySelectorAll('.sec-head, .layer, .pack, .perks > div, .f-top, .f-word');
 revealEls.forEach((el, i) => { el.classList.add('reveal'); el.style.setProperty('--d', `${(i % 4) * 0.08}s`); });
 if ('IntersectionObserver' in window) {
   const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }),
