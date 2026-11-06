@@ -1,0 +1,9 @@
+{
+  "name": "sahra-store",
+  "version": "1.0.0",
+  "private": true,
+  "description": "SAHRA, boutique de vêtements : portant interactif, fiche produit, panier",
+  "scripts": {
+    "dev": "npx http-server -p 8100 -c-1 -o"
+  }
+}

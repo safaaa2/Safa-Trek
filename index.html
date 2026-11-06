@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SAHRA | Vêtements</title>
+<meta name="description" content="SAHRA, vêtements dessinés à Agadir. Pièces en séries limitées.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f3f5f8; --ink:#16171a; --muted:#8a8f98; --line:#dfe3e8;
+    --ease:cubic-bezier(.22,.8,.22,1);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family:'Archivo',system-ui,sans-serif;color:var(--ink);
+    background:radial-gradient(120% 90% at 50% 40%,#fbfcfd 0%,var(--bg) 60%,#e9edf2 100%);
+    overflow-x:hidden;-webkit-font-smoothing:antialiased;
+  }
+  button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+  [hidden]{display:none!important}
+
+  /* ---------- En-tête ---------- */
+  header{
+    position:fixed;inset:0 0 auto 0;z-index:30;
+    display:grid;grid-template-columns:1fr auto 1fr;align-items:center;
+    padding:22px clamp(16px,3vw,40px);
+  }
+  .nav-left{display:flex;gap:22px;font-size:11px;letter-spacing:.14em;text-transform:uppercase}
+  .nav-left button:hover{opacity:.55}
+  .brand{
+    font-stretch:125%;font-weight:800;font-size:clamp(22px,2.6vw,30px);letter-spacing:.06em;
+    text-decoration:none;color:var(--ink);
+  }
+  .nav-right{display:flex;justify-content:flex-end;align-items:center;gap:18px}
+  .nav-right svg{width:19px;height:19px;stroke:var(--ink);fill:none;stroke-width:1.6}
+  .icon-btn{position:relative;display:grid;place-items:center;width:30px;height:30px;border-radius:50%;transition:background .2s}
+  .icon-btn:hover{background:rgba(0,0,0,.05)}
+  .badge{
+    position:absolute;top:-2px;right:-4px;min-width:16px;height:16px;padding:0 4px;border-radius:8px;
+    background:var(--ink);color:#fff;font-size:9px;font-weight:700;display:grid;place-items:center;
+    transform:scale(0);transition:transform .3s var(--ease);
+  }
+  .badge.on{transform:scale(1)}
+  .currency{
+    font-size:11px;letter-spacing:.08em;border:0;background:transparent;cursor:pointer;
+    font-family:inherit;color:var(--ink);padding:4px;
+  }
+
+  /* ---------- Portant ---------- */
+  main{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:110px 0 70px}
+  .stage{transition:filter .6s var(--ease),opacity .6s var(--ease),transform .6s var(--ease)}
+  .stage.blurred{filter:blur(14px);opacity:.45;transform:scale(.98)}
+  .rack-scroll{width:100%;display:flex;overflow-x:auto;overflow-y:visible;scrollbar-width:none}
+  .rack-scroll::-webkit-scrollbar{display:none}
+  .rack{position:relative;margin:0 auto;width:max-content;padding:0 60px}
+  .pole{
+    position:absolute;left:0;right:0;top:10px;height:7px;border-radius:4px;z-index:0;
+    background:linear-gradient(#fdfdfd,#c9cdd3 45%,#9aa0a8 55%,#e7e9ec);
+    box-shadow:0 6px 10px -6px rgba(0,0,0,.35);
+  }
+  .pole::before,.pole::after{
+    content:"";position:absolute;top:-4px;width:10px;height:15px;border-radius:3px;
+    background:linear-gradient(90deg,#b9bec5,#f4f5f7,#a9afb7);
+  }
+  .pole::before{left:-4px}.pole::after{right:-4px}
+  .items{position:relative;z-index:1;display:flex;align-items:flex-start;height:430px}
+  .item{
+    position:relative;width:92px;height:100%;perspective:1100px;cursor:pointer;
+    transition:width .7s var(--ease);outline:none;
+  }
+  .item .g{
+    position:absolute;top:0;left:50%;width:290px;margin-left:-145px;transform-origin:50% 2%;
+    transform:rotateY(66deg);transition:transform .7s var(--ease),filter .7s var(--ease);
+    filter:drop-shadow(0 18px 18px rgba(20,25,35,.16));
+    animation:sway 5s ease-in-out infinite;animation-delay:calc(var(--i) * -.7s);
+  }
+  .item:nth-child(even) .g{transform:rotateY(-66deg)}
+  .item.active{width:300px;z-index:5}
+  .item.active .g{transform:rotateY(0) scale(1.12);filter:drop-shadow(0 26px 26px rgba(20,25,35,.22));animation:none}
+  .item.dim{opacity:.18}
+  .item.sold::after{
+    content:"ÉPUISÉ";position:absolute;left:50%;top:405px;transform:translateX(-50%);
+    font-size:9px;letter-spacing:.2em;color:var(--muted);
+  }
+  @keyframes sway{0%,100%{rotate:0deg}50%{rotate:.8deg}}
+  .caption{
+    margin-top:22px;height:16px;text-align:center;font-size:10.5px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--muted);transition:opacity .3s;
+  }
+  .hint{margin-top:10px;font-size:10px;letter-spacing:.14em;color:#b3b8c0;text-transform:uppercase;text-align:center}
+
+  /* ---------- Fiche produit ---------- */
+  .detail{
+    position:fixed;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;
+    opacity:0;pointer-events:none;transition:opacity .45s var(--ease);
+  }
+  .detail.open{opacity:1;pointer-events:auto}
+  .detail-inner{
+    display:flex;flex-direction:column;align-items:center;gap:6px;padding:90px 16px 30px;
+    transform:translateY(24px);transition:transform .6s var(--ease);max-height:100vh;overflow-y:auto;
+  }
+  .detail.open .detail-inner{transform:none}
+  .d-garment{width:min(300px,72vw);perspective:1200px}
+  .d-garment .g{filter:drop-shadow(0 26px 24px rgba(20,25,35,.22))}
+  .d-garment .g.flip-out{animation:flipOut .3s ease-in forwards}
+  .d-garment .g.flip-in{animation:flipIn .4s var(--ease) both}
+  @keyframes flipOut{to{transform:rotateY(90deg)}}
+  @keyframes flipIn{from{transform:rotateY(-90deg)}}
+  .d-name{font-stretch:118%;font-weight:800;font-size:clamp(20px,2.4vw,26px);letter-spacing:.02em;text-transform:uppercase;text-align:center;margin-top:4px}
+  .d-price{font-size:12px;color:#4b4f57;letter-spacing:.06em}
+  .seg{display:flex;border:1px solid var(--ink);border-radius:20px;padding:2px;margin:10px 0 4px}
+  .seg button{font-size:9.5px;font-weight:700;letter-spacing:.14em;padding:5px 14px;border-radius:16px;transition:background .25s,color .25s}
+  .seg button.on{background:var(--ink);color:#fff}
+  .sizes{display:flex;gap:8px;margin-top:8px}
+  .sizes button{
+    min-width:34px;height:26px;padding:0 8px;border:1px solid #b9bec6;border-radius:14px;font-size:10px;
+    letter-spacing:.06em;transition:all .2s;
+  }
+  .sizes button:hover:not(:disabled){border-color:var(--ink)}
+  .sizes button.on{background:var(--ink);border-color:var(--ink);color:#fff}
+  .sizes button:disabled{color:#c4c8cf;border-color:#e2e5e9;text-decoration:line-through;cursor:not-allowed}
+  .add{
+    margin-top:16px;width:230px;height:40px;border-radius:22px;background:var(--ink);color:#fff;
+    font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;transition:opacity .2s,transform .2s;
+  }
+  .add:disabled{background:#d4d8de;color:#fff;cursor:not-allowed}
+  .add:not(:disabled):hover{transform:translateY(-1px)}
+  .link{font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;border-bottom:1px solid currentColor;padding-bottom:2px;margin-top:10px}
+  .stock{font-size:10.5px;color:#5c616a;letter-spacing:.04em;text-align:center;line-height:1.8;max-width:300px}
+  .d-desc{font-size:12px;line-height:1.6;color:#5c616a;text-align:center;max-width:340px;margin-top:8px}
+  .close{
+    position:fixed;top:84px;right:clamp(16px,3vw,40px);font-size:10.5px;letter-spacing:.16em;
+    display:flex;align-items:center;gap:8px;z-index:21;
+  }
+  .close:hover{opacity:.55}
+  .arrow{
+    position:fixed;top:50%;width:40px;height:40px;border-radius:50%;border:1px solid #9097a1;
+    display:grid;place-items:center;z-index:21;transition:all .2s;background:rgba(255,255,255,.4);
+  }
+  .arrow:hover{background:var(--ink);border-color:var(--ink);color:#fff}
+  .arrow.prev{left:clamp(12px,4vw,60px)}.arrow.next{right:clamp(12px,4vw,60px)}
+  .arrow svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.6}
+
+  /* ---------- Panier ---------- */
+  .scrim{position:fixed;inset:0;background:rgba(15,17,20,.25);z-index:40;opacity:0;pointer-events:none;transition:opacity .4s}
+  .scrim.on{opacity:1;pointer-events:auto}
+  .drawer{
+    position:fixed;top:0;right:0;bottom:0;width:min(400px,100%);background:#fbfcfd;z-index:41;
+    transform:translateX(100%);transition:transform .5s var(--ease);display:flex;flex-direction:column;
+  }
+  .drawer.on{transform:none;box-shadow:-20px 0 40px rgba(0,0,0,.08)}
+  .drawer-head{display:flex;justify-content:space-between;align-items:center;padding:24px;border-bottom:1px solid var(--line);font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:700}
+  .lines{flex:1;overflow-y:auto;padding:8px 24px}
+  .line{display:grid;grid-template-columns:64px 1fr auto;gap:14px;align-items:center;padding:16px 0;border-bottom:1px solid var(--line)}
+  .line .thumb{width:64px;height:78px;background:#eef1f4;border-radius:6px;display:grid;place-items:center;overflow:hidden}
+  .line .thumb .g{width:60px}
+  .line h4{font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-weight:700}
+  .line small{display:block;color:var(--muted);font-size:10.5px;margin-top:3px}
+  .qty{display:flex;align-items:center;gap:10px;margin-top:8px;font-size:11px}
+  .qty button{width:22px;height:22px;border:1px solid var(--line);border-radius:50%}
+  .line .rm{font-size:9.5px;letter-spacing:.12em;color:var(--muted);text-transform:uppercase}
+  .line .rm:hover{color:var(--ink)}
+  .line .lp{font-size:11.5px;text-align:right}
+  .empty{padding:60px 0;text-align:center;color:var(--muted);font-size:12px;letter-spacing:.04em}
+  .drawer-foot{padding:20px 24px 26px;border-top:1px solid var(--line)}
+  .total{display:flex;justify-content:space-between;font-size:12px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px}
+  .drawer-foot p{font-size:10.5px;color:var(--muted);margin-bottom:16px}
+  .checkout{width:100%;height:44px;border-radius:22px;background:var(--ink);color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
+  .checkout:disabled{background:#d4d8de}
+
+  /* ---------- Recherche / À propos / toast ---------- */
+  .search{
+    position:fixed;top:72px;left:50%;transform:translate(-50%,-10px);z-index:31;opacity:0;pointer-events:none;
+    transition:all .35s var(--ease);
+  }
+  .search.on{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+  .search input{
+    width:min(360px,86vw);height:38px;border-radius:20px;border:1px solid var(--line);background:#fff;
+    padding:0 18px;font:inherit;font-size:12px;letter-spacing:.04em;outline:none;
+  }
+  .search input:focus{border-color:var(--ink)}
+  .about{
+    position:fixed;inset:0;z-index:50;display:grid;place-items:center;padding:16px;
+    background:rgba(243,245,248,.75);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+    opacity:0;pointer-events:none;transition:opacity .4s;
+  }
+  .about.on{opacity:1;pointer-events:auto}
+  .about-card{max-width:460px;text-align:center}
+  .about-card h2{font-stretch:125%;font-weight:800;font-size:26px;letter-spacing:.06em;margin-bottom:18px}
+  .about-card p{font-size:13px;line-height:1.75;color:#4b4f57;margin-bottom:12px}
+  .about-card .link{display:inline-block;margin-top:14px}
+  .toast{
+    position:fixed;left:50%;bottom:28px;transform:translate(-50%,20px);z-index:60;opacity:0;
+    background:var(--ink);color:#fff;font-size:11px;letter-spacing:.08em;padding:12px 20px;border-radius:22px;
+    transition:all .4s var(--ease);pointer-events:none;
+  }
+  .toast.on{opacity:1;transform:translate(-50%,0)}
+
+  @media (max-width:760px){
+    .nav-left{gap:12px;font-size:10px}
+    .nav-right{gap:8px}
+    .currency{display:none}
+    .rack{padding:0 24px}
+    .items{height:300px}
+    .item,.item.active{width:150px}
+    .item .g,.item:nth-child(even) .g,.item.active .g{width:200px;margin-left:-100px;transform:none}
+    .item.sold::after{top:282px}
+    .arrow{top:auto;bottom:24px}
+    .close{top:76px}
+  }
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="nav-left">
+    <button id="aboutBtn">À propos</button>
+    <button id="allBtn">Collection</button>
+  </nav>
+  <a class="brand" href="#" id="home">SAHRA</a>
+  <div class="nav-right">
+    <select class="currency" id="currency" aria-label="Devise">
+      <option value="MAD">MAD</option>
+      <option value="EUR">EUR</option>
+    </select>
+    <button class="icon-btn" id="searchBtn" aria-label="Rechercher">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>
+    </button>
+    <button class="icon-btn" aria-label="Compte" id="accountBtn">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20c1.4-3.6 4.2-5.4 7.5-5.4s6.1 1.8 7.5 5.4"/></svg>
+    </button>
+    <button class="icon-btn" id="cartBtn" aria-label="Panier">
+      <svg viewBox="0 0 24 24"><path d="M3 4h2.4l2.2 11h10.2l2-8H6.6"/><circle cx="9" cy="19.5" r="1.3"/><circle cx="17" cy="19.5" r="1.3"/></svg>
+      <span class="badge" id="cartCount">0</span>
+    </button>
+  </div>
+</header>
+
+<div class="search" id="search"><input id="q" type="search" placeholder="Rechercher : hoodie, chemise, rayures…" autocomplete="off"></div>
+
+<main>
+  <div class="stage" id="stage">
+    <div class="rack-scroll">
+      <div class="rack">
+        <div class="pole"></div>
+        <div class="items" id="items"></div>
+      </div>
+    </div>
+    <div class="caption" id="caption"></div>
+    <div class="hint" id="hint">Survolez le portant · cliquez pour découvrir</div>
+  </div>
+</main>
+
+<section class="detail" id="detail" aria-modal="true" role="dialog">
+  <button class="close" id="close">FERMER <span aria-hidden="true">✕</span></button>
+  <button class="arrow prev" id="prev" aria-label="Précédent"><svg viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></button>
+  <button class="arrow next" id="next" aria-label="Suivant"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+  <div class="detail-inner">
+    <div class="d-garment" id="dGarment"></div>
+    <h1 class="d-name" id="dName"></h1>
+    <div class="d-price" id="dPrice"></div>
+    <div class="seg" id="side">
+      <button class="on" data-side="front">AVANT</button>
+      <button data-side="back">DOS</button>
+    </div>
+    <div class="sizes" id="sizes"></div>
+    <button class="add" id="add" disabled>Choisir une taille</button>
+    <button class="link" id="availBtn">Voir la disponibilité</button>
+    <div class="stock" id="stock" hidden></div>
+    <p class="d-desc" id="dDesc"></p>
+  </div>
+</section>
+
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" aria-label="Panier">
+  <div class="drawer-head">Panier <button id="drawerClose" aria-label="Fermer">✕</button></div>
+  <div class="lines" id="lines"></div>
+  <div class="drawer-foot">
+    <div class="total"><span>Sous-total</span><span id="subtotal">0</span></div>
+    <p>Livraison offerte partout au Maroc dès 800 MAD.</p>
+    <button class="checkout" id="checkout">Passer commande</button>
+  </div>
+</aside>
+
+<div class="about" id="about">
+  <div class="about-card">
+    <h2>SAHRA</h2>
+    <p>Une marque de vêtements née à Agadir, entre l'océan et le désert. Chaque pièce est produite en série limitée, dans des matières choisies pour durer.</p>
+    <p>Coupes amples, couleurs du sable, du ciel et de la nuit. Pas de saison, pas de soldes : juste des pièces qu'on garde.</p>
+    <button class="link" id="aboutClose">Retour au portant</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ================= Catalogue ================= */
+const PRODUCTS = [
+  { id:'dune',   name:'Dune Coach Jacket',  price:690, type:'jacket', color:'#d9c98b', trim:'#c7b573', pipe:'#f4edd2',
+    cat:'veste', desc:'Veste coach en sergé de coton, zip métal et liserés ton sur ton. Coupe ample, épaules tombantes.',
+    stock:{S:3,M:5,L:2,XL:0,'2XL':1} },
+  { id:'ember',  name:'Ember Knit Vest',    price:540, type:'knit', color:'#f0561d', trim:'#d9461a',
+    cat:'pull maille', desc:'Débardeur en maille torsadée, col V côtelé. Laine mérinos et coton, à porter sur un tee ou une chemise.',
+    stock:{S:2,M:4,L:4,XL:2,'2XL':0} },
+  { id:'night',  name:'Night Track Jacket', price:820, type:'jacket', color:'#2b2f37', trim:'#20232a', pipe:'#e9e6df',
+    cat:'veste', desc:'Veste de survêtement en nylon mat, passepoils crème sur les manches. Doublure mesh respirante.',
+    stock:{S:1,M:3,L:3,XL:2,'2XL':1} },
+  { id:'strike', name:'Atlas Plaid Strike', price:760, type:'shirt', pattern:'plaid', color:'#3a3f66', c2:'#7d6c93', c3:'#c65050', panel:'#17a56a', panelEdge:'#e6ea5c',
+    cat:'chemise carreaux', desc:'Chemise à carreaux et empiècements vert émeraude cousus à la main. Pièce signature, 60 exemplaires.',
+    stock:{S:2,M:2,L:1,XL:1,'2XL':0} },
+  { id:'cloud',  name:'Cloud Hoodie',       price:720, type:'hoodie', color:'#ecebe6', trim:'#dad7cf',
+    cat:'sweat hoodie', desc:'Hoodie en molleton 450 g brossé, poche kangourou et cordons plats. Le basique le plus épais de la collection.',
+    stock:{S:4,M:6,L:5,XL:3,'2XL':2} },
+  { id:'onyx',   name:'Onyx Zip Hoodie',    price:780, type:'hoodie', zip:true, color:'#2a2a2e', trim:'#1c1c1f',
+    cat:'sweat hoodie zip', desc:'Hoodie zippé noir profond, patch tissé sur la poitrine. Molleton 450 g, zip double curseur.',
+    stock:{S:3,M:5,L:4,XL:2,'2XL':1} },
+  { id:'ocean',  name:'Ocean Stripe Shirt', price:590, type:'shirt', pattern:'stripes', color:'#f7f9fc', c2:'#8db5e0',
+    cat:'chemise rayures', desc:'Chemise manches courtes en popeline rayée bleu océan, poche poitrine. Légère et fraîche.',
+    stock:{S:0,M:0,L:0,XL:0,'2XL':0} },
+  { id:'tranq',  name:'Tranquility Tee',    price:420, type:'tee', color:'#f8f8f6', trim:'#e4e3de', print:true,
+    cat:'tee t-shirt', desc:'Tee oversize en jersey 260 g, sérigraphie couché de soleil sur les dunes devant, logo au dos.',
+    stock:{S:5,M:8,L:6,XL:4,'2XL':2} },
+];
+const SIZES = ['S','M','L','XL','2XL'];
+
+/* ================= Dessin des vêtements (SVG) ================= */
+const SHAPES = {
+  tee:  'M72,50 Q100,64 128,50 L166,62 L190,108 L160,122 L153,104 L153,252 L47,252 L47,104 L40,122 L10,108 L34,62 Z',
+  long: 'M72,50 Q100,64 128,50 L164,60 Q178,66 182,96 L192,236 L168,240 L156,124 L153,124 L153,252 L47,252 L47,124 L44,124 L32,240 L8,236 L18,96 Q22,66 36,60 Z',
+  vest: 'M72,50 Q100,96 128,50 L150,58 Q146,92 156,106 L156,250 L44,250 L44,106 Q54,92 50,58 Z'
+};
+let uid = 0;
+
+function garment(p, side = 'front') {
+  const u = 'g' + (uid++);
+  const trim = p.trim || p.color;
+  let shape = p.type === 'tee' || p.type === 'shirt' ? SHAPES.tee : p.type === 'knit' ? SHAPES.vest : SHAPES.long;
+  if (side === 'back') shape = shape.replace('Q100,64', 'Q100,55').replace('Q100,96', 'Q100,58');
+  if (p.type === 'shirt' && side === 'front') shape = shape.replace('Q100,64', 'Q100,58');
+
+  const defs = [
+    `<linearGradient id="${u}s" x1="0" x2="1"><stop offset="0" stop-color="#000" stop-opacity=".22"/><stop offset=".2" stop-color="#000" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".08"/><stop offset=".8" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".24"/></linearGradient>`,
+    `<linearGradient id="${u}v" x1="0" y1="0" x2="0" y2="1"><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".12"/></linearGradient>`,
+    `<pattern id="${u}r" width="4" height="4" patternUnits="userSpaceOnUse"><rect width="2" height="4" fill="#000" opacity=".12"/></pattern>`,
+    `<clipPath id="${u}c"><path d="${shape}"/></clipPath>`
+  ];
+  let fill = p.color;
+  if (p.pattern === 'stripes') {
+    defs.push(`<pattern id="${u}p" width="14" height="10" patternUnits="userSpaceOnUse"><rect width="14" height="10" fill="${p.color}"/><rect width="5" height="10" fill="${p.c2}"/></pattern>`);
+    fill = `url(#${u}p)`;
+  } else if (p.pattern === 'plaid') {
+    defs.push(`<pattern id="${u}p" width="34" height="34" patternUnits="userSpaceOnUse"><rect width="34" height="34" fill="${p.color}"/><rect y="10" width="34" height="9" fill="${p.c2}" opacity=".55"/><rect x="10" width="9" height="34" fill="${p.c2}" opacity=".55"/><rect y="27" width="34" height="2" fill="${p.c3}" opacity=".85"/><rect x="27" width="2" height="34" fill="${p.c3}" opacity=".85"/><rect y="4" width="34" height="1" fill="#fff" opacity=".25"/><rect x="4" width="1" height="34" fill="#fff" opacity=".25"/></pattern>`);
+    fill = `url(#${u}p)`;
+  } else if (p.type === 'knit') {
+    defs.push(`<pattern id="${u}p" width="12" height="10" patternUnits="userSpaceOnUse"><rect width="12" height="10" fill="${p.color}"/><path d="M0,0 L6,5 L12,0 M0,5 L6,10 L12,5" fill="none" stroke="#000" stroke-opacity=".18" stroke-width="1.6"/></pattern>`);
+    fill = `url(#${u}p)`;
+  }
+
+  const hanger = `<path d="M100,40 L100,28 Q100,21 106,17 Q113,11 108,5 Q102,0 95,5" fill="none" stroke="#a2a7ae" stroke-width="2.6" stroke-linecap="round"/>
+    <path d="M90,34 Q100,30 110,34 L112,50 L88,50 Z" fill="#8b4a28"/><path d="M90,34 Q100,30 110,34 L110.6,38 Q100,34 89.4,38 Z" fill="#a55f37"/>`;
+
+  // Empiècements cousus (clippés dans la silhouette)
+  let clipped = '';
+  if (p.panel) {
+    const d = side === 'front'
+      ? 'M104,56 C124,92 72,118 108,156 C138,186 116,226 146,256 L200,256 L200,40 L128,40 Z M0,100 L44,116 C46,96 30,84 36,58 L0,58 Z'
+      : 'M96,56 C76,92 128,118 92,156 C62,186 84,226 54,256 L0,256 L0,40 L72,40 Z M200,100 L156,116 C154,96 170,84 164,58 L200,58 Z';
+    clipped += `<path d="${d}" fill="${p.panel}" stroke="${p.panelEdge}" stroke-width="3.2"/>`;
+  }
+
+  const rib = d => `<path d="${d}" fill="url(#${u}r)"/>`;
+  const hemLong = 'M47,236 L153,236 L153,252 L47,252 Z';
+  const cuffs = 'M9.3,218 L34,222 L32,240 L8,236 Z M190.7,218 L166,222 L168,240 L192,236 Z';
+  let det = '';
+
+  if (p.type === 'tee') {
+    det += `<path d="${side === 'front' ? 'M72,50 Q100,64 128,50' : 'M72,50 Q100,55 128,50'}" fill="none" stroke="${trim}" stroke-width="5"/>`;
+    det += `<path d="M14,100 L42,112 M186,100 L158,112" stroke="#000" stroke-opacity=".08" stroke-width="2"/>`;
+    if (p.print && side === 'front') {
+      defs.push(`<linearGradient id="${u}k" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f7d3a6"/><stop offset="1" stop-color="#e3755a"/></linearGradient>`);
+      det += `<text x="100" y="98" text-anchor="middle" font-family="Georgia,serif" font-size="12" font-weight="700" letter-spacing="1.5" fill="#26262a">TRANQUILITY</text>
+        <rect x="70" y="106" width="60" height="70" rx="3" fill="url(#${u}k)"/>
+        <circle cx="100" cy="136" r="11" fill="#fff4da"/>
+        <path d="M70,160 Q88,145 104,158 Q118,149 130,156 L130,176 L70,176 Z" fill="#c26a40"/>
+        <path d="M70,168 Q94,157 130,170 L130,176 L70,176 Z" fill="#94492a"/>
+        <text x="100" y="189" text-anchor="middle" font-family="Arial,sans-serif" font-size="5.5" letter-spacing="1.6" fill="#55555a">AGADIR · 30.4° N</text>`;
+    } else if (p.print) {
+      det += `<text x="100" y="96" text-anchor="middle" font-family="Arial Black,Arial,sans-serif" font-weight="900" font-size="22" letter-spacing="4" fill="#26262a">SAHRA</text>
+        <text x="100" y="110" text-anchor="middle" font-family="Arial,sans-serif" font-size="6" letter-spacing="2" fill="#55555a">SUN, SAND &amp; SILENCE</text>`;
+    }
+  }
+
+  if (p.type === 'shirt') {
+    if (side === 'front') {
+      det += `<path d="M72,50 L100,60 L88,84 Z" fill="${fill}" stroke="#000" stroke-opacity=".22" stroke-width="1"/><path d="M128,50 L100,60 L112,84 Z" fill="${fill}" stroke="#000" stroke-opacity=".22" stroke-width="1"/>`;
+      det += `<path d="M100,60 L100,252" stroke="#000" stroke-opacity=".18" stroke-width="1.2"/>`;
+      det += [92, 122, 152, 182, 212, 240].map(y => `<circle cx="100" cy="${y}" r="2.8" fill="#f3f0e8" stroke="#000" stroke-opacity=".25" stroke-width=".6"/>`).join('');
+      if (p.pattern === 'stripes') det += `<path d="M112,104 L138,104 L138,130 Q125,134 112,130 Z" fill="none" stroke="#000" stroke-opacity=".2" stroke-width="1"/>`;
+      if (p.panel) det += `<text x="70" y="104" font-family="Georgia,serif" font-size="13" font-weight="700" fill="#f3f0e8">A</text>`;
+    } else {
+      det += `<path d="M47,82 Q100,92 153,82" fill="none" stroke="#000" stroke-opacity=".2" stroke-width="1.2"/><path d="M100,88 L100,112" stroke="#000" stroke-opacity=".16"/>`;
+      det += `<path d="M72,50 Q100,57 128,50" fill="none" stroke="#000" stroke-opacity=".25" stroke-width="3"/>`;
+    }
+    det += `<path d="M14,100 L42,112 M186,100 L158,112" stroke="#000" stroke-opacity=".12" stroke-width="1.4"/>`;
+  }
+
+  if (p.type === 'hoodie') {
+    det += rib(hemLong) + rib(cuffs);
+    if (side === 'front') {
+      det += `<path d="M70,52 Q70,26 100,24 Q130,26 130,52 Q100,72 70,52 Z" fill="${trim}" stroke="#000" stroke-opacity=".15"/>
+        <path d="M78,52 Q80,36 100,34 Q120,36 122,52 Q100,64 78,52 Z" fill="#000" opacity=".22"/>`;
+      if (p.zip) {
+        det += `<path d="M100,62 L100,250" stroke="#8e9198" stroke-width="2.6"/><rect x="97" y="74" width="6" height="12" rx="1.5" fill="#b9bcc2"/>`;
+        det += `<rect x="118" y="104" width="18" height="7" rx="1" fill="#f1f1ee"/><path d="M66,170 L66,226 M134,170 L134,226" stroke="#000" stroke-opacity=".25" stroke-width="1.2"/>`;
+      } else {
+        det += `<path d="M66,232 L66,196 L80,166 L120,166 L134,196 L134,232 Z" fill="none" stroke="#000" stroke-opacity=".16" stroke-width="1.4"/>`;
+        det += `<text x="100" y="118" text-anchor="middle" font-family="Arial,sans-serif" font-size="6" letter-spacing="2.2" fill="#9a978f">SAHRA</text>`;
+      }
+      det += `<path d="M92,64 L90,110 M108,64 L110,110" stroke="${p.zip ? '#d9d9d6' : '#c9c5bc'}" stroke-width="2.4" stroke-linecap="round"/>
+        <path d="M90,108 L90,116 M110,108 L110,116" stroke="#8e9198" stroke-width="3" stroke-linecap="round"/>`;
+    } else {
+      det += `<path d="M64,52 Q58,124 100,132 Q142,124 136,52 Q100,62 64,52 Z" fill="${p.color}" stroke="#000" stroke-opacity=".16"/>
+        <path d="M100,56 L100,130" stroke="#000" stroke-opacity=".14" stroke-width="1.2"/>
+        <path d="M64,52 Q58,124 100,132 Q142,124 136,52" fill="none" stroke="#000" stroke-opacity=".08" stroke-width="6"/>`;
+    }
+  }
+
+  if (p.type === 'jacket') {
+    det += `<path d="${hemLong} ${cuffs}" fill="${trim}"/>` + rib(hemLong) + rib(cuffs);
+    det += `<path d="M38,62 Q24,80 20,100 L10,218 M162,62 Q176,80 180,100 L190,218" fill="none" stroke="${p.pipe}" stroke-width="3"/>`;
+    if (side === 'front') {
+      det += `<path d="M70,50 Q100,62 130,50 L131,40 Q100,54 69,40 Z" fill="${trim}"/>`;
+      det += `<path d="M100,56 L100,252" stroke="#9ba0a7" stroke-width="2.4"/><rect x="97" y="64" width="6" height="12" rx="1.5" fill="#c3c6cb"/>`;
+      det += `<path d="M58,150 L74,186 M142,150 L126,186" stroke="#000" stroke-opacity=".25" stroke-width="1.4"/>`;
+      det += `<circle cx="126" cy="94" r="4" fill="none" stroke="${p.pipe}" stroke-width="1.4"/>`;
+    } else {
+      det += `<path d="M70,50 Q100,57 130,50 L131,40 Q100,48 69,40 Z" fill="${trim}"/>`;
+      det += `<text x="100" y="92" text-anchor="middle" font-family="Arial,sans-serif" font-size="7" letter-spacing="3" fill="${p.pipe}">SAHRA ATHLETIC</text>`;
+    }
+  }
+
+  if (p.type === 'knit') {
+    det += rib('M44,234 L156,234 L156,250 L44,250 Z');
+    det += `<path d="${side === 'front' ? 'M72,50 Q100,96 128,50' : 'M72,50 Q100,58 128,50'}" fill="none" stroke="${trim}" stroke-width="7"/>`;
+    det += `<path d="M50,58 Q46,92 44,106 M150,58 Q154,92 156,106" fill="none" stroke="${trim}" stroke-width="6"/>`;
+    det += `<path d="M76,110 Q70,170 76,232 M124,110 Q130,170 124,232" fill="none" stroke="#000" stroke-opacity=".12" stroke-width="5"/>`;
+  }
+
+  const folds = `<path d="M68,150 Q73,195 66,246 M131,160 Q126,205 134,248" fill="none" stroke="#000" stroke-opacity=".05" stroke-width="3"/>`;
+
+  return `<svg class="g" viewBox="0 0 200 262" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>${defs.join('')}</defs>
+    ${hanger}
+    <path d="${shape}" fill="${fill}"/>
+    <g clip-path="url(#${u}c)">${clipped}${folds}</g>
+    ${det}
+    <path d="${shape}" fill="url(#${u}s)"/>
+    <path d="${shape}" fill="url(#${u}v)"/>
+    <path d="${shape}" fill="none" stroke="#000" stroke-opacity=".14" stroke-width="1.2" stroke-linejoin="round"/>
+  </svg>`;
+}
+
+/* ================= État ================= */
+const $ = s => document.querySelector(s);
+const store = {
+  get(k, d) { try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch { return d; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
+};
+let cart = store.get('sahra_cart', []);
+let currency = store.get('sahra_cur', 'MAD');
+let current = -1, side = 'front', size = null;
+
+const fmt = n => currency === 'EUR'
+  ? new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(n * 0.092)
+  : new Intl.NumberFormat('fr-MA').format(n) + ' MAD';
+const soldOut = p => SIZES.every(s => !p.stock[s]);
+
+/* ================= Portant ================= */
+const itemsEl = $('#items'), caption = $('#caption');
+function renderRack() {
+  itemsEl.innerHTML = PRODUCTS.map((p, i) =>
+    `<div class="item${soldOut(p) ? ' sold' : ''}" tabindex="0" data-i="${i}" style="--i:${i}" aria-label="${p.name}">${garment(p)}</div>`
+  ).join('');
+}
+function setActive(el) {
+  itemsEl.querySelectorAll('.item.active').forEach(x => x !== el && x.classList.remove('active'));
+  if (!el) { caption.textContent = ''; return; }
+  el.classList.add('active');
+  const p = PRODUCTS[el.dataset.i];
+  caption.textContent = `SAHRA ${p.name} · ${soldOut(p) ? 'Épuisé' : fmt(p.price)}`;
+}
+itemsEl.addEventListener('mouseover', e => { const el = e.target.closest('.item'); if (el) setActive(el); });
+itemsEl.addEventListener('mouseleave', () => setActive(null));
+itemsEl.addEventListener('focusin', e => setActive(e.target.closest('.item')));
+itemsEl.addEventListener('click', e => { const el = e.target.closest('.item'); if (el) openDetail(+el.dataset.i); });
+itemsEl.addEventListener('keydown', e => { if (e.key === 'Enter') { const el = e.target.closest('.item'); if (el) openDetail(+el.dataset.i); } });
+
+/* ================= Fiche produit ================= */
+const detail = $('#detail'), stage = $('#stage');
+function openDetail(i) {
+  current = (i + PRODUCTS.length) % PRODUCTS.length; side = 'front'; size = null;
+  const p = PRODUCTS[current];
+  $('#dGarment').innerHTML = garment(p, 'front');
+  $('#dName').textContent = 'SAHRA ' + p.name;
+  $('#dPrice').textContent = fmt(p.price);
+  $('#dDesc').textContent = p.desc;
+  document.querySelectorAll('#side button').forEach(b => b.classList.toggle('on', b.dataset.side === 'front'));
+  $('#sizes').innerHTML = SIZES.map(s => `<button data-s="${s}" ${p.stock[s] ? '' : 'disabled'}>${s}</button>`).join('');
+  $('#stock').hidden = true;
+  $('#stock').innerHTML = SIZES.map(s => `${s} : ${p.stock[s] ? (p.stock[s] <= 2 ? `plus que ${p.stock[s]}` : 'en stock') : 'épuisé'}`).join(' · ');
+  updateAdd();
+  detail.classList.add('open'); stage.classList.add('blurred');
+  document.body.style.overflow = 'hidden';
+}
+function closeDetail() {
+  detail.classList.remove('open'); stage.classList.remove('blurred'); current = -1;
+  document.body.style.overflow = '';
+}
+function updateAdd() {
+  const p = PRODUCTS[current], btn = $('#add');
+  if (soldOut(p)) { btn.disabled = true; btn.textContent = 'Épuisé'; return; }
+  btn.disabled = !size;
+  btn.textContent = size ? `Ajouter au panier · ${fmt(p.price)}` : 'Choisir une taille';
+}
+$('#side').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b || b.dataset.side === side) return;
+  side = b.dataset.side;
+  document.querySelectorAll('#side button').forEach(x => x.classList.toggle('on', x === b));
+  $('#dGarment .g').classList.add('flip-out');
+  setTimeout(() => {
+    $('#dGarment').innerHTML = garment(PRODUCTS[current], side);
+    $('#dGarment .g').classList.add('flip-in');
+  }, 300);
+});
+$('#sizes').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b || b.disabled) return;
+  size = b.dataset.s;
+  document.querySelectorAll('#sizes button').forEach(x => x.classList.toggle('on', x === b));
+  updateAdd();
+});
+$('#availBtn').addEventListener('click', () => { $('#stock').hidden = !$('#stock').hidden; });
+$('#add').addEventListener('click', () => {
+  const p = PRODUCTS[current];
+  const line = cart.find(l => l.id === p.id && l.size === size);
+  if (line) line.qty = Math.min(line.qty + 1, p.stock[size]); else cart.push({ id: p.id, size, qty: 1 });
+  saveCart(); toast(`${p.name} (${size}) ajouté au panier`);
+});
+$('#close').addEventListener('click', closeDetail);
+$('#prev').addEventListener('click', () => openDetail(current - 1));
+$('#next').addEventListener('click', () => openDetail(current + 1));
+
+/* ================= Panier ================= */
+const byId = id => PRODUCTS.find(p => p.id === id);
+function saveCart() { store.set('sahra_cart', cart); renderCart(); }
+function renderCart() {
+  const count = cart.reduce((s, l) => s + l.qty, 0);
+  const badge = $('#cartCount'); badge.textContent = count; badge.classList.toggle('on', count > 0);
+  const total = cart.reduce((s, l) => s + byId(l.id).price * l.qty, 0);
+  $('#subtotal').textContent = fmt(total);
+  $('#checkout').disabled = !count;
+  $('#lines').innerHTML = count ? cart.map((l, i) => {
+    const p = byId(l.id);
+    return `<div class="line">
+      <div class="thumb">${garment(p)}</div>
+      <div><h4>${p.name}</h4><small>Taille ${l.size} · ${fmt(p.price)}</small>
+        <div class="qty"><button data-q="-1" data-l="${i}" aria-label="Moins">−</button>${l.qty}<button data-q="1" data-l="${i}" aria-label="Plus">+</button></div></div>
+      <div><div class="lp">${fmt(p.price * l.qty)}</div><button class="rm" data-rm="${i}">Retirer</button></div>
+    </div>`;
+  }).join('') : '<div class="empty">Votre panier est vide.</div>';
+}
+$('#lines').addEventListener('click', e => {
+  const q = e.target.closest('[data-q]'), rm = e.target.closest('[data-rm]');
+  if (q) {
+    const l = cart[q.dataset.l], max = byId(l.id).stock[l.size];
+    l.qty = Math.max(1, Math.min(max, l.qty + +q.dataset.q));
+  }
+  if (rm) cart.splice(+rm.dataset.rm, 1);
+  if (q || rm) saveCart();
+});
+const toggleDrawer = on => { $('#drawer').classList.toggle('on', on); $('#scrim').classList.toggle('on', on); };
+$('#cartBtn').addEventListener('click', () => toggleDrawer(true));
+$('#drawerClose').addEventListener('click', () => toggleDrawer(false));
+$('#scrim').addEventListener('click', () => toggleDrawer(false));
+$('#checkout').addEventListener('click', () => { toast('Paiement bientôt disponible : boutique de démonstration'); });
+
+/* ================= Divers ================= */
+function toast(msg) {
+  const t = $('#toast'); t.textContent = msg; t.classList.add('on');
+  clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove('on'), 2400);
+}
+$('#currency').value = currency;
+$('#currency').addEventListener('change', e => {
+  currency = e.target.value; store.set('sahra_cur', currency); renderCart();
+  if (current >= 0) { $('#dPrice').textContent = fmt(PRODUCTS[current].price); updateAdd(); }
+});
+$('#searchBtn').addEventListener('click', () => {
+  const s = $('#search'); s.classList.toggle('on');
+  if (s.classList.contains('on')) $('#q').focus(); else { $('#q').value = ''; filter(''); }
+});
+function filter(q) {
+  q = q.trim().toLowerCase();
+  itemsEl.querySelectorAll('.item').forEach(el => {
+    const p = PRODUCTS[el.dataset.i];
+    el.classList.toggle('dim', !!q && !(p.name + ' ' + p.cat).toLowerCase().includes(q));
+  });
+}
+$('#q').addEventListener('input', e => filter(e.target.value));
+$('#accountBtn').addEventListener('click', () => toast('Espace client bientôt disponible'));
+const toggleAbout = on => $('#about').classList.toggle('on', on);
+$('#aboutBtn').addEventListener('click', () => toggleAbout(true));
+$('#aboutClose').addEventListener('click', () => toggleAbout(false));
+$('#allBtn').addEventListener('click', () => { closeDetail(); toggleAbout(false); toggleDrawer(false); });
+$('#home').addEventListener('click', e => { e.preventDefault(); closeDetail(); toggleAbout(false); });
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closeDetail(); toggleDrawer(false); toggleAbout(false); $('#search').classList.remove('on'); }
+  if (current >= 0 && e.key === 'ArrowLeft') openDetail(current - 1);
+  if (current >= 0 && e.key === 'ArrowRight') openDetail(current + 1);
+});
+
+if (matchMedia('(hover: none)').matches) $('#hint').textContent = 'Faites glisser le portant · touchez une pièce';
+renderRack(); renderCart();
+</script>
+</body>
+</html>
