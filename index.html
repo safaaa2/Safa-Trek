@@ -279,6 +279,66 @@
   .f-pay{display:flex;gap:6px}
   .f-pay span{border:1px solid #33363c;border-radius:6px;padding:4px 8px;font-size:9.5px;font-weight:700;letter-spacing:.08em;color:#c4c8cf}
 
+  /* ---------- Commande ---------- */
+  .co{
+    position:fixed;inset:0;z-index:45;background:var(--bg);overflow-y:auto;
+    opacity:0;pointer-events:none;transition:opacity .4s var(--ease);
+  }
+  .co.on{opacity:1;pointer-events:auto}
+  .co-head{display:flex;justify-content:space-between;align-items:center;padding:22px clamp(16px,3vw,40px);border-bottom:1px solid var(--line)}
+  .co-close{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;display:flex;gap:8px}
+  .co-close:hover{opacity:.55}
+  .co-body{display:grid;grid-template-columns:1.35fr 1fr;gap:56px;max-width:1100px;margin:0 auto;padding:40px 16px 90px;align-items:start}
+  .co-form h2{font-stretch:118%;font-weight:800;font-size:clamp(22px,3vw,30px);text-transform:uppercase;margin-bottom:30px}
+  .co-form fieldset{border:0;margin-bottom:30px}
+  .co-form legend{font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;margin-bottom:16px}
+  .co-form label{display:block;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:#4b4f57;margin-bottom:14px}
+  .co-form em{font-style:normal;text-transform:none;letter-spacing:0;color:var(--muted)}
+  .co-form input:not([type=radio]),.co-form select,.co-form textarea{
+    display:block;width:100%;margin-top:6px;height:46px;border:1px solid #d3d8de;border-radius:12px;background:#fff;
+    padding:0 14px;font:inherit;font-size:13.5px;color:var(--ink);outline:none;transition:border-color .2s,box-shadow .2s;
+  }
+  .co-form textarea{height:auto;padding:12px 14px;resize:vertical}
+  .co-form input:focus,.co-form select:focus,.co-form textarea:focus{border-color:var(--ink);box-shadow:0 0 0 3px rgba(22,23,26,.08)}
+  .co-form .invalid{border-color:#c0392b!important}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .opt{display:flex!important;align-items:center;gap:14px;border:1px solid #d3d8de;border-radius:14px;padding:14px 16px;background:#fff;cursor:pointer;margin-bottom:10px!important;transition:border-color .2s,box-shadow .2s}
+  .opt:has(input:checked){border-color:var(--ink);box-shadow:0 0 0 1px var(--ink)}
+  .opt.disabled{opacity:.45;cursor:not-allowed}
+  .opt input{accent-color:var(--ink);width:16px;height:16px;margin:0;flex:none}
+  .opt span{flex:1;text-transform:none;letter-spacing:0}
+  .opt b{display:block;font-size:13px;color:var(--ink)}
+  .opt small{font-size:11.5px;color:var(--muted)}
+  .opt i{font-style:normal;font-size:12.5px;color:var(--ink);text-transform:none;letter-spacing:0}
+  .co-err{color:#c0392b;font-size:12px;margin:-10px 0 14px}
+  .co-legal{font-size:11px;color:var(--muted);line-height:1.6;margin-top:14px}
+  .co-sum{position:sticky;top:24px;background:#fff;border:1px solid var(--line);border-radius:20px;padding:24px}
+  .co-sum h3{font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;margin-bottom:8px}
+  .co-sum .line{grid-template-columns:56px 1fr auto;padding:12px 0}
+  .co-sum .thumb{width:56px;height:64px}
+  .co-sum .thumb .g{width:50px}
+  .co-tot{display:flex;justify-content:space-between;font-size:12.5px;padding:8px 0;color:#4b4f57}
+  .co-tot.big{font-size:15px;font-weight:700;color:var(--ink);border-top:1px solid var(--line);margin-top:8px;padding-top:16px}
+  .co-done{max-width:560px;margin:0 auto;padding:70px 16px 90px;text-align:center}
+  .co-done .ok{width:64px;height:64px;border-radius:50%;background:var(--ink);display:grid;place-items:center;margin:0 auto 22px;animation:pop .5s var(--ease)}
+  .co-done .ok svg{width:28px;height:28px;stroke:#fff;fill:none;stroke-width:2.4}
+  @keyframes pop{from{transform:scale(.4);opacity:0}}
+  .co-done h2{font-stretch:118%;font-weight:800;font-size:clamp(22px,3vw,30px);text-transform:uppercase}
+  .co-done .num{display:inline-block;margin:14px 0 6px;font-size:12px;letter-spacing:.14em;padding:7px 14px;border-radius:14px;background:rgba(22,23,26,.06)}
+  .co-done > p{font-size:13px;line-height:1.7;color:#5c616a;margin-top:10px}
+  .co-done .co-sum{position:static;text-align:left;margin:28px 0}
+  .co-done .checkout{max-width:300px}
+  .order{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 0;border-bottom:1px solid var(--line);text-align:left}
+  .order b{display:block;font-size:12.5px;letter-spacing:.06em}
+  .order small{font-size:11.5px;color:var(--muted)}
+  .order .st{font-size:9.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:5px 10px;border-radius:12px;background:#fdf1d6;color:#8a5a00;white-space:nowrap}
+
+  @media (max-width:860px){
+    .co-body{grid-template-columns:1fr;gap:30px}
+    .co-sum{position:static;order:-1}
+  }
+  @media (max-width:520px){ .row2{grid-template-columns:1fr;gap:0} }
+
   @media (max-width:1000px){
     .f-top{grid-template-columns:1fr;gap:44px}
     .shelf{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -436,6 +496,65 @@
     <button class="link" id="aboutClose">Retour au portant</button>
   </div>
 </div>
+
+<section class="co" id="co" role="dialog" aria-modal="true" aria-labelledby="coTitle">
+  <div class="co-head">
+    <span class="brand"><svg viewBox="0 0 24 16" aria-hidden="true"><path d="M1 15 L8.5 3 L12.5 9 L15.5 5 L23 15 Z"/></svg>SAFA TREK</span>
+    <button class="co-close" id="coClose">Retour à la boutique <span aria-hidden="true">✕</span></button>
+  </div>
+
+  <div class="co-body" id="coCheckout">
+    <form class="co-form" id="orderForm" novalidate>
+      <h2 id="coTitle">Finaliser la commande</h2>
+      <fieldset>
+        <legend>1 · Coordonnées</legend>
+        <div class="row2">
+          <label>Prénom<input name="first" required autocomplete="given-name"></label>
+          <label>Nom<input name="last" required autocomplete="family-name"></label>
+        </div>
+        <div class="row2">
+          <label>Téléphone<input name="phone" type="tel" required placeholder="06 12 34 56 78" autocomplete="tel"></label>
+          <label>E-mail <em>(facultatif)</em><input name="email" type="email" autocomplete="email"></label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>2 · Livraison</legend>
+        <div class="row2">
+          <label>Ville<select name="city" required id="city">
+            <option value="">Choisir une ville</option>
+            <option>Agadir</option><option>Casablanca</option><option>Rabat</option><option>Marrakech</option>
+            <option>Fès</option><option>Tanger</option><option>Meknès</option><option>Oujda</option>
+            <option>Kénitra</option><option>Tétouan</option><option>Essaouira</option><option>Ouarzazate</option>
+            <option>Tiznit</option><option>Taroudant</option><option>Laâyoune</option><option>Autre ville</option>
+          </select></label>
+          <label>Code postal <em>(facultatif)</em><input name="zip" inputmode="numeric" autocomplete="postal-code"></label>
+        </div>
+        <label>Adresse<input name="address" required autocomplete="street-address" placeholder="Rue, numéro, quartier"></label>
+        <label class="opt"><input type="radio" name="ship" value="std" checked><span><b>Standard</b><small>2 à 4 jours ouvrés, partout au Maroc</small></span><i id="stdPrice"></i></label>
+        <label class="opt" id="expOpt"><input type="radio" name="ship" value="exp"><span><b>Express 24 h</b><small>Agadir, Casablanca, Rabat et Marrakech</small></span><i id="expPrice"></i></label>
+      </fieldset>
+      <fieldset>
+        <legend>3 · Paiement</legend>
+        <label class="opt"><input type="radio" name="pay" value="cod" checked><span><b>Paiement à la livraison</b><small>En espèces, à la réception du colis</small></span></label>
+        <label class="opt disabled"><input type="radio" name="pay" value="card" disabled><span><b>Carte bancaire</b><small>Bientôt disponible</small></span></label>
+        <label>Note pour le livreur <em>(facultatif)</em><textarea name="note" rows="2"></textarea></label>
+      </fieldset>
+      <p class="co-err" id="coErr" role="alert" hidden></p>
+      <button class="checkout" type="submit" id="coSubmit">Confirmer la commande</button>
+      <p class="co-legal">En confirmant, vous acceptez nos conditions générales de vente. Un conseiller vous appelle pour valider la commande avant l'expédition.</p>
+    </form>
+
+    <aside class="co-sum">
+      <h3>Votre commande</h3>
+      <div id="coLines"></div>
+      <div class="co-tot"><span>Sous-total</span><span id="coSub"></span></div>
+      <div class="co-tot"><span>Livraison</span><span id="coShip"></span></div>
+      <div class="co-tot big"><span>Total</span><span id="coTotal"></span></div>
+    </aside>
+  </div>
+
+  <div class="co-done" id="coDone" hidden></div>
+</section>
 
 <div class="toast" id="toast"></div>
 
@@ -895,7 +1014,119 @@ const toggleDrawer = on => { $('#drawer').classList.toggle('on', on); $('#scrim'
 $('#cartBtn').addEventListener('click', () => toggleDrawer(true));
 $('#drawerClose').addEventListener('click', () => toggleDrawer(false));
 $('#scrim').addEventListener('click', () => toggleDrawer(false));
-$('#checkout').addEventListener('click', () => { toast('Paiement bientôt disponible : boutique de démonstration'); });
+$('#checkout').addEventListener('click', () => { toggleDrawer(false); openCheckout(); });
+
+/* ================= Commande ================= */
+const co = $('#co'), orderForm = $('#orderForm');
+const EXPRESS_CITIES = ['Agadir', 'Casablanca', 'Rabat', 'Marrakech'];
+const FREE_SHIPPING = 1000, STD_PRICE = 35, EXP_PRICE = 60;
+const subtotalOf = items => items.reduce((s, l) => s + byId(l.id).price * l.qty, 0);
+const shippingOf = (sub, mode) => mode === 'exp' ? EXP_PRICE : sub >= FREE_SHIPPING ? 0 : STD_PRICE;
+const fmtShip = n => n ? fmt(n) : 'Offerte';
+const sumLines = items => items.map(l => {
+  const p = byId(l.id);
+  return `<div class="line"><div class="thumb">${art(p)}</div>
+    <div><h4>${p.name}</h4><small>${l.size === 'Unique' ? '' : l.size + ' · '}Qté ${l.qty}</small></div>
+    <div class="lp">${fmt(p.price * l.qty)}</div></div>`;
+}).join('');
+
+function showCo(view) {
+  $('#coCheckout').hidden = view !== 'checkout';
+  $('#coDone').hidden = view === 'checkout';
+  co.classList.add('on'); co.scrollTop = 0; document.body.style.overflow = 'hidden';
+}
+function closeCo() { co.classList.remove('on'); document.body.style.overflow = ''; }
+
+function openCheckout() {
+  if (!cart.length) return toast('Votre panier est vide');
+  updateSummary(); $('#coErr').hidden = true; showCo('checkout');
+}
+function updateSummary() {
+  const city = $('#city').value, exp = $('[name=ship][value=exp]');
+  // L'express n'est proposé que dans les grandes villes desservies en 24 h
+  const expOk = !city || EXPRESS_CITIES.includes(city);
+  exp.disabled = !expOk; $('#expOpt').classList.toggle('disabled', !expOk);
+  if (!expOk && exp.checked) $('[name=ship][value=std]').checked = true;
+  const sub = subtotalOf(cart), mode = orderForm.ship.value, ship = shippingOf(sub, mode);
+  $('#stdPrice').textContent = fmtShip(shippingOf(sub, 'std'));
+  $('#expPrice').textContent = fmt(EXP_PRICE);
+  $('#coLines').innerHTML = sumLines(cart);
+  $('#coSub').textContent = fmt(sub);
+  $('#coShip').textContent = fmtShip(ship);
+  $('#coTotal').textContent = fmt(sub + ship);
+  $('#coSubmit').textContent = `Confirmer la commande · ${fmt(sub + ship)}`;
+}
+orderForm.addEventListener('change', updateSummary);
+orderForm.addEventListener('input', e => e.target.classList.remove('invalid'));
+
+const esc = s => String(s).replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[ch]);
+const PHONE_RE = /^(?:\+212|00212|0)[5-7]\d{8}$/;
+orderForm.addEventListener('submit', e => {
+  e.preventDefault();
+  const f = orderForm, err = $('#coErr');
+  const phone = f.phone.value.replace(/[\s.-]/g, '');
+  let bad = [...f.querySelectorAll('[required]')].filter(i => !i.value.trim());
+  if (f.phone.value && !PHONE_RE.test(phone)) bad.push(f.phone);
+  if (f.email.value && !f.email.checkValidity()) bad.push(f.email);
+  f.querySelectorAll('.invalid').forEach(i => i.classList.remove('invalid'));
+  if (bad.length) {
+    bad.forEach(i => i.classList.add('invalid'));
+    err.textContent = bad.includes(f.phone) && f.phone.value
+      ? 'Numéro de téléphone invalide : utilisez un numéro marocain, par exemple 06 12 34 56 78.'
+      : 'Merci de compléter les champs en rouge.';
+    err.hidden = false; bad[0].focus(); return;
+  }
+  err.hidden = true;
+
+  const sub = subtotalOf(cart), ship = shippingOf(sub, f.ship.value);
+  const order = {
+    id: 'ST-' + Date.now().toString(36).slice(-6).toUpperCase(),
+    date: new Date().toISOString(),
+    items: cart.map(l => ({ ...l })),
+    subtotal: sub, shipping: ship, total: sub + ship,
+    ship: f.ship.value, pay: f.pay.value,
+    customer: { first: f.first.value.trim(), last: f.last.value.trim(), phone, email: f.email.value.trim(),
+                city: f.city.value, zip: f.zip.value.trim(), address: f.address.value.trim(), note: f.note.value.trim() }
+  };
+  const orders = store.get('safatrek_orders', []);
+  orders.unshift(order); store.set('safatrek_orders', orders);
+  cart = []; saveCart(); f.reset();
+  renderDone(order);
+});
+
+function renderDone(o) {
+  const c = o.customer;
+  $('#coDone').innerHTML = `
+    <div class="ok"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+    <h2>Merci ${esc(c.first)} !</h2>
+    <span class="num">Commande ${o.id}</span>
+    <p>Votre commande est enregistrée. Un conseiller Safa Trek vous appelle au <b>${esc(c.phone)}</b> pour la confirmer,
+      puis elle part ${o.ship === 'exp' ? 'en express (24 h)' : 'en livraison standard (2 à 4 jours)'} à ${esc(c.city)}.
+      Vous réglerez <b>${fmt(o.total)}</b> en espèces à la réception.</p>
+    <div class="co-sum">
+      <h3>Récapitulatif</h3>${sumLines(o.items)}
+      <div class="co-tot"><span>Sous-total</span><span>${fmt(o.subtotal)}</span></div>
+      <div class="co-tot"><span>Livraison</span><span>${fmtShip(o.shipping)}</span></div>
+      <div class="co-tot big"><span>Total</span><span>${fmt(o.total)}</span></div>
+    </div>
+    <button class="checkout" data-close-co>Continuer mes achats</button>`;
+  showCo('done');
+}
+
+function openOrders() {
+  const orders = store.get('safatrek_orders', []).filter(o => o.items.every(l => byId(l.id)));
+  $('#coDone').innerHTML = `
+    <h2>Mes commandes</h2>
+    ${orders.length ? `<div style="margin:24px 0 30px">${orders.map(o => `
+      <div class="order"><div><b>${o.id}</b>
+        <small>${new Date(o.date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })} · ${o.items.reduce((s, l) => s + l.qty, 0)} article(s) · ${esc(o.customer.city)}</small></div>
+        <div style="text-align:right"><div>${fmt(o.total)}</div><span class="st">En préparation</span></div></div>`).join('')}</div>`
+      : '<p>Vous n\'avez pas encore passé de commande.</p><br>'}
+    <button class="checkout" data-close-co>Retour à la boutique</button>`;
+  showCo('done');
+}
+$('#coClose').addEventListener('click', closeCo);
+$('#coDone').addEventListener('click', e => { if (e.target.closest('[data-close-co]')) closeCo(); });
 
 /* ================= Divers ================= */
 function toast(msg) {
@@ -918,7 +1149,7 @@ function filter(q) {
   shelfEl.querySelectorAll('.gcard').forEach(el => el.classList.toggle('dim', !match(GEAR[el.dataset.i])));
 }
 $('#q').addEventListener('input', e => filter(e.target.value));
-$('#accountBtn').addEventListener('click', () => toast('Espace client bientôt disponible'));
+$('#accountBtn').addEventListener('click', openOrders);
 const toggleAbout = on => $('#about').classList.toggle('on', on);
 $('#aboutBtn').addEventListener('click', () => toggleAbout(true));
 $('#aboutLink').addEventListener('click', e => { e.preventDefault(); toggleAbout(true); });
@@ -933,7 +1164,7 @@ $('#newsletter').addEventListener('submit', e => {
   e.preventDefault(); e.target.reset(); toast('Merci ! Vous recevrez nos prochains itinéraires et nouveautés.');
 });
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') { closeDetail(); toggleDrawer(false); toggleAbout(false); $('#search').classList.remove('on'); }
+  if (e.key === 'Escape') { closeCo(); closeDetail(); toggleDrawer(false); toggleAbout(false); $('#search').classList.remove('on'); }
   if (current >= 0 && e.key === 'ArrowLeft') openDetail(current - 1);
   if (current >= 0 && e.key === 'ArrowRight') openDetail(current + 1);
 });
