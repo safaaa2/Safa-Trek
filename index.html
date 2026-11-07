@@ -191,6 +191,21 @@
   .detail-inner > *{flex-shrink:0}
   .d-garment{width:min(300px,72vw);perspective:1200px}
   .d-garment .g{filter:drop-shadow(0 26px 24px rgba(20,25,35,.22))}
+  .d-garment.fit{width:min(170px,46vw)}
+  .d-garment.fit{cursor:grab;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+  .d-garment.fit:active{cursor:grabbing}
+  .d-garment .fit-svg{transform-origin:50% 50%;will-change:transform}
+  .fit-rot{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:10px}
+  .fit-rot span{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+  .fit-rot button{width:30px;height:30px;border-radius:50%;border:1px solid var(--ink);font-size:15px;line-height:1;display:grid;place-items:center;transition:background .2s,color .2s}
+  .fit-rot button:hover{background:var(--ink);color:#fff}
+  .fit-strip{width:min(420px,92vw);margin-top:6px;text-align:center}
+  .fit-strip p{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+  .fit-chips{display:flex;justify-content:center;gap:6px;flex-wrap:wrap}
+  .fit-chip{width:46px;height:46px;border-radius:12px;background:rgba(255,255,255,.7);border:1px solid rgba(0,0,0,.08);display:grid;place-items:center;transition:transform .3s var(--ease),border-color .2s,background .2s}
+  .fit-chip:hover{transform:translateY(-2px);background:#fff}
+  .fit-chip.on{border-color:var(--ink);background:#fff;box-shadow:0 0 0 1px var(--ink)}
+  .fit-chip .g{width:34px;height:34px;filter:none!important;animation:none!important}
   .d-garment .g.flip-out{animation:flipOut .3s ease-in forwards}
   .d-garment .g.flip-in{animation:flipIn .4s var(--ease) both}
   @keyframes flipOut{to{transform:rotateY(90deg)}}
@@ -612,7 +627,7 @@
   <div class="sec-head">
     <span class="eyebrow">01 · Vêtements</span>
     <h2>La collection <span class="serif">Atlas</span></h2>
-    <p>Huit pièces pensées pour le système trois couches : chaudes, légères et faites pour durer.</p>
+    <p>Douze pièces pensées pour le système trois couches : chaudes, légères et faites pour durer.</p>
   </div>
   <div class="rack-scroll">
     <div class="rack">
@@ -702,10 +717,12 @@
   <button class="arrow next" id="next" aria-label="Suivant"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
   <div class="detail-inner">
     <div class="d-garment" id="dGarment"></div>
+    <div class="fit-strip" id="fitStrip" hidden></div>
     <h1 class="d-name" id="dName"></h1>
     <div class="d-price" id="dPrice"></div>
     <div class="seg" id="side">
-      <button class="on" data-side="front">AVANT</button>
+      <button class="on" data-side="worn">PORTÉ</button>
+      <button data-side="front">AVANT</button>
       <button data-side="back">DOS</button>
     </div>
     <div class="sizes" id="sizes"></div>
@@ -826,6 +843,18 @@ const PRODUCTS = [
   { id:'trail',  name:'Trail Zip-Off Pants', price:790, type:'pants', color:'#5c614b', c2:'#2b2d27',
     cat:'pantalon short zip-off', desc:'Pantalon de trek convertible en short, genoux articulés, poche cargo zippée et ceinture intégrée.',
     specs:['Convertible short','Anti-UV UPF 50','350 g'], stock:{S:3,M:4,L:4,XL:2,'2XL':1} },
+  { id:'bouguemez', name:'Bougmez Trail Shorts', price:450, type:'pants', cut:'short', color:'#8a7a5c', c2:'#2b2d27',
+    cat:'short bermuda pantalon été chaud vallée', desc:'Short de trek léger et extensible, séchage rapide. Pour les vallées chaudes, les marches d’été et les journées de via ferrata.',
+    specs:['Séchage rapide','Poche cargo','210 g'], stock:{S:4,M:6,L:5,XL:3,'2XL':2} },
+  { id:'slimtrek', name:'Anti-Atlas Slim Pants', price:890, type:'pants', cut:'slim', nocargo:true, zipoff:false, color:'#3d4654', c2:'#2b2f37',
+    cat:'pantalon softshell slim coupe ajustée randonnée', desc:'Pantalon softshell à coupe fuselée : déperlant, extensible, entrejambe renforcé. Il suit le mouvement sans accrocher dans les pierriers.',
+    specs:['Softshell stretch','Coupe fuselée','430 g'], stock:{S:3,M:5,L:4,XL:3,'2XL':1} },
+  { id:'rainpants', name:'Toubkal Rain Pants', price:1190, type:'pants', stripe:true, nocargo:true, zipoff:false, color:'#2b2f37', c2:'#e0552b',
+    cat:'pantalon imperméable pluie hardshell surpantalon', desc:'Surpantalon imperméable 3 couches avec zips latéraux intégraux : on l’enfile sans retirer les chaussures. À garder dans le sac pour les orages.',
+    specs:['Imperméable 20 000 mm','Zips latéraux','390 g'], stock:{S:2,M:4,L:3,XL:2,'2XL':1} },
+  { id:'sahara', name:'Sahara Light Pants', price:690, type:'pants', zipoff:false, color:'#cdb88c', c2:'#7a6650',
+    cat:'pantalon léger lin été désert chaud', desc:'Pantalon ample en nylon ultra-léger, anti-UV et très respirant. Pour le désert, les gorges du Todra et les journées chaudes.',
+    specs:['UPF 50+','Ultra-léger','260 g'], stock:{S:3,M:5,L:5,XL:3,'2XL':2} },
   { id:'imlil',  name:'Imlil Windbreaker', price:640, type:'shell', light:true, color:'#a8c7d9', c2:'#e9eef2',
     cat:'coupe-vent veste légère', desc:'Coupe-vent ultra-léger qui tient dans la paume. Pour les crêtes ventées et les départs à l’aube.',
     specs:['Ultra-léger','Déperlant','110 g'], stock:{S:0,M:0,L:0,XL:0,'2XL':0} },
@@ -836,19 +865,21 @@ const SIZES = ['S','M','L','XL','2XL'];
 const SHAPES = {
   long:  'M72,50 Q100,64 128,50 L164,60 Q178,66 182,96 L192,236 L168,240 L156,124 L153,124 L153,252 L47,252 L47,124 L44,124 L32,240 L8,236 L18,96 Q22,66 36,60 Z',
   gilet: 'M72,50 Q100,62 128,50 L150,58 Q146,92 156,106 L156,250 L44,250 L44,106 Q54,92 50,58 Z',
-  pants: 'M58,48 L142,48 L152,252 L110,252 L100,118 L90,252 L48,252 Z'
+  pants: 'M58,48 L142,48 L152,252 L110,252 L100,118 L90,252 L48,252 Z',
+  slim:  'M60,48 L140,48 L138,252 L107,252 L100,118 L93,252 L62,252 Z',
+  short: 'M58,48 L142,48 L152,156 L108,156 L100,104 L92,156 L48,156 Z'
 };
 let uid = 0;
 
 // Photo détourée (images/<id>.png) si elle existe, sinon le dessin SVG
 const photo = src => `<img class="g photo" src="${src}" alt="" draggable="false">`;
 
-function garment(p, side = 'front') {
-  if (p.img) return photo(side === 'back' && p.imgBack ? p.imgBack : p.img);
+function garment(p, side = 'front', worn = false) {
+  if (p.img && !worn) return photo(side === 'back' && p.imgBack ? p.imgBack : p.img);
   const u = 'g' + (uid++);
   const front = side === 'front';
   const trim = p.trim || p.c2 || p.color;
-  let shape = SHAPES[p.type === 'gilet' ? 'gilet' : p.type === 'pants' ? 'pants' : 'long'];
+  let shape = SHAPES[p.type === 'gilet' ? 'gilet' : p.type === 'pants' ? (p.cut || 'pants') : 'long'];
   if (!front) shape = shape.replace('Q100,64', 'Q100,55').replace('Q100,62', 'Q100,55');
 
   const defs = [
@@ -870,12 +901,12 @@ function garment(p, side = 'front') {
 
   // Cintre : crochet + bois, ou barre à pinces pour le pantalon
   const hook = `<path d="M100,40 L100,28 Q100,21 106,17 Q113,11 108,5 Q102,0 95,5" fill="none" stroke="#a2a7ae" stroke-width="2.6" stroke-linecap="round"/>`;
-  const hanger = p.type === 'pants'
+  const hanger = worn ? '' : p.type === 'pants'
     ? hook + `<path d="M62,40 L138,40" stroke="#a2a7ae" stroke-width="3" stroke-linecap="round"/><rect x="65" y="37" width="9" height="18" rx="1.6" fill="#3a3d42"/><rect x="126" y="37" width="9" height="18" rx="1.6" fill="#3a3d42"/>`
     : hook + `<path d="M90,34 Q100,30 110,34 L112,50 L88,50 Z" fill="#8b4a28"/><path d="M90,34 Q100,30 110,34 L110.6,38 Q100,34 89.4,38 Z" fill="#a55f37"/>`;
 
   // Capuche repliée derrière le col (hardshell / coupe-vent)
-  const behind = p.type === 'shell' && front ? `<path d="M64,60 Q56,16 100,12 Q144,16 136,60 Z" fill="${p.c2}"/><path d="M64,60 Q56,16 100,12 Q144,16 136,60" fill="none" stroke="#000" stroke-opacity=".18"/>` : '';
+  const behind = p.type === 'shell' && front && !worn ? `<path d="M64,60 Q56,16 100,12 Q144,16 136,60 Z" fill="${p.c2}"/><path d="M64,60 Q56,16 100,12 Q144,16 136,60" fill="none" stroke="#000" stroke-opacity=".18"/>` : '';
 
   const rib = d => `<path d="${d}" fill="url(#${u}r)"/>`;
   const hemLong = 'M47,240 L153,240 L153,252 L47,252 Z';
@@ -957,15 +988,17 @@ function garment(p, side = 'front') {
   if (p.type === 'pants') {
     det += `<path d="M58,48 L142,48 L143,60 L57,60 Z" fill="${p.color}"/><path d="M58,48 L142,48 L143,60 L57,60 Z" fill="#000" opacity=".12"/>`;
     det += `<path d="M57,52 L143,52 L143,57 L57,57 Z" fill="${p.c2}"/>`;
-    det += `<path d="M50,206 L95,206 M105,206 L150,206" stroke="#26282c" stroke-width="1.8"/>`;
-    det += `<path d="M58,150 Q70,156 84,150 M116,150 Q130,156 142,150" fill="none" stroke="#000" stroke-opacity=".22"/>`;
-    det += `<path d="M52,244 L92,244 M108,244 L150,244" stroke="#000" stroke-opacity=".2"/>`;
+    const sh = p.cut === 'short';
+    if (!sh && p.zipoff !== false) det += `<path d="M50,206 L95,206 M105,206 L150,206" stroke="#26282c" stroke-width="1.8"/>`;
+    if (!sh) det += `<path d="M58,150 Q70,156 84,150 M116,150 Q130,156 142,150" fill="none" stroke="#000" stroke-opacity=".22"/>`;
+    det += sh ? `<path d="M50,148 L92,148 M108,148 L150,148" stroke="#000" stroke-opacity=".2"/>` : `<path d="${p.cut === 'slim' ? 'M65,244 L94,244 M106,244 L135,244' : 'M52,244 L92,244 M108,244 L150,244'}" stroke="#000" stroke-opacity=".2"/>`;
+    if (p.stripe) det += `<path d="M60,60 L50,246 M140,60 L150,246" stroke="${p.c2}" stroke-width="3.4"/><path d="M52,200 L96,196 M148,200 L104,196" stroke="#000" stroke-opacity=".3" stroke-width="2"/>`;
     if (front) {
       det += `<rect x="94" y="50" width="12" height="9" rx="1.5" fill="#26282c"/>`;
       det += `<path d="M100,60 Q100,92 92,104" fill="none" stroke="#000" stroke-opacity=".25" stroke-width="1.2"/>`;
       det += `<path d="M62,64 Q66,86 58,96 M138,64 Q134,86 142,96" fill="none" stroke="#000" stroke-opacity=".25" stroke-width="1.2"/>`;
-      det += `<rect x="124" y="130" width="22" height="30" rx="2" fill="${p.color}" stroke="#000" stroke-opacity=".25"/><path d="M124,138 L146,138" stroke="#000" stroke-opacity=".25"/>` + pocketZip(127, 134, 143, 134);
-      det += logo(58, 118, '#d9dccd', 4.2);
+      if (!p.nocargo) det += `<rect x="124" y="${sh ? 100 : 130}" width="22" height="${sh ? 26 : 30}" rx="2" fill="${p.color}" stroke="#000" stroke-opacity=".25"/><path d="M124,${sh ? 108 : 138} L146,${sh ? 108 : 138}" stroke="#000" stroke-opacity=".25"/>` + pocketZip(127, sh ? 104 : 134, 143, sh ? 104 : 134);
+      det += logo(58, sh ? 96 : 118, '#d9dccd', 4.2);
     } else {
       det += `<rect x="96" y="49" width="8" height="10" rx="1" fill="${p.color}" stroke="#000" stroke-opacity=".2"/>`;
       det += `<path d="M58,92 Q100,84 142,92" fill="none" stroke="#000" stroke-opacity=".22"/>` + pocketZip(64, 102, 86, 102) + pocketZip(136, 102, 114, 102);
@@ -974,7 +1007,10 @@ function garment(p, side = 'front') {
 
   const folds = `<path d="M68,150 Q73,195 66,246 M131,160 Q126,205 134,248" fill="none" stroke="#000" stroke-opacity=".05" stroke-width="3"/>`;
 
-  return `<svg class="g" viewBox="0 0 200 262" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  // Porté : <svg> imbriqué dans la silhouette (sans cintre ni capuche repliée)
+  const open = worn ? '<svg x="0" y="0" width="200" height="262" viewBox="0 0 200 262">'
+    : '<svg class="g" viewBox="0 0 200 262" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">';
+  return `${open}
     <defs>${defs.join('')}</defs>
     ${behind}
     ${hanger}
@@ -993,7 +1029,7 @@ const GEAR = [
     cat:'sac à dos sac', tag:'Best-seller', sizes:['35 L','45 L'], stock:{'35 L':4,'45 L':3},
     desc:'Sac de trek avec dos ventilé, ceinture rembourrée et housse de pluie intégrée. Taillé pour 2 à 5 jours en autonomie.',
     specs:['Dos ventilé','Housse de pluie','1,4 kg'] },
-  { id:'boots', kind:'gear', art:'boots', name:'Jbel Mid GTX Boots', price:1390, color:'#7a6650', c2:'#d9532c',
+  { id:'boots', kind:'gear', art:'boots', wear:'feet', name:'Jbel Mid GTX Boots', price:1390, color:'#7a6650', c2:'#d9532c',
     cat:'chaussures chaussure bottes randonnée', tag:'Nouveau', sizes:['39','40','41','42','43','44','45'],
     stock:{'39':2,'40':3,'41':4,'42':4,'43':3,'44':2,'45':0},
     desc:'Chaussures montantes imperméables en cuir nubuck, semelle crantée 5 mm pour les pierriers et les sentiers de l’Atlas.',
@@ -1034,14 +1070,39 @@ const GEAR = [
     cat:'chaussettes laine merino', sizes:['35-38','39-42','43-46'], stock:{'35-38':6,'39-42':8,'43-46':5},
     desc:'Lot de 2 paires de chaussettes en mérinos, renforcées au talon et aux orteils pour éviter les ampoules.',
     specs:['Mérinos 70 %','Talon renforcé','Lot de 2'] },
-  { id:'glasses', kind:'gear', art:'glasses', name:'Glacier Cat.4 Sunglasses', price:320, color:'#2b2f37', c2:'#e0752b',
+  { id:'glasses', kind:'gear', art:'glasses', wear:'eyes', name:'Glacier Cat.4 Sunglasses', price:320, color:'#2b2f37', c2:'#e0752b',
     cat:'lunettes soleil glacier altitude', tag:'Haute altitude', sizes:['Unique'], stock:{'Unique':6},
     desc:'Lunettes de glacier catégorie 4 avec protections latérales amovibles, pour la neige et le soleil en altitude.',
     specs:['Catégorie 4','Protections latérales','UV 400'] },
+  { id:'trailshoes', kind:'gear', art:'shoe', wear:'feet', name:'Atlas Trail Shoes', price:990, color:'#3d4654', c2:'#e0552b',
+    cat:'chaussures baskets trail running approche légères', tag:'Nouveau', sizes:['39','40','41','42','43','44','45'],
+    stock:{'39':3,'40':4,'41':5,'42':5,'43':4,'44':2,'45':1},
+    desc:'Chaussures basses de trail pour les sentiers roulants et les approches : semelle accrocheuse, tige respirante et amorti léger. Idéales quand les bottes sont trop lourdes.',
+    specs:['Tige respirante','Semelle crantée 4 mm','320 g'] },
+  { id:'cap', kind:'gear', art:'cap', wear:'head', name:'Atlas Sun Cap', price:190, color:'#d9532c', c2:'#2b2f37',
+    cat:'casquette chapeau tête soleil', tag:'Nouveau', sizes:['Unique'], stock:{'Unique':10},
+    desc:'Casquette légère à séchage rapide, visière pré-courbée et bandeau anti-transpiration. Pour les longues montées en plein soleil.',
+    specs:['Séchage rapide','UPF 50+','65 g'] },
+  { id:'beanie', kind:'gear', art:'beanie', wear:'head', name:'Merino Beanie', price:220, color:'#6c809b', c2:'#2b2f37',
+    cat:'bonnet laine merino tête froid', sizes:['Unique'], stock:{'Unique':7},
+    desc:'Bonnet en laine mérinos doublé polaire sur le front. Chaud, respirant et sans odeur, pour les départs à l’aube et les nuits en refuge.',
+    specs:['Mérinos','Doublé polaire','55 g'] },
+  { id:'buff', kind:'gear', art:'buff', wear:'neck', name:'Tour de cou Buff', price:140, color:'#2f5247', c2:'#e9c33f',
+    cat:'tour de cou buff cache-cou écharpe foulard', sizes:['Unique'], stock:{'Unique':12},
+    desc:'Tour de cou en microfibre : protège du vent, de la poussière et du soleil. Se porte en cache-cou, en bandeau ou sur le nez.',
+    specs:['Microfibre','Multi-usages','40 g'] },
+  { id:'mask', kind:'gear', art:'mask', wear:'face', name:'Masque air froid Altitude', price:390, color:'#3d4654', c2:'#e0552b',
+    cat:'masque nez bouche respirer souffle asthme air froid altitude', tag:'Souffle', sizes:['S/M','L/XL'], stock:{'S/M':4,'L/XL':3},
+    desc:'Masque thermique qui réchauffe et humidifie l’air inspiré. Il rend la respiration plus confortable par temps froid et en altitude, notamment pour les personnes sensibles à l’air froid. Ce n’est pas un dispositif médical : en cas d’asthme, demandez l’avis de votre médecin avant une randonnée en altitude.',
+    specs:['Échangeur de chaleur','Valve d’expiration','45 g'] },
+  { id:'nasal', kind:'gear', art:'nasal', wear:'nose', name:'Bandelettes nasales ×30', price:90, color:'#e8c9a8', c2:'#4a8fb0',
+    cat:'bandelettes nez narines respirer souffle asthme effort', tag:'Souffle', sizes:['Unique'], stock:{'Unique':20},
+    desc:'Bandelettes adhésives qui écartent doucement les narines pour faciliter la respiration par le nez à l’effort. Confort uniquement, pas un traitement : en cas d’asthme, suivez les conseils de votre médecin.',
+    specs:['30 bandelettes','Sans latex','Discrètes'] },
 ];
-const GEAR_GROUPS = { pack:'sacs', daypack:'sacs', tent:'camping', sleep:'camping', stove:'camping', flask:'camping',
-  boots:'marche', poles:'marche', socks:'marche', lamp:'securite', firstaid:'securite', glasses:'securite' };
-const GEAR_FILTERS = [['all', 'Tout'], ['sacs', 'Sacs'], ['camping', 'Camping'], ['marche', 'Marche'], ['securite', 'Sécurité']];
+const GEAR_GROUPS = { cap:'tete', beanie:'tete', buff:'tete', mask:'tete', nasal:'tete', pack:'sacs', daypack:'sacs', tent:'camping', sleep:'camping', stove:'camping', flask:'camping',
+  boots:'marche', trailshoes:'marche', poles:'marche', socks:'marche', lamp:'securite', firstaid:'securite', glasses:'securite' };
+const GEAR_FILTERS = [['all', 'Tout'], ['sacs', 'Sacs'], ['camping', 'Camping'], ['marche', 'Marche'], ['securite', 'Sécurité'], ['tete', 'Tête & souffle']];
 
 function gear(p) {
   if (p.img) return photo(p.img);
@@ -1230,6 +1291,61 @@ function gear(p) {
       <text x="100" y="146" text-anchor="middle" font-family="Arial,sans-serif" font-weight="700" font-size="6" letter-spacing="2" fill="#55585e">CAT. 4 · GLACIER</text>`;
   }
 
+  if (p.art === 'shoe') {
+    g = ground(78) + `
+      <path d="M20,148 L180,148 Q186,166 170,172 L30,172 Q16,168 20,148 Z" fill="#f1efe9"/>
+      <path d="M22,160 Q100,168 182,158" fill="none" stroke="#26282c" stroke-width="4"/>
+      <path d="M24,150 L24,108 Q24,94 38,94 L60,92 Q72,92 78,100 Q86,108 100,110 Q124,112 144,122 Q172,130 180,148 Z" fill="${c}"/>
+      <path d="M98,110 Q124,112 144,122 Q170,130 178,146 L128,148 Q112,128 98,110 Z" fill="${d}"/>
+      <path d="M24,108 Q24,94 38,94 L60,92 L58,104 Q40,100 24,112 Z" fill="#000" opacity=".25"/>
+      <path d="M80,104 L96,98 M88,111 L106,104 M98,117 L116,110 M108,123 L126,116" stroke="#fff" stroke-opacity=".8" stroke-width="3" stroke-linecap="round"/>
+      ${logo(34, 136, '#fff', 4.6)}`;
+  }
+  if (p.art === 'cap') {
+    g = ground(62) + `
+      <path d="M46,128 Q44,52 100,48 Q156,52 154,128 Z" fill="${c}"/>
+      <path d="M100,48 L100,128 M72,56 Q68,92 70,128 M128,56 Q132,92 130,128" fill="none" stroke="#000" stroke-opacity=".16"/>
+      <path d="M40,126 Q100,112 160,126 Q184,142 150,156 Q100,142 50,156 Q16,142 40,126 Z" fill="${d}"/>
+      <circle cx="100" cy="49" r="5" fill="${d}"/>
+      ${logo(78, 100, '#fff', 5)}
+      <path d="M46,128 Q100,118 154,128" fill="none" stroke="#000" stroke-opacity=".2" stroke-width="2"/>`;
+  }
+  if (p.art === 'beanie') {
+    let ribs = ''; for (let x = 52; x < 150; x += 8) ribs += `M${x},132 L${x},162 `;
+    g = ground(60) + `
+      <path d="M50,140 Q36,52 100,40 Q164,52 150,140 Z" fill="${c}"/>
+      <path d="M44,128 L156,128 L158,164 Q100,174 42,164 Z" fill="${d}"/>
+      <path d="${ribs}" stroke="#000" stroke-opacity=".25" stroke-width="2"/>
+      <rect x="84" y="136" width="32" height="14" rx="2" fill="#e9e6df"/>
+      <path d="M92,146 L97,138 L100,142 L103,137 L108,146 Z" fill="${d}"/>`;
+  }
+  if (p.art === 'buff') {
+    g = ground(60) + `
+      <path d="M52,52 L148,52 L156,160 Q100,184 44,160 Z" fill="${c}"/>
+      <path d="M50,84 Q100,98 150,84 M48,112 Q100,128 152,112 M46,140 Q100,156 154,140" fill="none" stroke="${d}" stroke-width="7" stroke-opacity=".9"/>
+      <ellipse cx="100" cy="52" rx="48" ry="11" fill="#000" opacity=".28"/>
+      <ellipse cx="100" cy="50" rx="48" ry="11" fill="${c}"/>
+      <path d="M58,52 Q100,62 142,52" fill="none" stroke="#fff" stroke-opacity=".25"/>`;
+  }
+  if (p.art === 'mask') {
+    g = ground(62) + `
+      <path d="M40,96 L12,84 M160,96 L188,84" stroke="${d}" stroke-width="5" stroke-linecap="round"/>
+      <path d="M38,76 Q100,52 162,76 Q168,136 100,170 Q32,136 38,76 Z" fill="${c}"/>
+      <path d="M38,76 Q100,52 162,76" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="3"/>
+      <circle cx="100" cy="116" r="22" fill="${d}"/><circle cx="100" cy="116" r="14" fill="#000" opacity=".25"/>
+      <path d="M91,112 L109,112 M91,116 L109,116 M91,120 L109,120" stroke="#fff" stroke-opacity=".6" stroke-width="1.6"/>
+      ${logo(68, 150, '#cfd4db', 4.4)}`;
+  }
+  if (p.art === 'nasal') {
+    const strip = (y, rot) => `<g transform="rotate(${rot} 100 ${y})"><rect x="52" y="${y - 9}" width="96" height="18" rx="9" fill="${c}"/><rect x="52" y="${y - 9}" width="96" height="18" rx="9" fill="none" stroke="#000" stroke-opacity=".18"/><path d="M66,${y} L134,${y}" stroke="${d}" stroke-width="3" stroke-linecap="round" stroke-dasharray="1 8"/></g>`;
+    g = ground(56) + `
+      <rect x="40" y="26" width="120" height="152" rx="14" fill="${d}"/>
+      <rect x="40" y="26" width="120" height="152" rx="14" fill="none" stroke="#000" stroke-opacity=".2"/>
+      <text x="100" y="56" text-anchor="middle" font-family="Arial,sans-serif" font-weight="800" font-size="15" letter-spacing="2" fill="#fff">RESPIRE</text>
+      <text x="100" y="72" text-anchor="middle" font-family="Arial,sans-serif" font-size="7" letter-spacing="2" fill="#fff" opacity=".85">BANDELETTES NASALES</text>
+      ${strip(100, -3)}${strip(128, 2)}${strip(156, -2)}`;
+  }
+
   if (p.small) g = `<g transform="translate(15,28.5) scale(.85)">${g}</g>`;
 
   return `<svg class="g" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>${shade}${defs}</defs>${g}</svg>`;
@@ -1302,10 +1418,216 @@ const updateCue = () => cue.classList.toggle('gone', detail.scrollTop + detail.c
 detail.addEventListener('scroll', updateCue, { passive: true });
 addEventListener('resize', updateCue);
 cue.addEventListener('click', () => detail.scrollTo({ top: detail.scrollHeight, behavior: 'smooth' }));
+/* ---------- Cabine d'essayage : silhouette qui porte les vêtements choisis ---------- */
+const outfit = { feet: null, top: null, pants: null, head: null, neck: null, face: null, nose: null, eyes: null };
+const slotOf = p => p.wear || (p.type === 'pants' ? 'pants' : 'top');
+const WEARABLES = [...PRODUCTS, ...GEAR.filter(g => g.wear)];
+// Accessoires dessinés sur le visage et la tête (repère du mannequin : tête centrée en x=100, y=36)
+// Chaussures : dessinées sur les deux pieds du mannequin (le pied droit est le miroir du gauche)
+const FEET = (p, high) => {
+  const one = `${high ? `<path d="M60,450 L92,450 L92,484 L60,484 Z" fill="${p.color}"/><path d="M60,450 L92,450 L92,458 L60,458 Z" fill="${p.c2}"/><path d="M60,450 L92,450 L92,484 L60,484 Z" fill="#000" opacity=".1"/>` : `<path d="M62,474 L92,474 L92,484 L62,484 Z" fill="${p.color}"/><path d="M62,474 L92,474 L92,478 L62,478 Z" fill="${p.c2}"/>`}
+    <path d="M60,478 L93,478 L97,494 Q76,503 52,498 Q49,484 60,478 Z" fill="${p.color}"/>
+    <path d="M62,482 L90,482 M62,487 L88,487 M64,492 L84,492" stroke="${p.c2}" stroke-width="1.6" stroke-linecap="round"/>
+    <path d="M50,496 Q76,506 99,494 L99,500 Q76,510 49,502 Z" fill="#26282c"/>`;
+  return `<g>${one}</g><g transform="matrix(-1 0 0 1 200 0)">${one}</g>`;
+};
+const HEAD_ART = {
+  cap: (p, back) => `<path d="M80,28 Q79,6 100,5 Q121,6 120,28 Z" fill="${p.color}"/><path d="M100,5 L100,28" stroke="#000" stroke-opacity=".15"/>
+    ${back ? `<path d="M80,24 Q100,28 120,24 L120,29 Q100,33 80,29 Z" fill="${p.c2}"/>` : `<path d="M78,26 Q100,33 122,26 L126,32 Q100,44 74,32 Z" fill="${p.c2}"/>`}<circle cx="100" cy="5.5" r="2.4" fill="${p.c2}"/>`,
+  beanie: p => `<path d="M79,30 Q76,3 100,2 Q124,3 121,30 Z" fill="${p.color}"/>
+    <path d="M78,21 Q100,17 122,21 L122,32 Q100,28 78,32 Z" fill="${p.c2}"/><path d="M84,20 V30 M91,19 V29 M98,19 V29 M105,19 V29 M112,19 V29 M118,20 V30" stroke="#000" stroke-opacity=".25"/>`,
+  buff: p => `<path d="M88,60 L112,60 L117,90 Q100,98 83,90 Z" fill="${p.color}"/>
+    <path d="M86,70 Q100,76 114,70 M85,80 Q100,86 115,80" fill="none" stroke="${p.c2}" stroke-width="3"/><path d="M88,60 Q100,66 112,60" fill="none" stroke="#000" stroke-opacity=".25"/>`,
+  mask: p => `<path d="M82,42 L77,38 M118,42 L123,38" stroke="${p.c2}" stroke-width="1.6" stroke-linecap="round"/>
+    <path d="M83,42 Q100,37 117,42 Q118,60 100,66 Q82,60 83,42 Z" fill="${p.color}"/>
+    <circle cx="100" cy="52" r="5.5" fill="${p.c2}"/><circle cx="100" cy="52" r="3" fill="#000" opacity=".3"/>`,
+  nasal: p => `<g transform="rotate(-8 100 41)"><rect x="92" y="38" width="16" height="5" rx="2.5" fill="${p.color}" stroke="#000" stroke-opacity=".2" stroke-width=".5"/></g>`,
+  boots: p => FEET(p, true),
+  shoe: p => FEET(p, false),
+  glasses: p => `<path d="M82,35 L79,33 M118,35 L121,33" stroke="${p.color}" stroke-width="1.6"/>
+    <path d="M82,31 Q82,29 87,29 L94,30 Q97,31 96,36 Q94,42 88,42 Q82,41 82,35 Z M118,31 Q118,29 113,29 L106,30 Q103,31 104,36 Q106,42 112,42 Q118,41 118,35 Z" fill="#2a2433" stroke="${p.color}" stroke-width="1.8"/>
+    <path d="M96,32 Q100,30 104,32" fill="none" stroke="${p.color}" stroke-width="1.8"/>`
+};
+function fitSVG(back = false) {
+  const worn = (p, ty) => p ? `<g transform="translate(0,${ty})">${garment(p, back ? 'back' : 'front', true)}</g>` : '';
+  const FACE = ['nose', 'face', 'eyes'];
+  const acc = slot => !outfit[slot] || (back && FACE.includes(slot)) ? '' : HEAD_ART[outfit[slot].art](outfit[slot], back);
+  const mirror = 'transform="matrix(-1 0 0 1 200 0)"';
+  const arm = 'M33,104 Q22,112 20,134 L15,252 Q14,262 20,274 L30,276 Q38,270 40,258 L53,112 Z';
+  const hand = 'M17,268 Q11,284 16,300 Q22,309 31,302 Q38,286 38,270 Z';
+  const leg = 'M58,288 L99,288 Q99,350 95,404 Q94,446 91,484 L62,484 Q60,446 58,404 Q55,350 58,288 Z';
+  const foot = 'M61,482 L91,482 L95,494 Q75,502 54,497 Q54,488 61,482 Z';
+  // Mannequin de vitrine : corps lisse gris chaud, tête ovale sans visage
+  return `<svg class="g fit-svg" viewBox="0 0 200 506" aria-hidden="true">
+    <defs>
+      <linearGradient id="fitBody" gradientUnits="userSpaceOnUse" x1="0" x2="200"><stop offset="0" stop-color="#a9a49b"/><stop offset=".35" stop-color="#d6d1c8"/><stop offset=".6" stop-color="#ddd8cf"/><stop offset="1" stop-color="#a39e95"/></linearGradient>
+      <radialGradient id="fitHead" cx=".42" cy=".36" r=".75"><stop offset="0" stop-color="#e6e1d8"/><stop offset="1" stop-color="#b3aea5"/></radialGradient>
+    </defs>
+    <ellipse cx="100" cy="499" rx="62" ry="6" fill="#000" opacity=".14"/>
+    <g fill="url(#fitBody)">
+      <path d="${leg}"/><path d="${leg}" ${mirror}/><path d="${foot}"/><path d="${foot}" ${mirror}/>
+      <path d="${arm}"/><path d="${arm}" ${mirror}/><path d="${hand}"/><path d="${hand}" ${mirror}/>
+      <path d="M92,56 L108,56 L109,80 Q114,90 136,98 L64,98 Q86,90 91,80 Z"/>
+      <path d="M62,96 Q56,150 63,200 Q59,246 56,294 L144,294 Q141,246 137,200 Q144,150 138,96 Q100,110 62,96 Z"/>
+    </g>
+    <ellipse cx="100" cy="35" rx="16.5" ry="22" fill="url(#fitHead)"/>
+    ${back ? '' : '<path d="M100,40 Q98,47 100,49" fill="none" stroke="#000" stroke-opacity=".1" stroke-width="1.4" stroke-linecap="round"/>'}
+    ${worn(outfit.pants, 227)}${worn(outfit.top, 40)}
+    ${acc('feet')}${acc('neck')}${acc('nose')}${acc('face')}${acc('eyes')}${acc('head')}
+  </svg>`;
+}
+// Vue de profil (regard vers la droite ; la vue gauche en est le miroir) : mannequin et vêtements redessinés en coupe latérale
+function sideSVG() {
+  const shade = d => `<path d="${d}" fill="url(#sideShade)"/>`;
+  const T = outfit.top, P = outfit.pants, F = outfit.feet;
+  const sleeveless = T && T.type === 'gilet';
+  const body = 'fill="url(#fitBody)"';
+  const arm = 'M94,100 Q87,112 89,140 L91,262 Q91,274 100,277 L111,275 Q115,262 113,250 L112,120 Q112,101 100,98 Z';
+  const leg = 'M81,286 L124,286 Q126,350 116,404 Q114,446 111,484 L84,484 Q84,446 88,404 Q80,350 81,286 Z';
+  const foot = 'M84,482 L110,482 L113,490 L142,494 Q151,498 146,503 L82,503 Q80,490 84,482 Z';
+
+  // Haut : buste profilé, manche vers l'avant, col, poignet et ourlet
+  let top = '';
+  if (T) {
+    const c = T.color, t2 = T.trim || T.c2 || c;
+    const torso = 'M78,92 Q73,160 76,292 L127,292 Q132,160 125,99 Q103,85 78,92 Z';
+    const sleeve = sleeveless ? '' : 'M92,98 Q83,110 85,140 L87,268 L113,268 L111,126 Q111,100 100,96 Z';
+    const fill = T.type === 'puffer' || T.type === 'gilet' ? 'url(#sidePuff)' : c;
+    top += `<path d="${torso}" fill="${fill}"/>`;
+    if (T.type === 'shell') top += `<path d="M78,92 Q103,84 125,99 L127,140 Q102,130 75,140 Z" fill="${T.c2}"/>`;
+    if (T.type === 'fleece' || T.type === 'soft') top += `<path d="M76,276 L127,276 L127,292 L76,292 Z" fill="${t2}"/>`;
+    if (T.type === 'puffer') top += `<path d="M76,282 L127,282 L127,292 L76,292 Z" fill="${T.c2}"/>`;
+    top += shade(torso);
+    top += `<path d="M126,100 Q131,170 126,290" fill="none" stroke="#26282c" stroke-opacity=".5" stroke-width="1.6"/>`;
+    if (sleeve) {
+      top += `<path d="${sleeve}" fill="${fill}"/>` + shade(sleeve);
+      top += `<path d="M87,252 L113,252 L113,268 L87,268 Z" fill="${T.type === 'puffer' ? T.c2 : t2}" opacity=".9"/>`;
+      top += `<path d="M86,262 L112,262" stroke="#000" stroke-opacity=".18"/>`;
+    }
+    top += `<path d="M90,74 L110,74 L113,96 Q100,102 88,96 Z" fill="${T.type === 'shell' || T.type === 'fleece' ? T.c2 : t2}"/><path d="M90,74 L110,74 L113,96 Q100,102 88,96 Z" fill="#000" opacity=".12"/>`;
+  }
+
+  // Pantalon : jambe vue de côté, ceinture, poche, bande latérale, ourlet
+  let pants = '';
+  if (P) {
+    const short = P.cut === 'short', slim = P.cut === 'slim', hem = short ? 383 : 480;
+    const d = short ? `M80,284 L125,284 L127,${hem} L82,${hem} Z`
+      : slim ? `M82,284 L123,284 Q124,350 115,404 Q113,446 110,${hem} L86,${hem} Q86,446 89,404 Q82,350 82,284 Z`
+      : `M80,284 L125,284 Q128,350 118,404 Q116,446 114,${hem} L82,${hem} Q82,446 86,404 Q78,350 80,284 Z`;
+    pants += `<path d="${d}" fill="${P.color}"/>` + shade(d);
+    pants += `<path d="M80,284 L125,284 L125,296 L80,296 Z" fill="${P.c2}" opacity=".55"/>`;
+    if (P.stripe) pants += `<path d="M103,296 L101,${hem - 4}" stroke="${P.c2}" stroke-width="4"/>`;
+    if (!P.nocargo) pants += `<rect x="102" y="${short ? 318 : 336}" width="18" height="${short ? 22 : 28}" rx="2" fill="${P.color}" stroke="#000" stroke-opacity=".3"/>`;
+    pants += `<path d="M82,${hem - 3} L${short ? 127 : 112},${hem - 3}" stroke="#000" stroke-opacity=".22"/>`;
+    if (!short && P.zipoff !== false) pants += `<path d="M84,404 L116,404" stroke="#26282c" stroke-width="1.8"/>`;
+    pants += `<path d="M103,300 Q108,360 100,404" fill="none" stroke="#000" stroke-opacity=".12" stroke-width="3"/>`;
+  }
+
+  // Chaussures de profil
+  let shoes = '';
+  if (F) {
+    const high = F.art === 'boots', c = F.color, a = F.c2;
+    if (high) shoes += `<path d="M83,452 L111,452 L112,486 L84,486 Z" fill="${c}"/><path d="M83,452 L111,452 L111,460 L83,460 Z" fill="${a}"/><path d="M96,462 L110,466 M96,468 L110,472 M96,474 L111,478" stroke="${a}" stroke-width="1.6"/>`;
+    else shoes += `<path d="M83,476 L111,476 L111,486 L83,486 Z" fill="${c}"/><path d="M83,476 L111,476 L111,480 L83,480 Z" fill="${a}"/>`;
+    shoes += `<path d="M83,484 L110,482 L113,490 L142,494 Q151,498 146,503 L81,503 Q79,492 83,484 Z" fill="${c}"/>`;
+    shoes += `<path d="M112,490 L136,494" stroke="${a}" stroke-width="2.4" stroke-linecap="round"/>`;
+    shoes += `<path d="M79,499 Q112,508 150,500 L150,506 Q112,514 79,505 Z" fill="${high ? '#26282c' : '#f1efe9'}"/>`;
+  }
+
+  // Tête et accessoires de profil
+  const acc = (slot, svg) => outfit[slot] && outfit[slot].art === svg ? true : false;
+  let head = '';
+  const o = outfit;
+  if (o.neck) head += `<path d="M90,60 L111,60 L114,92 Q101,100 87,92 Z" fill="${o.neck.color}"/><path d="M89,72 Q101,78 112,72 M88,82 Q101,88 113,82" fill="none" stroke="${o.neck.c2}" stroke-width="3"/>`;
+  if (o.nose) head += `<rect x="112" y="40" width="9" height="4" rx="2" fill="${o.nose.color}" stroke="#000" stroke-opacity=".25" stroke-width=".6" transform="rotate(20 116 42)"/>`;
+  if (o.face) head += `<path d="M86,40 L112,42" stroke="${o.face.c2}" stroke-width="1.6"/><path d="M110,40 Q124,46 123,58 Q116,66 106,64 Q110,52 110,40 Z" fill="${o.face.color}"/><circle cx="118" cy="55" r="4" fill="${o.face.c2}"/><circle cx="118" cy="55" r="2" fill="#000" opacity=".3"/>`;
+  if (o.eyes) head += `<path d="M86,34 L108,32" stroke="${o.eyes.color}" stroke-width="1.8"/><path d="M107,28 Q118,28 118,36 Q116,42 108,40 Z" fill="#2a2433" stroke="${o.eyes.color}" stroke-width="1.8"/>`;
+  if (o.head) {
+    const h = o.head;
+    if (h.art === 'cap') head += `<path d="M83,28 Q84,5 102,4 Q119,6 119,28 Z" fill="${h.color}"/><path d="M110,24 L146,28 Q152,33 143,35 L110,32 Z" fill="${h.c2}"/><path d="M83,24 Q101,29 119,24 L119,29 Q101,34 83,29 Z" fill="${h.c2}"/>`;
+    if (h.art === 'beanie') head += `<path d="M82,30 Q80,2 102,1 Q122,3 119,30 Z" fill="${h.color}"/><path d="M81,20 Q101,16 120,20 L120,33 Q101,29 81,33 Z" fill="${h.c2}"/><path d="M87,19 V31 M94,18 V30 M101,18 V30 M108,18 V30 M115,19 V31" stroke="#000" stroke-opacity=".25"/>`;
+  }
+
+  return `<svg class="g fit-svg" viewBox="0 0 200 506" aria-hidden="true">
+    <defs>
+      <linearGradient id="fitBody" gradientUnits="userSpaceOnUse" x1="76" x2="130"><stop offset="0" stop-color="#a39e95"/><stop offset=".5" stop-color="#d6d1c8"/><stop offset="1" stop-color="#aaa59c"/></linearGradient>
+      <linearGradient id="sideShade" x1="0" x2="1"><stop offset="0" stop-color="#000" stop-opacity=".3"/><stop offset=".45" stop-color="#fff" stop-opacity=".08"/><stop offset="1" stop-color="#000" stop-opacity=".22"/></linearGradient>
+      ${T && (T.type === 'puffer' || T.type === 'gilet') ? `<pattern id="sidePuff" width="200" height="22" y="2" patternUnits="userSpaceOnUse"><rect width="200" height="22" fill="${T.color}"/><path d="M0,21.3 H200" stroke="#000" stroke-opacity=".35" stroke-width="1.4"/></pattern>` : ''}
+    </defs>
+    <ellipse cx="112" cy="503" rx="50" ry="6" fill="#000" opacity=".14"/>
+    <g ${body}>
+      <path d="${leg}"/><path d="${foot}"/><path d="${arm}"/><ellipse cx="101" cy="288" rx="9" ry="12"/>
+      <path d="M93,54 L108,54 L109,90 L92,90 Z"/>
+      <path d="M84,96 Q80,150 84,200 Q82,250 86,294 L122,294 Q126,250 123,200 Q128,150 122,100 Q104,90 84,96 Z"/>
+      <ellipse cx="101" cy="35" rx="15.5" ry="22"/>
+    </g>
+    ${pants}${shoes}${top}${head}
+  </svg>`;
+}
+
+let angle = 0;
+// Vue courante selon l'angle : face, profil droit, dos, profil gauche
+const viewOf = () => ['front', 'sideR', 'back', 'sideL'][Math.round(((angle % 360) + 360) % 360 / 90) % 4];
+// Entre deux vues, le corps se resserre légèrement pour donner l'impression de tourner
+const spin = () => {
+  const g = $('#dGarment .fit-svg'); if (!g) return;
+  const r = angle * Math.PI / 180, v = viewOf();
+  const k = v === 'front' || v === 'back' ? Math.max(.62, Math.abs(Math.cos(r))) : Math.max(.62, Math.abs(Math.sin(r)));
+  g.style.transform = `scaleX(${v === 'sideL' ? -k : k})`;
+};
+function paintStage() {
+  const stage = $('#dGarment'), p = list[current], isWorn = side === 'worn';
+  stage.classList.toggle('fit', isWorn);
+  stage.innerHTML = isWorn ? (viewOf().startsWith('side') ? sideSVG() : fitSVG(viewOf() === 'back')) : art(p, side);
+  if (isWorn) spin();
+  paintStrip();
+}
+// Glisser pour tourner (souris ou doigt), boutons ↺ ↻ pour tourner par pas de 45°
+let drag = null;
+$('#dGarment').addEventListener('pointerdown', e => {
+  if (side !== 'worn') return;
+  drag = { x: e.clientX, a: angle }; $('#dGarment').setPointerCapture(e.pointerId);
+  $('#dGarment .fit-svg')?.classList.remove('flip-in');
+});
+$('#dGarment').addEventListener('pointermove', e => {
+  if (!drag) return;
+  const was = viewOf();
+  angle = drag.a + (e.clientX - drag.x) * 0.9;
+  was === viewOf() ? spin() : paintStage();
+});
+const endDrag = () => { drag = null; };
+$('#dGarment').addEventListener('pointerup', endDrag);
+$('#dGarment').addEventListener('pointercancel', endDrag);
+$('#dGarment').addEventListener('dblclick', () => { if (side === 'worn') turnTo(Math.round(angle / 360) * 360); });
+function turnTo(target) {
+  const from = angle, t0 = performance.now(), d = 450;
+  (function step(now) {
+    const t = Math.min(1, (now - t0) / d), e = 1 - Math.pow(1 - t, 3), was = viewOf();
+    angle = from + (target - from) * e;
+    was === viewOf() ? spin() : paintStage();
+    if (t < 1) requestAnimationFrame(step);
+  })(t0);
+}
+function paintStrip() {
+  const strip = $('#fitStrip'); strip.hidden = side !== 'worn';
+  if (strip.hidden) return;
+  strip.innerHTML = `<div class="fit-rot"><button data-rot="-45" aria-label="Tourner vers la gauche">↺</button><span>Glissez pour tourner</span><button data-rot="45" aria-label="Tourner vers la droite">↻</button></div><p>Touchez un article pour l'essayer</p><div class="fit-chips">${WEARABLES.map(q =>
+    `<button class="fit-chip ${outfit[slotOf(q)] === q ? 'on' : ''}" data-id="${q.id}" title="${q.name}" aria-label="${q.name}">${art(q)}</button>`).join('')}</div>`;
+}
+$('#fitStrip').addEventListener('click', e => {
+  const r = e.target.closest('[data-rot]'); if (r) { turnTo(Math.round(angle / 45) * 45 + +r.dataset.rot); return; }
+  const b = e.target.closest('.fit-chip'); if (!b) return;
+  const q = byId(b.dataset.id), s = slotOf(q);
+  outfit[s] = outfit[s] === q ? null : q;
+  paintStage();
+});
 function openDetail(i, l = list) {
-  list = l; current = (i + list.length) % list.length; side = 'front'; size = null;
+  list = l; current = (i + list.length) % list.length; size = null;
   const p = list[current], sizes = sizesOf(p);
-  $('#dGarment').innerHTML = art(p, 'front');
+  side = p.kind !== 'gear' || p.wear ? 'worn' : 'front';
+  angle = 0;
+  if (side === 'worn') outfit[slotOf(p)] = p;
+  paintStage();
   $('#dName').textContent = p.name;
   $('#specs').innerHTML = p.specs.map(s => `<span>${s}</span>`).join('');
   $('#dPrice').textContent = fmt(p.price);
@@ -1313,8 +1635,10 @@ function openDetail(i, l = list) {
   renderPairs(p);
   detail.scrollTop = 0;
   requestAnimationFrame(updateCue);
-  $('#side').hidden = p.kind === 'gear';
-  document.querySelectorAll('#side button').forEach(b => b.classList.toggle('on', b.dataset.side === 'front'));
+  $('#side').hidden = p.kind === 'gear' && !p.wear;
+  $('#side [data-side="back"]').hidden = p.kind === 'gear';
+  $('#side [data-side="front"]').textContent = p.kind === 'gear' ? 'PRODUIT' : 'AVANT';
+  document.querySelectorAll('#side button').forEach(b => b.classList.toggle('on', b.dataset.side === side));
   if (sizes.length === 1 && p.stock[sizes[0]]) size = sizes[0];
   $('#sizes').innerHTML = sizes.map(s => `<button data-s="${s}" class="${s === size ? 'on' : ''}" ${p.stock[s] ? '' : 'disabled'}>${s}</button>`).join('');
   $('#stock').hidden = true;
@@ -1339,7 +1663,7 @@ $('#side').addEventListener('click', e => {
   document.querySelectorAll('#side button').forEach(x => x.classList.toggle('on', x === b));
   $('#dGarment .g').classList.add('flip-out');
   setTimeout(() => {
-    $('#dGarment').innerHTML = art(list[current], side);
+    paintStage();
     $('#dGarment .g').classList.add('flip-in');
   }, 300);
 });
