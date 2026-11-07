@@ -199,6 +199,13 @@
   .fit-rot span{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
   .fit-rot button{width:30px;height:30px;border-radius:50%;border:1px solid var(--ink);font-size:15px;line-height:1;display:grid;place-items:center;transition:background .2s,color .2s}
   .fit-rot button:hover{background:var(--ink);color:#fff}
+  .coll-tabs{display:flex;justify-content:center;gap:8px;margin:-30px 16px 34px;flex-wrap:wrap}
+  .coll-tabs button{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:9px 18px;border-radius:20px;border:1px solid var(--ink);transition:background .25s,color .25s,border-color .25s}
+  .coll-tabs button:hover{background:rgba(0,0,0,.05)}
+  .coll-tabs button.on{background:var(--ink);color:#fff}
+  .coll-tabs button.rose{border-color:#e0679a;color:#c0457c}
+  .coll-tabs button.rose.on{background:#e0679a;color:#fff}
+  main.rose .eyebrow,main.rose .sec-head h2 .serif{color:#d6558a}
   .fit-strip{width:min(420px,92vw);margin-top:6px;text-align:center}
   .fit-strip p{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
   .fit-chips{display:flex;justify-content:center;gap:6px;flex-wrap:wrap}
@@ -626,8 +633,13 @@
 <main id="clothes">
   <div class="sec-head">
     <span class="eyebrow">01 · Vêtements</span>
-    <h2>La collection <span class="serif">Atlas</span></h2>
-    <p>Douze pièces pensées pour le système trois couches : chaudes, légères et faites pour durer.</p>
+    <h2 id="collTitle">La collection <span class="serif">Atlas</span></h2>
+    <p id="collText">Sept hauts pensés pour le système trois couches : chauds, légers et faits pour durer.</p>
+  </div>
+  <div class="coll-tabs" id="collTabs">
+    <button class="on" data-col="atlas">Hauts Atlas</button>
+    <button data-col="pants">Pantalons</button>
+    <button data-col="rose" class="rose">Collection Rose · Femme</button>
   </div>
   <div class="rack-scroll">
     <div class="rack">
@@ -858,6 +870,27 @@ const PRODUCTS = [
   { id:'imlil',  name:'Imlil Windbreaker', price:640, type:'shell', light:true, color:'#a8c7d9', c2:'#e9eef2',
     cat:'coupe-vent veste légère', desc:'Coupe-vent ultra-léger qui tient dans la paume. Pour les crêtes ventées et les départs à l’aube.',
     specs:['Ultra-léger','Déperlant','110 g'], stock:{S:0,M:0,L:0,XL:0,'2XL':0} },
+  { id:'rosehard', col:'rose', name:'Rosa Hardshell 3L', price:1490, type:'shell', color:'#e8628f', c2:'#3b2a35',
+    cat:'veste imperméable pluie hardshell femme rose', desc:'Veste imperméable 3 couches taillée pour la silhouette féminine : capuche ajustable, coutures étanchées et aérations sous les bras. La même technicité que la collection Atlas, en rose.',
+    specs:['Imperméable 20 000 mm','Coupe femme','410 g'], sizes:['XS','S','M','L','XL'], stock:{XS:2,S:4,M:5,L:4,XL:2} },
+  { id:'blush', col:'rose', name:'Blush Down Jacket', price:1290, type:'puffer', color:'#f0a6c0', c2:'#a94d74',
+    cat:'doudoune duvet chaud hiver femme rose', desc:'Doudoune en duvet 800 cuin à la coupe légèrement cintrée. Chaude pour les nuits en refuge, elle se range dans sa propre poche.',
+    specs:['Duvet 800 cuin','Coupe cintrée','340 g'], sizes:['XS','S','M','L','XL'], stock:{XS:1,S:3,M:4,L:3,XL:1} },
+  { id:'peony', col:'rose', name:'Peony Fleece Half-Zip', price:690, type:'fleece', color:'#f4c3d3', c2:'#c0587f',
+    cat:'polaire fleece pull femme rose', desc:'Polaire grille douce, demi-zip et empiècements renforcés aux épaules pour le portage du sac. Une seconde couche chaude et respirante.',
+    specs:['Polaire grille','Séchage rapide','290 g'], sizes:['XS','S','M','L','XL'], stock:{XS:3,S:5,M:5,L:3,XL:2} },
+  { id:'orchid', col:'rose', name:'Orchidée Softshell', price:990, type:'soft', color:'#b8628f', trim:'#8e4570', zipc:'#ffe3ee',
+    cat:'softshell veste vent femme rose', desc:'Softshell coupe-vent et déperlante, extensible dans 4 directions. Pour l’approche et la randonnée rapide, avec des zips contrastés.',
+    specs:['Coupe-vent','Stretch 4 sens','440 g'], sizes:['XS','S','M','L','XL'], stock:{XS:2,S:3,M:4,L:3,XL:1} },
+  { id:'rosemerino', col:'rose', name:'Rosé Merino Base Layer', price:490, type:'base', color:'#e598b4', trim:'#c97593',
+    cat:'sous-couche merino t-shirt manches longues femme rose', desc:'Première couche en laine mérinos 180 g : chaude, respirante et sans odeur, même après plusieurs jours de marche.',
+    specs:['100 % mérinos','Anti-odeurs','170 g'], sizes:['XS','S','M','L','XL'], stock:{XS:3,S:6,M:6,L:4,XL:2} },
+  { id:'magnolia', col:'rose', name:'Magnolia Trek Leggings', price:590, type:'pants', cut:'slim', nocargo:true, zipoff:false, stripe:true, color:'#8e3a63', c2:'#f08db4',
+    cat:'legging pantalon collant randonnée femme rose', desc:'Legging de trek extensible, taille haute, poche zippée pour la clé ou le téléphone. Il ne glisse pas et sèche vite.',
+    specs:['Taille haute','Poche zippée','230 g'], sizes:['XS','S','M','L','XL'], stock:{XS:4,S:6,M:6,L:4,XL:2} },
+  { id:'blushpants', col:'rose', name:'Blush Zip-Off Pants', price:790, type:'pants', color:'#d99ab0', c2:'#6e3b4c',
+    cat:'pantalon short zip-off femme rose', desc:'Pantalon de trek convertible en short, genoux articulés, poche cargo zippée et ceinture ajustable. Coupe pensée pour les hanches.',
+    specs:['Zip-off','Poche cargo','360 g'], sizes:['XS','S','M','L','XL'], stock:{XS:2,S:4,M:5,L:3,XL:2} },
 ];
 const SIZES = ['S','M','L','XL','2XL'];
 
@@ -1074,20 +1107,41 @@ const GEAR = [
     cat:'lunettes soleil glacier altitude', tag:'Haute altitude', sizes:['Unique'], stock:{'Unique':6},
     desc:'Lunettes de glacier catégorie 4 avec protections latérales amovibles, pour la neige et le soleil en altitude.',
     specs:['Catégorie 4','Protections latérales','UV 400'] },
-  { id:'trailshoes', kind:'gear', art:'shoe', wear:'feet', name:'Atlas Trail Shoes', price:990, color:'#3d4654', c2:'#e0552b',
+  { id:'trailshoes', kind:'gear', col:'atlas', art:'shoe', wear:'feet', name:'Atlas Trail Shoes', price:990, color:'#3d4654', c2:'#e0552b',
     cat:'chaussures baskets trail running approche légères', tag:'Nouveau', sizes:['39','40','41','42','43','44','45'],
     stock:{'39':3,'40':4,'41':5,'42':5,'43':4,'44':2,'45':1},
     desc:'Chaussures basses de trail pour les sentiers roulants et les approches : semelle accrocheuse, tige respirante et amorti léger. Idéales quand les bottes sont trop lourdes.',
     specs:['Tige respirante','Semelle crantée 4 mm','320 g'] },
-  { id:'cap', kind:'gear', art:'cap', wear:'head', name:'Atlas Sun Cap', price:190, color:'#d9532c', c2:'#2b2f37',
+  { id:'rosebeanie', kind:'gear', art:'beanie', wear:'head', col:'rose', name:'Rosé Merino Beanie', price:220, color:'#f0a6c0', c2:'#c0587f',
+    cat:'bonnet laine merino tête froid femme rose', tag:'Rose', sizes:['Unique'], stock:{'Unique':8},
+    desc:'Bonnet en laine mérinos doublé polaire sur le front. Chaud, respirant et sans odeur, pour les départs à l’aube.',
+    specs:['Mérinos','Doublé polaire','55 g'] },
+  { id:'rosecap', kind:'gear', art:'cap', wear:'head', col:'rose', name:'Rosa Sun Cap', price:190, color:'#e8628f', c2:'#3b2a35',
+    cat:'casquette tête soleil femme rose', tag:'Rose', sizes:['Unique'], stock:{'Unique':9},
+    desc:'Casquette légère à séchage rapide, bandeau anti-transpiration et attache pour queue de cheval. Pour les longues montées au soleil.',
+    specs:['Séchage rapide','UPF 50+','60 g'] },
+  { id:'rosebuff', kind:'gear', art:'buff', wear:'neck', col:'rose', name:'Tour de cou Rosé', price:140, color:'#f4c3d3', c2:'#c0587f',
+    cat:'tour de cou buff cache-cou foulard femme rose', tag:'Rose', sizes:['Unique'], stock:{'Unique':10},
+    desc:'Tour de cou en microfibre : protège du vent, de la poussière et du soleil. Se porte en cache-cou, en bandeau ou sur le nez.',
+    specs:['Microfibre','Multi-usages','40 g'] },
+  { id:'rosepack', kind:'gear', art:'pack', small:true, col:'rose', name:'Rosa 24L Daypack', price:520, color:'#e8628f', c2:'#3b2a35',
+    cat:'sac à dos sac journée femme rose', tag:'Rose', sizes:['Unique'], stock:{'Unique':6},
+    desc:'Sac de journée avec dos ventilé et bretelles ajustées aux épaules plus étroites. Poches latérales pour la gourde.',
+    specs:['Dos ventilé','Coupe femme','680 g'] },
+  { id:'roseshoes', kind:'gear', art:'shoe', wear:'feet', col:'rose', name:'Rosa Trail Shoes', price:990, color:'#f0a6c0', c2:'#c0587f',
+    cat:'chaussures baskets trail running légères femme rose', tag:'Rose', sizes:['36','37','38','39','40','41'],
+    stock:{'36':2,'37':4,'38':5,'39':5,'40':3,'41':2},
+    desc:'Chaussures basses de trail pour les sentiers roulants et les approches : semelle accrocheuse, tige respirante et amorti léger, sur une forme plus étroite.',
+    specs:['Tige respirante','Forme femme','290 g'] },
+  { id:'cap', kind:'gear', col:'atlas', art:'cap', wear:'head', name:'Atlas Sun Cap', price:190, color:'#d9532c', c2:'#2b2f37',
     cat:'casquette chapeau tête soleil', tag:'Nouveau', sizes:['Unique'], stock:{'Unique':10},
     desc:'Casquette légère à séchage rapide, visière pré-courbée et bandeau anti-transpiration. Pour les longues montées en plein soleil.',
     specs:['Séchage rapide','UPF 50+','65 g'] },
-  { id:'beanie', kind:'gear', art:'beanie', wear:'head', name:'Merino Beanie', price:220, color:'#6c809b', c2:'#2b2f37',
+  { id:'beanie', kind:'gear', col:'atlas', art:'beanie', wear:'head', name:'Merino Beanie', price:220, color:'#6c809b', c2:'#2b2f37',
     cat:'bonnet laine merino tête froid', sizes:['Unique'], stock:{'Unique':7},
     desc:'Bonnet en laine mérinos doublé polaire sur le front. Chaud, respirant et sans odeur, pour les départs à l’aube et les nuits en refuge.',
     specs:['Mérinos','Doublé polaire','55 g'] },
-  { id:'buff', kind:'gear', art:'buff', wear:'neck', name:'Tour de cou Buff', price:140, color:'#2f5247', c2:'#e9c33f',
+  { id:'buff', kind:'gear', col:'atlas', art:'buff', wear:'neck', name:'Tour de cou Buff', price:140, color:'#2f5247', c2:'#e9c33f',
     cat:'tour de cou buff cache-cou écharpe foulard', sizes:['Unique'], stock:{'Unique':12},
     desc:'Tour de cou en microfibre : protège du vent, de la poussière et du soleil. Se porte en cache-cou, en bandeau ou sur le nez.',
     specs:['Microfibre','Multi-usages','40 g'] },
@@ -1100,7 +1154,7 @@ const GEAR = [
     desc:'Bandelettes adhésives qui écartent doucement les narines pour faciliter la respiration par le nez à l’effort. Confort uniquement, pas un traitement : en cas d’asthme, suivez les conseils de votre médecin.',
     specs:['30 bandelettes','Sans latex','Discrètes'] },
 ];
-const GEAR_GROUPS = { cap:'tete', beanie:'tete', buff:'tete', mask:'tete', nasal:'tete', pack:'sacs', daypack:'sacs', tent:'camping', sleep:'camping', stove:'camping', flask:'camping',
+const GEAR_GROUPS = { rosebeanie:'tete', rosecap:'tete', rosebuff:'tete', rosepack:'sacs', roseshoes:'marche', cap:'tete', beanie:'tete', buff:'tete', mask:'tete', nasal:'tete', pack:'sacs', daypack:'sacs', tent:'camping', sleep:'camping', stove:'camping', flask:'camping',
   boots:'marche', trailshoes:'marche', poles:'marche', socks:'marche', lamp:'securite', firstaid:'securite', glasses:'securite' };
 const GEAR_FILTERS = [['all', 'Tout'], ['sacs', 'Sacs'], ['camping', 'Camping'], ['marche', 'Marche'], ['securite', 'Sécurité'], ['tete', 'Tête & souffle']];
 
@@ -1371,11 +1425,31 @@ const ALL = [...PRODUCTS, ...GEAR];
 
 /* ================= Portant ================= */
 const itemsEl = $('#items'), caption = $('#caption');
+// Collection affichée sur le portant : « atlas » (mixte) ou « rose » (femme)
+let collection = 'atlas';
+const colOf = p => p.col || 'atlas';
+// Trois portants : hauts Atlas, pantalons, collection Rose
+const rackKey = p => colOf(p) === 'rose' ? 'rose' : p.type === 'pants' ? 'pants' : 'atlas';
+const rackList = () => PRODUCTS.filter(p => rackKey(p) === collection);
+const openFromRack = el => { const l = rackList(); openDetail(l.indexOf(PRODUCTS[+el.dataset.i]), l); };
+const COLLECTIONS = {
+  atlas: ['La collection <span class="serif">Atlas</span>', 'Sept hauts pensés pour le système trois couches : chauds, légers et faits pour durer.'],
+  pants: ['Les <span class="serif">Pantalons</span>', 'Cinq coupes pour marcher : short, zip-off, softshell fuselé, léger pour le désert et surpantalon de pluie.'],
+  rose: ['La collection <span class="serif">Rose</span>', 'Sept pièces pour elles : coupes ajustées, tons roses et la même technicité que la collection Atlas.']
+};
 function renderRack() {
-  itemsEl.innerHTML = PRODUCTS.map((p, i) =>
-    `<div class="item${soldOut(p) ? ' sold' : ''}" tabindex="0" data-i="${i}" style="--i:${i}" aria-label="${p.name}">${garment(p)}</div>`
+  itemsEl.innerHTML = rackList().map((p, n) =>
+    `<div class="item${soldOut(p) ? ' sold' : ''}" tabindex="0" data-i="${PRODUCTS.indexOf(p)}" style="--i:${n}" aria-label="${p.name}">${garment(p)}</div>`
   ).join('');
 }
+$('#collTabs').addEventListener('click', e => {
+  const b = e.target.closest('[data-col]'); if (!b || b.dataset.col === collection) return;
+  collection = b.dataset.col;
+  document.querySelectorAll('#collTabs button').forEach(x => x.classList.toggle('on', x === b));
+  $('#clothes').classList.toggle('rose', collection === 'rose');
+  $('#collTitle').innerHTML = COLLECTIONS[collection][0]; $('#collText').textContent = COLLECTIONS[collection][1];
+  setActive(null); renderRack(); filter($('#q').value);
+});
 function setActive(el) {
   itemsEl.querySelectorAll('.item.active').forEach(x => x !== el && x.classList.remove('active'));
   if (!el) { caption.textContent = ''; return; }
@@ -1386,8 +1460,8 @@ function setActive(el) {
 itemsEl.addEventListener('mouseover', e => { const el = e.target.closest('.item'); if (el) setActive(el); });
 itemsEl.addEventListener('mouseleave', () => setActive(null));
 itemsEl.addEventListener('focusin', e => setActive(e.target.closest('.item')));
-itemsEl.addEventListener('click', e => { const el = e.target.closest('.item'); if (el) openDetail(+el.dataset.i, PRODUCTS); });
-itemsEl.addEventListener('keydown', e => { if (e.key === 'Enter') { const el = e.target.closest('.item'); if (el) openDetail(+el.dataset.i, PRODUCTS); } });
+itemsEl.addEventListener('click', e => { const el = e.target.closest('.item'); if (el) openFromRack(el); });
+itemsEl.addEventListener('keydown', e => { if (e.key === 'Enter') { const el = e.target.closest('.item'); if (el) openFromRack(el); } });
 
 /* ================= Étagère matériel ================= */
 const shelfEl = $('#shelf'), filtersEl = $('#gfilters');
@@ -1422,6 +1496,11 @@ cue.addEventListener('click', () => detail.scrollTo({ top: detail.scrollHeight, 
 const outfit = { feet: null, top: null, pants: null, head: null, neck: null, face: null, nose: null, eyes: null };
 const slotOf = p => p.wear || (p.type === 'pants' ? 'pants' : 'top');
 const WEARABLES = [...PRODUCTS, ...GEAR.filter(g => g.wear)];
+// Pièces proposées : celles de la collection de l'article ouvert (les accessoires sans collection vont avec les deux)
+const fitChoices = () => {
+  const p = list[current], c = p.kind === 'gear' ? (p.col || collection) : colOf(p);
+  return WEARABLES.filter(q => q.kind === 'gear' ? !q.col || q.col === c : colOf(q) === c);
+};
 // Accessoires dessinés sur le visage et la tête (repère du mannequin : tête centrée en x=100, y=36)
 // Chaussures : dessinées sur les deux pieds du mannequin (le pied droit est le miroir du gauche)
 const FEET = (p, high) => {
@@ -1611,7 +1690,7 @@ function turnTo(target) {
 function paintStrip() {
   const strip = $('#fitStrip'); strip.hidden = side !== 'worn';
   if (strip.hidden) return;
-  strip.innerHTML = `<div class="fit-rot"><button data-rot="-45" aria-label="Tourner vers la gauche">↺</button><span>Glissez pour tourner</span><button data-rot="45" aria-label="Tourner vers la droite">↻</button></div><p>Touchez un article pour l'essayer</p><div class="fit-chips">${WEARABLES.map(q =>
+  strip.innerHTML = `<div class="fit-rot"><button data-rot="-45" aria-label="Tourner vers la gauche">↺</button><span>Glissez pour tourner</span><button data-rot="45" aria-label="Tourner vers la droite">↻</button></div><p>Touchez un article pour l'essayer</p><div class="fit-chips">${fitChoices().map(q =>
     `<button class="fit-chip ${outfit[slotOf(q)] === q ? 'on' : ''}" data-id="${q.id}" title="${q.name}" aria-label="${q.name}">${art(q)}</button>`).join('')}</div>`;
 }
 $('#fitStrip').addEventListener('click', e => {
@@ -1919,6 +1998,12 @@ const openProduct = id => { const p = byId(id), l = listOf(p); openDetail(l.inde
 
 /* ---------- Complétez votre tenue ---------- */
 const PAIRS = {
+  rosehard: ['magnolia', 'rosebeanie', 'rosepack'], blush: ['blushpants', 'rosebeanie', 'roseshoes'],
+  peony: ['magnolia', 'rosecap', 'rosebuff'], orchid: ['blushpants', 'rosebuff', 'roseshoes'],
+  rosemerino: ['rosehard', 'magnolia', 'rosecap'], magnolia: ['rosemerino', 'roseshoes', 'rosebeanie'],
+  blushpants: ['peony', 'roseshoes', 'rosecap'], rosebeanie: ['rosehard', 'rosebuff', 'rosecap'],
+  rosecap: ['peony', 'blushpants', 'rosepack'], rosebuff: ['blush', 'rosebeanie', 'magnolia'],
+  rosepack: ['rosehard', 'roseshoes', 'rosecap'], roseshoes: ['magnolia', 'blushpants', 'rosepack'],
   atlas: ['merino', 'toubkal', 'boots'], toubkal: ['merino', 'atlas', 'lamp'], ifni: ['merino', 'trail', 'pack'],
   antiatlas: ['merino', 'trail', 'poles'], merino: ['ifni', 'atlas', 'socks'], mgoun: ['merino', 'antiatlas', 'sleep'],
   trail: ['boots', 'socks', 'antiatlas'], imlil: ['merino', 'daypack', 'glasses'], pack: ['flask', 'lamp', 'firstaid'],

@@ -20,9 +20,9 @@ Site vitrine e-commerce au design éditorial : portant de vêtements interactif,
 ## Fonctionnalités
 
 - **Hero vidéo plein écran** avec un décor de montagnes animé en attendant le chargement de la vidéo.
-- **Portant interactif** : 12 vêtements suspendus, tournés de côté ; au survol, la pièce pivote de face et grandit.
+- **Portant interactif** : vêtements répartis sur trois portants (hauts Atlas, pantalons, collection Rose pour femme), tournés de côté ; au survol, la pièce pivote de face et grandit.
 - **Fiche produit** sur fond givré : vue avant / dos animée, tailles avec stock, caractéristiques techniques et suggestions « Complétez votre tenue ».
-- **Matériel** : 18 produits (sacs, chaussures, tente, réchaud, lampe frontale…) avec filtres par catégorie, dont une collection **Tête & souffle** : casquette, bonnet, tour de cou, masque air froid et bandelettes nasales, ainsi que des chaussures essayables sur le mannequin.
+- **Matériel** : 23 produits (sacs, chaussures, tente, réchaud, lampe frontale…) avec filtres par catégorie, dont une collection **Tête & souffle** : casquette, bonnet, tour de cou, masque air froid et bandelettes nasales, ainsi que des chaussures essayables sur le mannequin.
 - **Cabine d'essayage** : un mannequin porte les vêtements et accessoires choisis (haut, pantalon, couvre-chef, lunettes, masque…).
 - **Système trois couches** : un guide qui relie chaque couche au produit conseillé.
 - **Packs par randonnée** : Toubkal, M'Goun, gorges du Todra et Paradise Valley, avec le matériel à emporter et un bouton « Ajouter le sac ».
